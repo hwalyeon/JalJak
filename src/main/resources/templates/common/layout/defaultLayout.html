@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">WMS</title>
+	<head th:replace="~{common/fragments/commonHeader}"></head>
+</head>
+<body class="gray-bg">
+	<div id="wrapper" >
+		<div id="page-content" class="gray-bg">
+			<div layout:fragment="content" th:remove="tag" ></div>
+		</div>
+	</div>
+	<div id="spinner" data-iframe-height></div>
+
+	<script th:include="~{common/fragments/commonScript}" th:remove="tag"></script>
+	<section layout:fragment="user_include" th:remove="tag"></section>
+
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+		var token = WebUtil.getStorageData('jwtToken', false);
+	    if ( WebUtil.isNull(token) ) {
+	    	window.location.href = '/login';
+	    }
+	
+	</script>
+
+	<!-- Image Viewer -->
+	<div th:replace="~{common/imageView}"></div>
+	<!-- //Image Viewer -->
+</body>
+</html>

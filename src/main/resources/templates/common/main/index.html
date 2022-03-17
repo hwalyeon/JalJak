@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/tabLayout}">
+<body>
+    <div layout:fragment="content">
+		<div id="indexApp" class="animated" v-cloak>
+			<div class="row">
+				<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+		        	<div class="navbar-header">
+		            	<!-- <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a> -->
+					</div>
+		            <div class="infont col-md-10 minimalize-styl-2">
+		            	<!-- 
+		            	<div class="topNavBar-cureent-date float_left mg_right_20">
+		            		<span>Current : </span><span id="topNavBarCurrentDateTime">2020/07/16, 13:01:38</span>
+		            	</div>
+		            	<div class="topNavBar-yesterday-job-stat float_left mg_right_20 ">
+		            		<div class="topNavBar-yesterday-job-stat-title">Yesterday</div>
+		            		<span id="topNavBarYesterdayJobStat" class="topNavBar-yesterday-job-stat-content">Scheduled:123  Done:100  Fail: 23</span>
+		            	</div>
+		            	<div class="topNavBar-today-job-stat float_left mg_right_20">
+		            		<div class="topNavBar-today-job-stat-title">Today</div>
+		            		<span id="topNavBarTodayJobStat" class="topNavBar-today-job-stat-content">Scheduled:123  Done:100  Fail:2  Running:18  Remain:3</span>
+		            	</div>
+		            	<a href="#" class="ladda-button ladda-button-reload btn btn-outline btn-primary" style="padding: 3px 5px 3px 5px;" data-style="zoom-in" >
+		               		<i class="fa fa-refresh"></i> <span>리로딩메시지</span>
+						</a> -->
+					</div>
+		            <ul class="nav navbar-top-links navbar-right">
+		            	<li>Hello {{searchAuthParam.userNm}}</li>
+		                <li>
+		                	<a href="#" v-on:click="logout">
+		                    	<i class="fa fa-sign-out"></i> 로그아웃
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="row">
+				<div class="ibox-content width_per_90 float_left" style="padding: 10px 10px 0px 10px;">
+					<ul id="tab-list" class="nav nav-tabs" role="tablist">
+						<li v-for="(menu, index) in menuList" v-on:click="activeTab(menu.menuId)">
+							<a v-bind:href="'#tab' + menu.menuId" v-bind:index="index" role="tab" data-toggle="tab">
+								<span v-if="index == 0" class="close">&nbsp;</span>
+								<template v-for="(val, id) in (menu.menuNm.split('.'))">
+									<small v-if="id === 0 && menu.menuNm.split('.').length > 1">{{ val }}.</small>
+									<span v-else>{{val}}</span>
+								</template>
+								<span v-if="index == 0" class="close">&nbsp;</span>
+								<button v-if="index > 0" class="close" type="button" title="Remove this page" v-on:click="closeTab($event, index)">
+									&nbsp;<i class="fa fa-times-circle-o" aria-hidden="true"></i>
+								</button>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="ibox-content clear_none width_per_10 float_right pd_right_15" style="padding: 10px 10px 0px 10px; height: 45px; text-align: right;">
+					<a href="#"><i class="fa-fold navbar-minimalize"></i> </a>
+					<!-- <a href="#"><i class="fa-close"></i> </a> -->
+					<a href="#"><i class="fa-close-all" v-on:click="closeAllTabs"></i> </a>
+				</div>
+				<div id="tab-content" class="tab-content">
+					<div v-for="(menu, index) in menuList" class="tab-pane fade in active" v-bind:id="'tab' + menu.menuId">
+						<iframe v-bind:id="'tabFrame_' + menu.menuId" v-on:load="resizeEvent($event, index);" style="display:block; width:100%; border: none" scrolling="auto" frameborder="0" border="" v-bind:src="menu.menuUrl"></iframe>
+					</div>
+				</div>
+				<!-- modal 비밀번호 변경 -->
+				<div class="modal fade" id="updateUserPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog-wrap">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content" style="width: 500px;">
+								<div class="modal-header">
+									<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">비밀번호 변경</h4>
+								</div>
+								<div class="modal-body form-horizontal">
+									<div class="ibox" style="margin-bottom: 0px">
+										<div class="ibox-content" style="border-style:none">
+											<pre>{{postParam | json}}</pre>
+											<div class="form-group required">
+												<label class="col-sm-4 control-label">기존 비밀번호</label>
+												<div class="col-sm-8">
+													<input type="password" v-model="postParam.orgEmpScrtNo" class="form-control" required>
+												</div>
+											</div>
+											<div class="form-group required">
+												<label class="col-sm-4 control-label">신규 비밀번호</label>
+												<div class="col-sm-8">
+													<input type="password" v-model="postParam.empScrtNo" class="form-control" required>
+												</div>
+											</div>
+											<div class="form-group required">
+												<label class="col-sm-4 control-label">비밀번호 확인</label>
+												<div class="col-sm-8">
+													<input type="password" id="empId" v-model="postParam.confirmEmpScrtNo" maxlength="20" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="col-xs-3 col-xs-offset-3">
+												<button type="button" v-on:click="resetPassword" class="form-control ladda-button ladda-button-resetpwd btn btn-outline btn-primary" data-style="zoom-in">수정</button>
+											</div>
+											<div class="col-xs-3">
+												<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- modal 비밀번호 변경 -->
+			</div>
+		</div>
+	</div>
+
+	<!-- User Script Area Start //-->
+	<section layout:fragment="user_script">
+		<!-- Tab Scripts -->
+		<style type="text/css">[contenteditable] {
+			border: solid 1px lightgreen;
+			padding: 5px;
+			border-radius: 3px;
+			}
+		</style>
+		<style>
+			.nav-tabs > li > a {
+			  padding: 5px 5px 5px 5px;
+			}
+
+			.close {
+				float: none;
+			}
+		</style>
+		<style>iframe{width: 1px;min-width: 100%;}</style>
+
+		<script type="text/javascript" th:src="@{/js/common/main/index.js}"></script>
+		<script type="text/javascript" th:src="@{/js/common/main/navigation.js}"></script>
+		<script th:inline="javascript" type="text/javascript">
+            // index.postParam.empNo = '';
+            // navigation.searchAuthParam.empNo = '';
+		</script>
+		<script th:inline="javascript" type="text/javascript">
+
+			// sandbox disable popups
+			if (window.self !== window.top && window.name!="view1") {
+				window.alert = function(){/*disable alert*/};
+			  	window.confirm = function(){/*disable confirm*/};
+			  	window.prompt = function(){/*disable prompt*/};
+			  	window.open = function(){/*disable open*/};
+			}
+
+			// prevent href=# click jump
+			document.addEventListener("DOMContentLoaded", function() {
+				var links = document.getElementsByTagName("A");
+				for(var i=0; i < links.length; i++)
+				{
+					if(links[i].href.indexOf('#')!=-1)
+					{
+				  		links[i].addEventListener("click", function(e) {
+							if (this.hash) {
+								if (this.hash=="#") {
+						  			e.preventDefault();
+						  			return false;
+								} else {
+
+								}
+					  		}
+					  		return false;
+						});
+					}
+				}
+			}, false);
+
+		</script>
+	</section>
+</body>
+</html>

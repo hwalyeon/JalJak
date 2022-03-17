@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="set.roleMng">
+
+<select id="selectDupRoleCd" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT ROLE_CD ,
+	              ROLE_NM
+	FROM   TC_ROLE_BASE
+	WHERE 1=1
+	AND    ROLE_CD LIKE CONCAT('%',#{roleCd},'%') OR   ROLE_NM LIKE CONCAT('%',#{roleNm},'%') 
+</select>
+
+	<select id="searchTcRoleBaseList" parameterType="Map" resultType="MybatisMap">
+SELECT ROLE_CD
+      ,ROLE_NM
+      ,ROLE_DESC
+      ,ROLE_DIV_CD
+FROM   TC_ROLE_BASE
+WHERE  1 = 1
+<if test=" roleCd != null and roleCd != '' ">
+AND    ROLE_CD = #{roleCd}		</if>
+<if test=" roleNm != null and roleNm != '' ">
+AND    ROLE_NM LIKE CONCAT(#{roleNm}, '%')		</if>
+<if test=" roleDivCd != null and roleDivCd != '' ">
+AND    ROLE_DIV_CD = #{roleDivCd}		</if>
+ORDER BY ROLE_CD
+    <if test=' paging == "Y" '>
+LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+
+	<insert id="insertTcRoleBase" parameterType="java.util.Map">
+INSERT INTO TC_ROLE_BASE
+(
+     ROLE_CD
+    ,ROLE_NM
+    ,ROLE_DESC
+    ,ROLE_DIV_CD
+    ,REG_DT
+    ,REG_TM
+    ,REG_USER_ID
+    ,UPT_DT
+    ,UPT_TM
+    ,UPT_USER_ID
+)
+VALUES
+(
+     #{roleCd}
+    ,#{roleNm}
+    ,#{roleDesc}
+    ,#{roleDivCd}
+    ,TO_CHAR(NOW(), 'YYYYMMDD')
+    ,TO_CHAR(NOW(), 'HH24IISS')
+    ,#{regUserId}
+    ,TO_CHAR(NOW(), 'YYYYMMDD')
+    ,TO_CHAR(NOW(), 'HH24IISS')
+    ,#{uptUserId}	
+)
+	</insert>
+
+	<update id="updateTcRoleBase" parameterType="java.util.Map">
+UPDATE TC_ROLE_BASE
+SET    UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
+      ,UPT_TM      = TO_CHAR(NOW(), 'HH24IISS')
+      ,UPT_USER_ID = #{uptUserId}
+<if test="roleNm     != null and roleNm     != ''">,ROLE_NM      = #{roleNm}		</if>
+<if test="roleDesc   != null and roleDesc   != ''">,ROLE_DESC    = #{roleDesc}		</if>
+<if test="roleDivCd  != null and roleDivCd  != ''">,ROLE_DIV_CD  = #{roleDivCd}		</if>
+WHERE  ROLE_CD = #{roleCd}	
+	</update>
+	
+	<delete id="deleteTcRoleBase" parameterType="java.util.Map">
+DELETE
+FROM   TC_ROLE_BASE
+WHERE  ROLE_CD = #{roleCd}
+	</delete>
+</mapper>

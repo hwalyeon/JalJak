@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}">
+	  
+<style>
+	.mg_top_200 {
+		margin-top: 200px;
+	}
+</style>
+<head>
+	<meta charset="UTF-8">
+	<title>메뉴역할</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="wrapper-content" id="menuRoleMng">
+		<div class="col-xs-12 pd_left_none pd_right_none">
+			<div class="col-xs-3 pd_left_none pd_right_none">
+				<div class="ibox m-b-sm">
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>메뉴정보</h5>
+					<!-- 	<div class="ibox-tools">
+							<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</div> -->
+					</div>
+					<div class="ibox-content m-b-sm border-bottom">
+						<div class="form-group">
+							<div id="menu_tree" style="overflow-y: scroll; height: 680px;">
+						        <div id="menu_tree_list"></div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1  pd_left_none pd_right_none text-center "  style="margin-top:320px;">
+				<div class="form-group">
+					<a href="#" class="btn btn-outline btn-success"  v-on:click.prevent="addMenu()">
+						<span>→</span>
+					</a>
+				</div>
+				<div class="form-group">
+					<a href="#" class="btn btn-outline btn-success" v-on:click.prevent="removeMenu()">
+						<span>←</span>
+					</a>
+				</div>
+			</div>
+			<div class="col-xs-8 pd_left_none pd_right_none">
+				<div class="ibox">
+					<div class="ibox-content">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-xs-2 control-label">역할명</label>
+								<div class="col-xs-3">
+									<select id="roleCd" name="roleCd" class="form-control" v-model="params.roleCd" v-on:change="changeRoleCd($event.target.value)">
+			                        	<option value="">선택</option>
+			                            <option v-for="item in code.roleList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+			                        </select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox">
+					<div class="ibox-content pd_btm_15">
+						<div class="form-group">
+							<div class="float_left">
+							</div>
+							<div class="float_right">
+								<button type="button" id="btnReg" class="btn btn-outline btn-primary ladda-button mg_left_10" v-on:click="saveMenuRole()">&nbsp;저장</button>
+							</div>
+							<div class="clear_both"></div>
+						</div>
+						<div class="form-group">
+							<div id="menuRole_list_wrapper">
+								<table id="menuRole_list"></table>
+								<div id="menuRole_pager_list"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+<section layout:fragment="user_script">
+	<script type="text/javascript" th:src="@{/js/set/menuRoleMng.js}"></script>
+</section>
+</body>
+</html>

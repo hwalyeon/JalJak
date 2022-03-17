@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist.imageView">
+
+	<select id="searchTakeEvntImageList" parameterType="java.util.Map" resultType="MybatisMap">
+SELECT A.COUS_NO
+      ,A.LECT_SEQ
+      ,A.STDT_ID
+      ,A.SEQ
+      ,A.OCCR_DTTM
+      ,B.FILE_PATH
+      ,B.PGIC_FILE_NM
+      ,B.LGIC_FILE_NM
+FROM   TS_TAKE_HIST A
+       INNER JOIN TC_FILE B
+       ON  B.FILE_NO = A.FILE_NO
+WHERE  1 = 1
+AND    A.COUS_NO      = #{cousNo}
+AND    A.LECT_SEQ     = #{lectSeq}
+AND    A.STDT_ID      = #{stdtId}
+AND    A.TAKE_EVNT_CD = #{takeEvntCd}
+ORDER BY SEQ
+<if test=' paging == "Y" '>
+LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+</mapper>

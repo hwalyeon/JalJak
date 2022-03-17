@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cmon.user">
+
+	<select id="searchUserInfo" parameterType="Map" resultType="MybatisMap">
+    
+	SELECT USER_ID
+	      ,USER_NM
+	      ,BLNG_NM
+	      ,TEL_NO
+	      ,MTEL_NO
+	      ,MAIL_ADDR
+	FROM   TC_USER_BASE
+	WHERE  1 = 1
+	AND   USER_ID = #{userId}
+	AND   USER_PW = #{userPw}
+	ORDER BY USER_ID
+
+	</select>
+
+	<select id="searchMenuList" parameterType="Map" resultType="MybatisMap">
+    
+SELECT A.MENU_NO
+      ,A.MENU_NM
+      ,A.UPPR_MENU_NO
+	  ,B.MENU_NM        AS UPPR_MENU_NM
+	  ,A.ICON_INFO
+	  ,A.MENU_URL 
+FROM   TC_MENU_BASE A
+       INNER JOIN TC_MENU_BASE B
+       ON  B.MENU_NO = A.UPPR_MENU_NO
+       INNER JOIN TC_MENU_ROLE C
+       ON  C.MENU_NO = A.MENU_NO
+       INNER JOIN TC_USER_ROLE D
+       ON  D.ROLE_CD = C.ROLE_CD
+WHERE  1 = 1
+AND    A.USE_YN  = 'Y'
+AND    D.USER_ID = #{userId}
+ORDER BY A.MENU_NO
+
+	</select>
+	
+	<select id="searchRoleList" parameterType="Map" resultType="MybatisMap">
+	
+SELECT B.ROLE_CD
+      ,B.ROLE_DIV_CD
+      ,B.ROLE_NM
+FROM   TC_USER_ROLE A
+       INNER JOIN TC_ROLE_BASE B
+       ON  B.ROLE_CD = A.ROLE_CD
+WHERE  1 = 1
+AND    A.USER_ID = #{userId}
+ORDER BY B.ROLE_CD
+
+	</select>
+
+</mapper>

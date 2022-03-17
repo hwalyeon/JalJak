@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.grow.growJudgStndMng">
+
+       <select id="searchGrowJudgList" parameterType="java.util.Map" resultType="MybatisMap">
+	    /* Generated SQL SQL ID : ti_grow_judg_stnd.select */
+        SELECT  grow_judg_cd /* grow_judg_cd 성장_판정_코드 character varying(20) */
+               ,fn_getCdNm('GROW_JUDG_CD', grow_judg_cd) as grow_judg_nm
+               ,gidx_fr /* gidx_fr 성장지수_FROM numeric */
+               ,gidx_to /* gidx_to 성장지수_TO numeric */
+               ,smry_cntn /* smry_cntn 요약_내용 character varying(100) */
+               ,spec_cntn /* spec_cntn 상세_내용 character varying(4000) */
+               ,reg_dt /* reg_dt 등록_일자 character(8) */
+               ,reg_tm /* reg_tm 등록_시각 character(6) */
+               ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+               ,upt_dt /* upt_dt 수정_일자 character(8) */
+               ,upt_tm /* upt_tm 수정_시각 character(6) */
+               ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+        FROM   ti_grow_judg_stnd
+		WHERE  1 = 1
+		AND    grow_judg_cd LIKE CONCAT (#{growJudgCd}, '%') /* grow_judg_cd 성장_판정_코드 character varying(20) */
+		order by grow_judg_cd
+        </select>
+
+       <insert id="insertTiGrowJudgStnd"  parameterType="java.util.Map" >
+              /* insertTiGrowJudgStnd */
+              INSERT INTO ti_grow_judg_stnd
+              (
+              grow_judg_cd /* grow_judg_cd 성장_판정_코드 character varying(20) */
+              ,gidx_fr /* gidx_fr 성장지수_FROM numeric */
+              ,gidx_to /* gidx_to 성장지수_TO numeric */
+              <if test="smryCntn != null">
+                     ,smry_cntn /* smry_cntn 요약_내용 character varying(100) */
+              </if>
+              <if test="specCntn != null">
+                     ,spec_cntn /* spec_cntn 상세_내용 character varying(4000) */
+              </if>
+              ,reg_dt /* reg_dt 등록_일자 character(8) */
+              ,reg_tm /* reg_tm 등록_시각 character(6) */
+              ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+              ,upt_dt /* upt_dt 수정_일자 character(8) */
+              ,upt_tm /* upt_tm 수정_시각 character(6) */
+              ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+              )
+              VALUES
+              (
+              #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+              ,CAST(#{gidxFr} as integer) /* gidx_fr 성장지수_FROM numeric */
+              ,CAST(#{gidxTo} as integer) /* gidx_to 성장지수_TO numeric */
+              <if test="smryCntn != null">
+                     ,#{smryCntn} /* smry_cntn 요약_내용 character varying(100) */
+              </if>
+              <if test="specCntn != null">
+                     ,#{specCntn} /* spec_cntn 상세_내용 character varying(4000) */
+              </if>
+              ,TO_CHAR(NOW(), 'YYYYMMDD') /* reg_dt 등록_일자 character(8) */
+              ,TO_CHAR(NOW(), 'HH24MISS') /* reg_tm 등록_시각 character(6) */
+              ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+              ,TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+              ,TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+              ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              )
+       </insert>
+
+       <update id="updateTiGrowJudgStnd"  parameterType="java.util.Map" >
+              /* updateTiGrowJudgStnd */
+              UPDATE ti_grow_judg_stnd
+              <trim prefix="SET" prefixOverrides=",">
+                     <if test="gidxFr != null">
+                            ,gidx_fr = #{gidxFr} /* gidx_fr 성장지수_FROM numeric */
+                     </if>
+                     <if test="gidxTo != null">
+                            ,gidx_to = #{gidxTo} /* gidx_to 성장지수_TO numeric */
+                     </if>
+                     <if test="smryCntn != null">
+                            ,smry_cntn = #{smryCntn} /* smry_cntn 요약_내용 character varying(100) */
+                     </if>
+                     <if test="specCntn != null">
+                            ,spec_cntn = #{specCntn} /* spec_cntn 상세_내용 character varying(4000) */
+                     </if>
+                     ,upt_dt = #{uptDt} /* upt_dt 수정_일자 character(8) */
+                     ,upt_tm = #{uptTm} /* upt_tm 수정_시각 character(6) */
+                     ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              </trim>
+              WHERE  1 = 1
+              AND    grow_judg_cd = #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+       </update>
+
+       <delete id="deleteTiGrowJudgStnd"  parameterType="java.util.Map" >
+		/* deleteTiGrowJudgStnd */
+		DELETE FROM ti_grow_judg_stnd
+		WHERE  1 = 1
+		AND    grow_judg_cd = #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+	   </delete>
+
+
+</mapper>

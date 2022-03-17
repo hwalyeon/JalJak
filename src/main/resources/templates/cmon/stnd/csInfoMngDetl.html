@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="csInfoDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 750px; height: 470px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>성장판정기준 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-2" />
+		                        <col class="col-xs-10" />
+		                    </colgroup>
+		                    <tbody>
+			                    <tr>
+			                        <th scope="row">등록번호</th>
+			                        <td>
+										<input type="number" id="regNo" name="regNo" v-model="csInfoMngInfo.regNo" class="form-control" maelength="10" :disabled="csInfoMngInfo.crud=='U'"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">고객지원 전화번호</th>
+			                        <td>
+			                        	<input type="number" id="csTelNo" name="csTelNo" v-model="csInfoMngInfo.csTelNo" class="form-control" maxlength="10"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">고객지원 메일주소</th>
+			                        <td>
+			                        	<input type="text" id="csMailAddr" name="csMailAddr" v-model="csInfoMngInfo.csMailAddr" class="form-control" maxlength="30"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">고객지원 URL</th>
+			                        <td>
+										<input type="text" id="csUrl" name="csUrl" v-model="csInfoMngInfo.csUrl" class="form-control" maxlength="30" />
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">밴드 홈페이지 URL</th>
+			                        <td>
+										<input type="text" id="bandHpgeUrl" name="bandHpgeUrl" v-model="csInfoMngInfo.bandHpgeUrl" class="form-control" maxlength="30"/>
+			                        </td>
+			                    </tr>
+							</tbody>
+		                </table>
+            		</div>
+            	</div>
+            	<div class="modal-footer" style="">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveInfo">저장</button>
+						</div>
+						<div v-if="csInfoMngInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteInfo">삭제</button>
+						</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>			
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}">
+<head>
+	<meta charset="UTF-8">
+	<title>휴식대사량계산</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="wrapper-content" id="bpalCalcStndMng">
+
+
+		<!-- 검색조건 영역 -->
+		<div class="ibox m-b-sm">
+			<div class="ibox-title">
+				<i class="fa fa-title-bar"></i>
+				<h5>검색조건</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-xs-1 control-label">성별</label>
+						<div class="col-xs-2">
+							<select id="sexCd" name="sexCd" class="form-control" v-model="params.sexCd">
+								<option value="">전체</option>
+								<option v-for="item in code.sexCdList" :value="item.cdVal" v-text="item.cdNm" ></option>
+							</select>
+						</div>
+						<label class="col-xs-1 control-label">나이(From)</label>
+						<div class="col-xs-2">
+							<input type="text" name="ageYcntFr" class="form-control" v-model="params.ageYcntFr">
+						</div>
+					</div>
+					<div class="form-group mg_none">
+						<div class="text-center">
+							<button class="btn btn-secondary" @click="resetSearchParam()" type="button">
+								<span class="glyphicon glyphicon-refresh"> 초기화</span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-w-m btn-primary" @click="searchBpalCalcStndList(true)"><span>조회</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 검색조건 영역 -->
+
+		<!-- 결과 리스트 영역 -->
+		<div class="ibox">
+			<div class="ibox-content">
+				<div class="form-group">
+					<div class="float_left">
+						<div class="ibox-title pd_none mg_top_10" style="min-height: 0px;">
+							<i class="fa fa-title-bar"></i>
+							<h5>휴식대사량계산기준 목록</h5>
+						</div>
+					</div>
+					<div class="clear_both"></div>
+					<div class="float_right">
+						<button type="button" id="btnSave" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" v-on:click="btnSave">&nbsp;저장</button>
+						<button type="button" id="btnDownloadExcel" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcel"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+					</div>
+					<div class="float_left" style="margin-top:10px">
+						<button type="button" id="btnAdd" class="btn btn-primary btn-xs" data-style="zoom-in" data-toggle="modal" v-on:click="btnAddRow"><span class="glyphicon glyphicon-plus"></span></button>
+						<button type="button" id="btnDel" class="btn btn-primary btn-xs" data-style="zoom-in" data-toggle="modal" v-on:click="btnDelRow"><span class="glyphicon glyphicon-minus"></span></button>
+					</div><div class="clear_both"></div>
+				</div>
+				<div class="form-group">
+					<div id="bpalCalcStnd_list_wrapper">
+						<table id="bpalCalcStnd_list"></table>
+						<div id="bpalCalcStnd_pager_list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--    <div th:insert="~{set/userDetl :: body}"></div>-->
+</div>
+<section layout:fragment="user_script">
+	<script type="text/javascript" th:src="@{/js/svcStnd/fat/bpalCalcStndMng.js}"></script>
+</section>
+</body>
+</html>

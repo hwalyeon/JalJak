@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="set.cdMng">
+
+<select id="selectDuprCdSpec" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT *
+	FROM   TC_CD_SPEC
+	WHERE 1=1
+	AND    CD_GRP LIKE CONCAT('%',#{cdGrp},'%') AND   CD_VAL LIKE CONCAT('%',#{cdVal},'%') 
+</select>
+
+
+<select id="searchTcCdGrp" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT CD_GRP ,
+	              CD_GRP_NM
+	FROM   TC_CD_GRP
+	WHERE 1=1
+	AND    CD_GRP LIKE CONCAT('%',#{cdGrp},'%') OR   CD_GRP_NM LIKE CONCAT('%',#{cdGrpNm},'%') 
+</select>
+
+
+	<select id="selectCdGrpDivList" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT  CD_GRP
+FROM TC_CD_GRP TCG 
+WHERE 1=1
+   </select>
+   
+	<select id="selectTcCdGrp" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT CD_GRP
+	      ,CD_GRP_NM
+	      ,USE_YN
+	FROM   TC_CD_GRP
+	WHERE 1 = 1
+	<if test=" cdGrp != null and cdGrp != '' ">
+	AND   CD_GRP LIKE CONCAT('%',#{cdGrp},'%')		</if>
+	<if test=" cdGrpNm != null and cdGrpNm != '' ">
+	AND   CD_GRP_NM LIKE CONCAT('%', #{cdGrpNm}, '%')	</if>
+	ORDER BY CD_GRP
+	<if test=' paging == "Y" '>
+    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+	<insert id="insertTcCdGrp" parameterType="java.util.Map">
+	
+	INSERT INTO TC_CD_GRP
+	(
+	     CD_GRP
+	    ,CD_GRP_NM
+	    ,USE_YN
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{cdGrp}
+	    ,#{cdGrpNm}
+	    ,#{useYn}
+		,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24IISS')
+	    ,#{regUserId}
+		,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24IISS')
+	    ,#{uptUserId}	
+	)
+	
+	</insert>
+	
+	<update id="updateTcCdGrp" parameterType="java.util.Map">
+	
+	UPDATE TC_CD_GRP
+	SET    UPT_DT   = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24IISS')
+	      ,UPT_USER_ID = #{uptUserId}
+    	<if test="cdGrpNm != null and cdGrpNm != ''">,CD_GRP_NM = #{cdGrpNm}	</if>
+    	<if test="useYn   != null and useYn   != ''">,USE_YN    = #{useYn}		</if>
+	WHERE  CD_GRP = #{cdGrp}
+	
+	</update>
+	
+	<delete id="deleteTcCdGrp" parameterType="java.util.Map">
+	
+	DELETE
+	FROM   TC_CD_GRP
+	WHERE  CD_GRP = #{cdGrp}
+	
+	</delete>
+	
+	<select id="selectTcCdSpec" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT B.CD_GRP
+	      ,B.CD_GRP_NM
+	      ,A.CD_VAL
+	      ,A.CD_NM
+	      ,A.CD_DESC
+	      ,A.FLTR_VAL_1
+	      ,A.FLTR_VAL_2
+	      ,A.FLTR_VAL_3
+	      ,A.SORT_ORD
+	      ,A.USE_YN
+	FROM   TC_CD_SPEC A
+	       INNER JOIN TC_CD_GRP B
+	       ON  B.CD_GRP = A.CD_GRP
+	WHERE 1 = 1
+	<if test=" cdGrp != null and cdGrp != '' ">
+	AND   A.CD_GRP = #{cdGrp}	</if>
+	<if test=" cdVal != null and cdVal != '' ">
+	AND   A.CD_VAL = #{cdVal}	</if>
+	ORDER BY A.CD_GRP, A.SORT_ORD
+	<if test=' paging == "Y" '>
+    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+	<insert id="insertTcCdSpec" parameterType="java.util.Map">
+	
+	INSERT INTO TC_CD_SPEC
+	(
+	     CD_GRP
+	    ,CD_VAL
+	    ,CD_NM
+	    ,CD_DESC
+	    ,FLTR_VAL_1
+	    ,FLTR_VAL_2
+	    ,FLTR_VAL_3
+	    ,SORT_ORD
+	    ,USE_YN
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{cdGrp}
+	    ,#{cdVal}
+	    ,#{cdNm}
+	    ,#{cdDesc}
+	    ,#{fltrVal1}
+	    ,#{fltrVal2}
+	    ,#{fltrVal3}
+       <if test ="sortOrd !=null and sortOrd !='' ">,CAST (#{sortOrd} AS INTEGER)</if>
+       <if test ="sortOrd ==null or sortOrd =='' ">,null</if>
+	   ,#{useYn}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24IISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24IISS')
+	    ,#{uptUserId}	
+	)
+	
+	</insert>
+	
+	<update id="updateTcCdSpec" parameterType="java.util.Map">
+	
+	UPDATE TC_CD_SPEC
+	SET    UPT_DT    = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24IISS')
+	      ,UPT_USER_ID = #{uptUserId}
+    	<if test="newCdGrp    != null and newCdGrp    != ''">,CD_GRP    = #{newCdGrp}	</if>
+    	<if test="newCdVal    != null and newCdVal    != ''">,CD_VAL    = #{newCdVal}	</if>
+    	<if test="cdNm    != null and cdNm    != ''">,CD_NM    = #{cdNm}	</if>
+    	<if test="cdDesc    != null and cdNm    != ''">,CD_DESC   = #{cdDesc}	</if>
+    	<if test="fltrVal1    != null and fltrVal1    != ''">,FLTR_VAL_1   = #{fltrVal1}	</if>
+    	<if test="fltrVal2    != null and fltrVal2    != ''">,FLTR_VAL_2   = #{fltrVal2}	</if>
+    	<if test="fltrVal3    != null and fltrVal3    != ''">,FLTR_VAL_3   = #{fltrVal3}	</if>
+    	<if test="sortOrd != null and sortOrd != ''">,SORT_ORD =    CAST (#{sortOrd} AS INTEGER)	</if>
+    	<if test="useYn   != null and useYn   != ''">,USE_YN   = #{useYn}	</if>
+ 	WHERE  CD_GRP = #{oldCdGrp}
+	AND    CD_VAL = #{oldCdVal}
+	
+	</update>
+	
+	<delete id="deleteTcCdSpec" parameterType="java.util.Map">
+	
+	DELETE
+	FROM   TC_CD_SPEC
+	WHERE  CD_GRP = #{cdGrp}
+	<if test=" cdVal != null and cdVal != '' ">
+	AND    CD_VAL = #{cdVal}	</if>
+	
+	</delete>
+	
+</mapper>

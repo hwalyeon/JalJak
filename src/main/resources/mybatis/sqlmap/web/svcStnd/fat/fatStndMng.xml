@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.fat.fatStndMng">
+
+    <!--성장기준 리스트 조회-->
+	<select id="searchFatStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      FAT_STND_VER
+	                    , FAT_STND_NO
+	                    , FAT_STND_NO AS FAT_STND_NO_TEMP
+		                , SEX_CD
+		                , AGE_YCNT
+		                , AGE_MCNT
+                        , P5_FIDX
+                        , P50_FIDX
+                        , P95_FIDX
+                        , REG_DT
+                        , REG_TM
+                        , REG_USER_ID
+                        , UPT_DT
+                        , UPT_TM
+                        , UPT_USER_ID
+		FROM        TI_FAT_STND
+		WHERE     1 = 1
+		<if test=" fatStndVer != null and fatStndVer != '' ">
+		AND         FAT_STND_VER LIKE CONCAT('%',#{fatStndVer},'%')   </if>
+		<if test=" fatStndNo != null and fatStndNo != '' ">
+		AND         FAT_STND_NO   = #{fatStndNo}::NUMERIC    </if>
+		ORDER BY FAT_STND_VER, FAT_STND_NO
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	<!--행추가_행삭제 인서트-->
+	<insert id="insertTiFatStndList" parameterType="java.util.Map">
+    	INSERT INTO TI_FAT_STND
+    	(
+    	      FAT_STND_VER
+			, FAT_STND_NO
+			, SEX_CD
+			, AGE_YCNT
+			, AGE_MCNT
+			, P5_FIDX
+			, P50_FIDX
+			, P95_FIDX
+			, REG_DT
+			, REG_TM
+			, REG_USER_ID
+			, UPT_DT
+			, UPT_TM
+			, UPT_USER_ID
+    	)
+    	VALUES
+    	(
+    	     #{fatStndVer}
+    	   , #{fatStndNo}::NUMERIC
+    	   , #{sexCd}
+    	   , #{ageYcnt}::NUMERIC
+    	   , #{ageMcnt}::NUMERIC
+    	   , #{p5Fidx}::NUMERIC
+    	   , #{p50Fidx}::NUMERIC
+    	   , #{p95Fidx}::NUMERIC
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{regUserId}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{uptUserId}
+    	)
+    </insert>
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiFatStndList" parameterType="java.util.Map">
+		UPDATE TI_FAT_STND
+		SET         UPT_DT           =  TO_CHAR(NOW(), 'YYYYMMDD')
+		            ,  UPT_TM           = TO_CHAR(NOW(),'HH24MISS')
+	             	,  UPT_USER_ID  = #{uptUserId}
+		<if test="fatStndVer != null and fatStndVer !=''">  ,FAT_STND_VER = #{fatStndVer}</if>
+		<if test="fatStndNo != null and fatStndNo != ''">  ,FAT_STND_NO = #{fatStndNo}::NUMERIC</if>
+		<if test="sexCd != null and sexCd !=''">, SEX_CD = #{sexCd}</if>
+		<if test="ageYcnt != null and ageYcnt != ''">, AGE_YCNT = #{ageYcnt}::NUMERIC</if>
+		<if test="ageMcnt !=null and ageMcnt !=''">, AGE_MCNT = #{ageMcnt}::NUMERIC</if>
+		<if test="p5Fidx !=null and p5Fidx !=''">, P5_FIDX = #{p5Fidx}::NUMERIC</if>
+		<if test="p50Fidx !=null and p50Fidx != ''">, P50_FIDX = #{p50Fidx}::NUMERIC</if>
+		<if test="p95Fidx !=null and p95Fidx !=''">, P95_FIDX = #{p95Fidx}::NUMERIC</if>
+		WHERE  FAT_STND_NO = #{fatStndNoTemp}::NUMERIC
+	</update>
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiFatStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_FAT_STND
+        WHERE  FAT_STND_NO = #{fatStndNoTemp}::NUMERIC
+	</delete>
+
+</mapper>

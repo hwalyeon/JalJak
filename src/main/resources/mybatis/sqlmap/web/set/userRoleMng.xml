@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="set.userRoleMng">
+	
+	<select id="searchTcUserRoleList" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT A.USER_ID
+	      ,C.USER_NM
+	      ,A.ROLE_CD
+	      ,B.ROLE_NM
+	      ,C.BLNG_NM
+	FROM   TC_USER_ROLE A
+	       INNER JOIN TC_ROLE_BASE B
+	       ON  B.ROLE_CD = A.ROLE_CD
+	       INNER JOIN TC_USER_BASE C
+	       ON  C.USER_ID = A.USER_ID
+	WHERE  1 = 1
+    <if test=" userId != null and userId != '' ">
+	AND   A.USER_ID = #{userId}		</if>
+	<if test=" roleCd != null and roleCd != '' ">
+	AND   A.ROLE_CD = #{roleCd}		</if>
+	ORDER BY A.ROLE_CD, A.USER_ID
+	<if test=' paging == "Y" '>
+    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+	<insert id="insertTcUserRole" parameterType="java.util.Map">
+	INSERT INTO TC_USER_ROLE
+	(
+	     USER_ID
+	    ,ROLE_CD
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{userId}
+	    ,#{roleCd}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}	
+	)
+	</insert>
+	
+	<update id="updateTcUserRole" parameterType="java.util.Map">
+	UPDATE TC_USER_ROLE
+	SET UPT_DT      = DATE_FORMAT(NOW(), '%Y%m%d')
+	      ,UPT_TM      = DATE_FORMAT(NOW(), '%H%i%s')
+	      ,UPT_USER_ID = #{uptUserId}
+    	<if test="roleCd != null and roleCd != ''">
+    	,ROLE_CD = #{roleCd}	</if>
+		WHERE  1 = 1
+		<if test=" userId != null and userId != '' ">
+		AND    USER_ID = #{userId}		</if>
+		<if test=" roleCd != null and roleCd != '' ">
+		AND    ROLE_CD = #{roleCd}		</if>	
+	</update>
+	
+	<delete id="deleteTcUserRole" parameterType="java.util.Map">
+	DELETE
+	FROM   TC_USER_ROLE
+	WHERE  1 = 1
+<if test=" userId != null and userId != '' ">
+	AND    USER_ID = #{userId}		</if>
+<if test=" roleCd != null and roleCd != '' ">
+	AND    ROLE_CD = #{roleCd}		</if>
+	</delete>
+		
+</mapper>

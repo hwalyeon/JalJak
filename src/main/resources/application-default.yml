@@ -1,0 +1,43 @@
+# 로그 레벨
+logging:
+  level:
+    kr.co.seculink: debug
+
+# spring profile
+spring:
+  config:
+    activate:
+      on-profile: local, default
+  datasource:
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://abd01.cluster-czdogjjomgak.ap-northeast-2.rds.amazonaws.com:5432/abd01dsv?currentSchema=absv
+      username: masteraccount
+      password: TLZBFLDZM1!
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  thymeleaf:
+    prefix: classpath:templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false
+
+server:
+  port: 28080
+
+jwt:
+  token:
+    header: Authorization
+    role: USER
+    issuer: hubble-local
+    clientId: untactor-server
+    expirySeconds: 31536000
+
+upload:
+  prof: C:\\project\\workspace\\wms\\src\\main\\resources\\static\\uploads\\
+  event: C:\\project\\workspace\\wms\\src\\main\\resources\\static\\uploads\\
+  temp: C:\\project\\workspace\\wms\\src\\main\\resources\\static\\uploads\\temp\\
+  hwork: C:\\project\\workspace\\wms\\src\\main\\resources\\static\\uploads\\

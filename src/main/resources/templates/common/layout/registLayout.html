@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<title>WMS</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
+    <!-- Mainly scripts -->
+	<script src="js/plugins/jquery-3.3.1.min.js"></script>
+	<script src="js/plugins/bootstrap.min.js"></script>
+
+</head>
+<body class="white-bg">
+
+	<div class="wrapper wrapper-content" style="padding-bottom: 50px;">
+		<div layout:fragment="content" th:remove="tag"></div>
+	</div>
+	
+	<div class="footer" style="position: fixed;">
+        <div>
+			Copyrightⓒ by seculink.co.kr All rights reserved.
+        </div>
+    </div>
+	<script th:include="~{common/fragments/commonScript}" th:remove="tag"></script>
+
+</body>
+</html>

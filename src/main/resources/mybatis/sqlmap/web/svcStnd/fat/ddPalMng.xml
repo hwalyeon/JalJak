@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.fat.ddPalMng">
+
+       <select id="searchDdPalList" parameterType="java.util.Map" resultType="MybatisMap">
+           SELECT  	    curr_fat_judg_cd AS curr_fat_judg_cd_temp/* curr_fat_judg_cd 현재_비만_판정_코드 character varying(20) */
+           ,prdt_fat_judg_cd AS prdt_fat_judg_cd_temp/* prdt_fat_judg_cd 예측_비만_판정_코드 character varying(20) */
+           ,sex_cd           AS sex_cd_temp/* sex_cd 성별_코드 character varying(20) */
+           ,age_ycnt         AS age_ycnt_temp
+           ,nutr_stat_cd     AS nutr_stat_cd_temp
+           ,nutr_cd          AS nutr_cd_temp
+           ,curr_fat_judg_cd
+           ,prdt_fat_judg_cd
+           ,sex_cd
+           ,age_ycnt /* age_ycnt 나이_년수_FROM numeric */
+           ,pal_cd /* pal_cd 신체활동수준_코드 character(18) */
+           ,cal_qty_fr /* cal_qty_fr 칼로리량_FORM numeric */
+           ,cal_qty_to /* cal_qty_to 칼로리량_TO numeric */
+           ,dd_cal_qty /* dd_cal_qty 일일_칼로리_량 numeric */
+           ,nutr_cd /* nutr_cd 영양소_코드 character(18) */
+           ,nutr_stat_cd/* nutr_stat_cd 영양섭취_상태_코드 character(18) */
+           ,reg_dt /* reg_dt 등록_일자 character(8) */
+           ,reg_tm /* reg_tm 등록_시각 character(6) */
+           ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+           ,upt_dt /* upt_dt 수정_일자 character(8) */
+           ,upt_tm /* upt_tm 수정_시각 character(6) */
+           ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+           FROM   ti_dd_pal_blck
+           WHERE  1 = 1
+		AND    curr_fat_judg_cd like concat('%',#{currFatJudgCd},'%')
+		AND    prdt_fat_judg_cd like concat('%',#{prdtFatJudgCd},'%')
+        <if test=' paging == "Y" '>
+        LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+        </select>
+       <!--행추가_행삭제 인서트-->
+       <insert id="insertTiDdPalList" parameterType="java.util.Map">
+           /* Generated SQL SQL ID : ti_dd_pal_blck.insert */
+           INSERT INTO ti_dd_pal_blck
+           (
+           curr_fat_judg_cd
+           ,prdt_fat_judg_cd
+           ,sex_cd
+           ,age_ycnt
+           ,cal_qty_fr
+           ,cal_qty_to
+           ,dd_cal_qty
+           ,pal_cd
+           ,nutr_cd
+           ,nutr_stat_cd
+           ,reg_dt
+           ,reg_tm
+           ,reg_user_id
+           ,upt_dt
+           ,upt_tm
+           ,upt_user_id
+           )
+           VALUES
+           (
+            #{currFatJudgCd}
+            ,#{prdtFatJudgCd}
+            ,#{sexCd}
+            ,#{ageYcnt}::NUMERIC
+            ,#{calQtyFr}::NUMERIC
+            ,#{calQtyTo}::NUMERIC
+            ,#{ddCalQty}::NUMERIC
+            ,#{palCd}
+            ,#{nutrCd}
+            ,#{nutrStatCd}
+            ,TO_CHAR(NOW(), 'YYYYMMDD')
+	        ,TO_CHAR(NOW(), 'HH24MISS')
+	        ,#{regUserId}
+	        ,TO_CHAR(NOW(), 'YYYYMMDD')
+	        ,TO_CHAR(NOW(), 'HH24MISS')
+	        ,#{uptUserId}
+           )
+        </insert>
+       <!--행추가_행삭제 업데이트-->
+       <update id="updateTiDdPalList" parameterType="java.util.Map">
+           /* Generated SQL SQL ID : ti_dd_pal_blck.update */
+           UPDATE ti_dd_pal_blck
+           SET      UPT_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
+           ,UPT_TM       = TO_CHAR(NOW(),'HH24MISS')
+           ,UPT_USER_ID  = #{uptUserId}
+           <if test="currFatJudgCd != null and currFatJudgCd !=''">  ,curr_fat_judg_cd = #{currFatJudgCd}</if>
+           <if test="prdtFatJudgCd != null and prdtFatJudgCd != ''">  ,prdt_fat_judg_cd = #{prdtFatJudgCd}</if>
+           <if test="sexCd != null and sexCd != ''">  ,sex_cd = #{sexCd}</if>
+           <if test="ageYcnt != null and ageYcnt != ''">  ,age_ycnt = #{ageYcnt}::NUMERIC</if>
+           <if test="palValFr != null and palValFr != ''">  ,pal_val_fr = #{palValFr}::NUMERIC</if>
+           <if test="palValTo != null and palValTo != ''">  ,pal_val_to = #{palValTo}::NUMERIC</if>
+           <if test="calQtyFr != null and calQtyFr != ''">  ,cal_qty_fr = #{calQtyFr}::NUMERIC</if>
+           <if test="calQtyTo != null and calQtyTo != ''">  ,cal_qty_to = #{calQtyTo}::NUMERIC</if>
+           <if test="ddCalQty != null and ddCalQty != ''">  ,dd_cal_qty = #{ddCalQty}::NUMERIC</if>
+           <if test="palCd    != null and palCd    != ''">  ,pal_cd     = #{palCd}</if>
+           <if test="nutrCd    != null and nutrCd    != ''">  ,nutr_cd     = #{nutrCd}</if>
+           <if test="nutrStatCd    != null and nutrStatCd    != ''">  ,nutr_stat_cd = #{nutrStatCd}</if>
+           WHERE  1=1
+           AND    curr_fat_judg_cd = #{currFatJudgCdTemp} /* curr_fat_judg_cd 현재_비만_판정_코드 character varying(20) */
+           AND    prdt_fat_judg_cd = #{prdtFatJudgCdTemp} /* prdt_fat_judg_cd 예측_비만_판정_코드 character varying(20) */
+           AND    sex_cd = #{sexCdTemp} /* sex_cd 성별_코드 character varying(20) */
+           AND    age_ycnt = #{ageYcntTemp}::NUMERIC /* age_ycnt_fr 나이_년수_FROM numeric */
+           AND    pal_val_fr = #{palValFrTemp}::NUMERIC /* pal_val_fr 신체활동수준_값_FROM numeric */
+       </update>
+       <!--행추가_행삭제 삭제-->
+       <delete id ="deleteTiDdPalList" parameterType="java.util.Map">
+        /* Generated SQL SQL ID : ti_dd_pal_blck.delete */
+		DELETE FROM ti_dd_pal_blck
+		WHERE  1 = 1
+		AND    curr_fat_judg_cd = #{currFatJudgCdTemp} /* curr_fat_judg_cd 현재_비만_판정_코드 character varying(20) */
+		AND    prdt_fat_judg_cd = #{prdtFatJudgCdTemp} /* prdt_fat_judg_cd 예측_비만_판정_코드 character varying(20) */
+		AND    sex_cd = #{sexCdTemp} /* sex_cd 성별_코드 character varying(20) */
+		AND    age_ycnt = #{ageYcnt} ::NUMERIC /* age_ycnt_fr 나이_년수_FROM numeric */
+	   </delete>
+</mapper>

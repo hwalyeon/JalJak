@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cmon.file">
+
+	<select id="selectTcFile" parameterType="kr.co.seculink.web.model.cmon.TcFileVO" resultType="kr.co.seculink.web.model.cmon.TcFileVO">
+	SELECT  FILE_NO
+	       ,FILE_PATH
+	       ,LGIC_FILE_NM
+	       ,PGIC_FILE_NM
+	FROM   TC_FILE
+	WHERE  FILE_NO = #{fileNo}
+	</select>
+
+	<insert id="insertTcFile" parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+    INSERT INTO TC_FILE
+	(
+	    FILE_NO
+	   ,FILE_PATH
+	   ,LGIC_FILE_NM
+	   ,PGIC_FILE_NM
+	   ,REG_DT
+	   ,REG_TM
+	   ,REG_USER_ID
+	   ,UPT_DT
+	   ,UPT_TM
+	   ,UPT_USER_ID
+	)
+	VALUES
+	(
+	    #{fileNo}
+	   ,#{filePath}
+	   ,#{lgicFileNm}
+	   ,#{pgicFileNm}
+       ,DATE_FORMAT(NOW(), '%Y%m%d')
+       ,DATE_FORMAT(NOW(), '%H%i%s')
+       ,#{regUserId}
+       ,DATE_FORMAT(NOW(), '%Y%m%d')
+       ,DATE_FORMAT(NOW(), '%H%i%s')
+       ,#{uptUserId}
+    )
+	</insert>
+	
+	<update id="updateTcFile" parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+	UPDATE TC_FILE
+	SET    USE_YN = 'N'
+	WHERE  FILE_NO = #{fileNo}
+	</update>
+	
+	<update id="deleteTcFile" parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+	DELETE 
+	FROM   TC_FILE
+	WHERE  FILE_NO = #{fileNo}
+	</update>
+	
+	<select id="selectFileNo" parameterType="kr.co.seculink.web.model.cmon.TcFileVO" resultType="int">
+	SELECT CASE WHEN MAX(FILE_NO) IS NULL THEN 1
+	            ELSE CAST(MAX(FILE_NO) AS UNSIGNED) + 1
+	       END AS FILE_NO
+	FROM   TC_FILE
+	</select>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.nutr.ddRcmdEatStndMng">
+
+    <!--일일_권장_섭취량_기준_리스트 리스트 조회-->
+	<select id="selectDdRcmdEatStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      TDNEB.SEX_CD             AS SEX_CD_TEMP
+		                , TDNEB.AGE_YCNT        AS AGE_YCNT_TEMP
+		                , TNI.NUTR_CD               AS NUTR_CD_TEMP
+					    , TDNEB.EAT_QTY_FR    AS EAT_QTY_FR_TEMP
+		                , TDNEB.SEX_CD
+	   		            , TDNEB.AGE_YCNT
+		                , TNI.NUTR_CD
+		                , TNI.NUTR_NM
+						, TDNEB.EAT_QTY_FR
+						, TDNEB.EAT_QTY_TO
+                        , TDNEB.NUTR_STAT_CD
+                        , TDNEB.USE_YN
+                        , TDNEB.REG_DT
+                        , TDNEB.REG_TM
+                        , TDNEB.REG_USER_ID
+                        , TDNEB.UPT_DT
+                        , TDNEB.UPT_TM
+                        , TDNEB.UPT_USER_ID
+  	    FROM        TI_DD_NUTR_EAT_BLCK AS TDNEB
+		LEFT OUTER JOIN TI_NUTR_INFO     AS TNI
+		ON            TDNEB.NUTR_CD = TNI.NUTR_CD
+		WHERE     1 = 1
+		<if test=" sexCd != null and sexCd != '' ">
+		AND          SEX_CD = #{sexCd}</if>
+		<if test=" ageYcnt != null and ageYcnt!= '' ">
+		AND          AGE_YCNT = #{ageYcnt}::NUMERIC</if>
+		<if test=" nutrNm != null and nutrNm!= '' ">
+		AND          NUTR_NM LIKE CONCAT ('%', #{nutrNm}, '%')</if>
+		<if test=" eatQtyFr != null and eatQtyFr!= '' ">
+		AND          EAT_QTY_FR = #{eatQtyFr}::NUMERIC</if>
+		ORDER BY SEX_CD, AGE_YCNT,NUTR_NM
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+
+	<!--행추가_행삭제 인서트-->
+	<insert id="insertTiDdRcmdEatStndList" parameterType="java.util.Map">
+    	INSERT INTO  TI_DD_NUTR_EAT_BLCK
+    	(
+		      SEX_CD
+			, AGE_YCNT
+			, NUTR_CD
+			, EAT_QTY_FR
+			, EAT_QTY_TO
+			, NUTR_STAT_CD
+			, USE_YN
+			, REG_DT
+			, REG_TM
+			, REG_USER_ID
+			, UPT_DT
+			, UPT_TM
+			, UPT_USER_ID
+    	)
+    	VALUES
+    	(
+    	     #{sexCd}
+    	   , #{ageYcnt}::NUMERIC
+    	   , #{nutrCd}
+    	   , #{eatQtyFr}::NUMERIC
+    	   , #{eatQtyTo}::NUMERIC
+    	   , #{nutrStatCd}
+    	   , #{useYn}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{regUserId}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{uptUserId}
+    	)
+    </insert>
+
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiDdRcmdEatStndList" parameterType="java.util.Map">
+		UPDATE TI_DD_NUTR_EAT_BLCK
+		SET         UPT_DT           = TO_CHAR(NOW(), 'YYYYMMDD')
+		            ,  UPT_TM           = TO_CHAR(NOW(),'HH24MISS')
+	             	,  UPT_USER_ID  = #{uptUserId}
+		<if test="sexCd != null and sexCd !=''">  ,SEX_CD = #{sexCd}</if>
+		<if test="ageYcnt != null and ageYcnt != ''">  ,AGE_YCNT = #{ageYcnt}::NUMERIC</if>
+		<if test="nutrCd != null and nutrCd != ''">  ,NUTR_CD = #{nutrCd}</if>
+		<if test="eatQtyFr != null and eatQtyFr != ''">  ,EAT_QTY_FR = #{eatQtyFr}::NUMERIC</if>
+		<if test="eatQtyTo != null and eatQtyTo != ''">  ,EAT_QTY_TO = #{eatQtyTo}::NUMERIC</if>
+		<if test="nutrStatCd != null and nutrStatCd !=''">, NUTR_STAT_CD = #{nutrStatCd}</if>
+		<if test="useYn != null and useYn !=''">, USE_YN = #{useYn}</if>
+		WHERE  1=1
+		AND SEX_CD         = #{sexCdTemp}
+		AND AGE_YCNT    = #{ageYcntTemp}::NUMERIC
+		AND NUTR_CD      = #{nutrCdTemp}
+		AND EAT_QTY_FR  = #{eatQtyFrTemp}::NUMERIC
+	</update>
+
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiDdRcmdEatStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_DD_NUTR_EAT_BLCK
+        WHERE  1=1
+		AND SEX_CD          = #{sexCdTemp}
+		AND AGE_YCNT     = #{ageYcntTemp}::NUMERIC
+		AND NUTR_CD      = #{nutrCdTemp}
+		AND EAT_QTY_FR = #{eatQtyFrTemp}::NUMERIC
+	</delete>
+
+</mapper>

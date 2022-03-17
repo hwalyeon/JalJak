@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="termAgreYnInfoDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 530px; height: 670px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>약관동의 여부 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body" >
+					<div class="ibox-content border-style_none" style="height: 510px">
+						<div class="form-group">
+							<div id="termAgreYnInfoDetl_list_wrapper">
+								<table id="termAgreYnInfoDetl_list"></table>
+								<div id="termAgreYnInfoDetl_pager_list"></div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style="">
+						<div class="text-center">
+							<div class="disp_in_block width_per_20 mg_right_15">
+								<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveTermAgreYnInfoDetl">저장</button>
+							</div>
+							<div class="disp_in_block width_per_20">
+								<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

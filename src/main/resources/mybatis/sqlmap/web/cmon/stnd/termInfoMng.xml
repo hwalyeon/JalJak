@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmon.stnd.termInfoMng">
+
+       <select id="searchTermInfoList" parameterType="java.util.Map" resultType="MybatisMap">
+	    /* Generated SQL SQL ID : ti_term_base.select */
+        SELECT  term_div_cd /* term_div_cd 약관_구분_코드 character varying(20) */
+               ,fn_getCdNm('TERM_DIV_CD', term_div_cd) as term_div_nm
+               ,term_ver /* term_ver 약관_버전 numeric */
+               ,aply_strt_dt /* aply_strt_dt 적용_시작_일자 character(8) */
+               ,substring(term_cntn, 0, 200 )    as  term_cntn_temp/* term_cntn 약관_내용 text */
+               ,term_cntn /* term_cntn 약관_내용 text */
+               ,essn_yn /* essn_yn 필수_여부 character(1) */
+               ,sort_ord /* sort_ord 정렬_순서 character(1) */
+               ,reg_dt /* reg_dt 등록_일자 character(8) */
+               ,reg_tm /* reg_tm 등록_시각 character(6) */
+               ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+               ,upt_dt /* upt_dt 수정_일자 character(8) */
+               ,upt_tm /* upt_tm 수정_시각 character(6) */
+               ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+        FROM   ti_term_base
+		WHERE  1 = 1
+		AND    term_div_cd LIKE CONCAT (#{termDivCd},'%') /* term_div_cd 약관_구분_코드 character varying(20) */
+        </select>
+
+       <insert id="insertTiTermBase"  parameterType="java.util.Map" >
+              /* Generated SQL SQL ID : ti_term_base.insert */
+              INSERT INTO ti_term_base
+              (
+              term_div_cd /* term_div_cd 약관_구분_코드 character varying(20) */
+              ,term_ver /* term_ver 약관_버전 numeric */
+              <if test="aplyStrtDt != null">
+                     ,aply_strt_dt /* aply_strt_dt 적용_시작_일자 character(8) */
+              </if>
+              <if test="termCntn != null">
+                     ,term_cntn /* term_cntn 약관_내용 text */
+              </if>
+              ,essn_yn /* essn_yn 필수_여부 character(1) */
+              <if test="regDt != null">
+                     ,reg_dt /* reg_dt 등록_일자 character(8) */
+              </if>
+              <if test="regTm != null">
+                     ,reg_tm /* reg_tm 등록_시각 character(6) */
+              </if>
+              <if test="regUserId != null">
+                     ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+              </if>
+              <if test="uptDt != null">
+                     ,upt_dt /* upt_dt 수정_일자 character(8) */
+              </if>
+              <if test="uptTm != null">
+                     ,upt_tm /* upt_tm 수정_시각 character(6) */
+              </if>
+              <if test="uptUserId != null">
+                     ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+              </if>
+              )
+              VALUES
+              (
+              #{termDivCd} /* term_div_cd 약관_구분_코드 character varying(20) */
+              ,#{termVer} /* term_ver 약관_버전 numeric */
+              <if test="aplyStrtDt != null">
+                     ,#{aplyStrtDt} /* aply_strt_dt 적용_시작_일자 character(8) */
+              </if>
+              <if test="termCntn != null">
+                     ,#{termCntn} /* term_cntn 약관_내용 text */
+              </if>
+              ,#{essnYn} /* essn_yn 필수_여부 character(1) */
+              <if test="regDt != null">
+                     ,#{regDt} /* reg_dt 등록_일자 character(8) */
+              </if>
+              <if test="regTm != null">
+                     ,#{regTm} /* reg_tm 등록_시각 character(6) */
+              </if>
+              <if test="regUserId != null">
+                     ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+              </if>
+              <if test="uptDt != null">
+                     ,#{uptDt} /* upt_dt 수정_일자 character(8) */
+              </if>
+              <if test="uptTm != null">
+                     ,#{uptTm} /* upt_tm 수정_시각 character(6) */
+              </if>
+              <if test="uptUserId != null">
+                     ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              </if>
+              )
+       </insert>
+
+       <update id="updateTiTermBase"  parameterType="java.util.Map" >
+              /* Generated SQL SQL ID : ti_term_base.update */
+              UPDATE ti_term_base
+              <trim prefix="SET" prefixOverrides=",">
+                     <if test="aplyStrtDt != null">
+                            ,aply_strt_dt = #{aplyStrtDt} /* aply_strt_dt 적용_시작_일자 character(8) */
+                     </if>
+                     <if test="termCntn != null">
+                            ,term_cntn = #{termCntn} /* term_cntn 약관_내용 text */
+                     </if>
+                     <if test="essnYn != null">
+                            ,essn_yn = #{essnYn} /* essn_yn 필수_여부 character(1) */
+                     </if>
+                     <if test="regDt != null">
+                            ,reg_dt = #{regDt} /* reg_dt 등록_일자 character(8) */
+                     </if>
+                     <if test="regTm != null">
+                            ,reg_tm = #{regTm} /* reg_tm 등록_시각 character(6) */
+                     </if>
+                     <if test="regUserId != null">
+                            ,reg_user_id = #{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+                     </if>
+                     <if test="uptDt != null">
+                            ,upt_dt = #{uptDt} /* upt_dt 수정_일자 character(8) */
+                     </if>
+                     <if test="uptTm != null">
+                            ,upt_tm = #{uptTm} /* upt_tm 수정_시각 character(6) */
+                     </if>
+                     <if test="uptUserId != null">
+                            ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+                     </if>
+              </trim>
+              WHERE  1 = 1
+              AND    term_div_cd = #{termDivCd} /* term_div_cd 약관_구분_코드 character varying(20) */
+              AND    term_ver = #{termVer} /* term_ver 약관_버전 numeric */
+       </update>
+
+       <delete id="deleteTiTermBase"  parameterType="java.util.Map" >
+		/* Generated SQL SQL ID : ti_term_base.delete */
+		DELETE FROM ti_term_base
+		WHERE  1 = 1
+		AND    term_div_cd = #{termDivCd} /* term_div_cd 약관_구분_코드 character varying(20) */
+		AND    term_ver = #{termVer} /* term_ver 약관_버전 numeric */
+	   </delete>
+
+
+</mapper>

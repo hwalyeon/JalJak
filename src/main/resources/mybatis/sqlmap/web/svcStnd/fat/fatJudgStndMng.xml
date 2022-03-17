@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.fat.fatJudgStndMng">
+
+    <select id="searchFatJudgList" parameterType="java.util.Map" resultType="MybatisMap">
+        SELECT 	    fat_judg_cd /* fat_judg_cd 비만_판정_코드 character varying(20) */
+                   ,fn_getCdNm('FAT_JUDG_CD', fat_judg_cd) as fat_judg_nm
+                   ,bmi_fr
+                   ,bmi_to
+                   ,fidx_fr /* fidx_fr 비만지수_FROM numeric */
+                   ,fidx_to /* fidx_to 비만지수_TO numeric */
+                   ,curr_eval_cntn /* curr_eval_cntn 현재_평가_내용 character varying(100) */
+                   ,prdt_eval_cntn /* prdt_eval_cntn 예측_평가_내용 character varying(4000) */
+                   ,trim(reg_dt) /* reg_dt 등록_일자 character(8) */ AS reg_dt
+                   ,trim(reg_tm) /* reg_tm 등록_시각 character(6) */ AS reg_tm
+                   ,trim(reg_user_id) /* reg_user_id 등록_사용자_ID character varying(20) */ AS reg_user_id
+                   ,trim(upt_dt) /* upt_dt 수정_일자 character(8) */ AS upt_dt
+                   ,trim(upt_tm) /* upt_tm 수정_시각 character(6) */ AS upt_tm
+                   ,trim(upt_user_id) /* upt_user_id 수정_사용자_ID character varying(20) */ AS upt_user_id
+        FROM   ti_fat_judg_stnd
+        WHERE
+            fat_judg_cd LIKE CONCAT (#{fatJudgCd}, '%') /* ment_strs_stat_cd 정신적_스트레스_상태_코드 character varying(20) */
+    </select>
+    <insert id="insertTiFatJudgStnd"  parameterType="java.util.Map">
+        /* insertTiFatJudgStnd */
+        INSERT INTO ti_fat_judg_stnd
+        (
+        fat_judg_cd /* fat_judg_cd 비만_판정_코드 character varying(20) */
+        ,bmi_fr
+        ,bmi_to
+        ,fidx_fr /* fidx_fr 비만지수_FROM numeric */
+        ,fidx_to /* fidx_to 비만지수_TO numeric */
+        <if test="currEvalCntn != null">
+            ,curr_eval_cntn /* curr_eval_cntn 현재_평가_내용 character varying(100) */
+        </if>
+        <if test="prdtEvalCntn != null">
+            ,prdt_eval_cntn /* prdt_eval_cntn 예측_평가_내용 character varying(4000) */
+        </if>
+        ,reg_dt /* reg_dt 등록_일자 character(8) */
+        ,reg_tm /* reg_tm 등록_시각 character(6) */
+        ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+        ,upt_dt /* upt_dt 수정_일자 character(8) */
+        ,upt_tm /* upt_tm 수정_시각 character(6) */
+        ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+        )
+        VALUES
+        (
+        #{fatJudgCd} /* fat_judg_cd 비만_판정_코드 character varying(20) */
+        ,CAST(#{bmiFr} as integer)  /* bmi_fr numeric */
+        ,CAST(#{bmiTo} as integer) /* bmi_to numeric */
+        ,CAST(#{fidxFr} as integer)  /* fidx_fr 비만지수_FROM numeric */
+        ,CAST(#{fidxTo} as integer)  /* fidx_to 비만지수_TO numeric */
+        <if test="currEvalCntn != null">
+            ,#{currEvalCntn} /* curr_eval_cntn 현재_평가_내용 character varying(100) */
+        </if>
+        <if test="prdtEvalCntn != null">
+            ,#{prdtEvalCntn} /* prdt_eval_cntn 예측_평가_내용 character varying(4000) */
+        </if>
+        ,TO_CHAR(NOW(), 'YYYYMMDD') /* reg_dt 등록_일자 character(8) */
+        ,TO_CHAR(NOW(), 'HH24MISS') /* reg_tm 등록_시각 character(6) */
+        ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+        ,TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+        ,TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+        ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+        )
+    </insert>
+
+    <update id="updateTiFatJudgStnd" parameterType="java.util.Map">
+        /* updateTiFatJudgStnd */
+        UPDATE ti_fat_judg_stnd
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="bmiFr != null">
+                ,bmi_fr = CAST(#{bmiFr} as integer) /* bmi_fr BMI_FROM numeric */
+            </if>
+            <if test="bmiTo != null">
+                ,bmi_to = CAST(#{bmiTo} as integer) /* bmi_to BMI_TO numeric */
+            </if>
+            <if test="fidxFr != null">
+                ,fidx_fr = CAST(#{fidxFr} as integer) /* fidx_fr 비만지수_FROM numeric */
+            </if>
+            <if test="fidxTo != null">
+                ,fidx_to = CAST(#{fidxTo} as integer) /* fidx_to 비만지수_TO numeric */
+            </if>
+            <if test="currEvalCntn != null">
+                ,curr_eval_cntn = #{currEvalCntn} /* curr_eval_cntn 현재_평가_내용 character varying(100) */
+            </if>
+            <if test="prdtEvalCntn != null">
+                ,prdt_eval_cntn = #{prdtEvalCntn} /* prdt_eval_cntn 예측_평가_내용 character varying(4000) */
+            </if>
+            ,upt_dt = #{uptDt} /* upt_dt 수정_일자 character(8) */
+            ,upt_tm = #{uptTm} /* upt_tm 수정_시각 character(6) */
+            ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+        </trim>
+        WHERE  1 = 1
+        AND    fat_judg_cd = #{fatJudgCd} /* fat_judg_cd 비만_판정_코드 character varying(20) */
+    </update>
+
+    <delete id="deleteTiFatJudgStnd"  parameterType="java.util.Map" >
+		/* deleteTiFatJudgStnd */
+		DELETE FROM ti_fat_judg_stnd
+		WHERE  1 = 1
+		AND    fat_judg_cd = #{fatJudgCd} /* fat_judg_cd 비만_판정_코드 character varying(20) */
+	   </delete>
+
+</mapper>

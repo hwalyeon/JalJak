@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <form th:fragment="session" id="sessionForm" name="sessionForm" method="get">
+        
+        <input type="hidden" id="gblAuthGrpcd"      name="gblAuthGrpcd"      />
+        <input type="hidden" id="gblAuthSuperCd"    name="gblAuthSuperCd"    />
+        <input type="hidden" id="gblAuthAdminCd"    name="gblAuthAdminCd"    />
+        <input type="hidden" id="gblAuthMdCd"       name="gblAuthMdCd"       />
+        <input type="hidden" id="gblAuthWpMdCd"     name="gblAuthWpMdCd"     />
+        <input type="hidden" id="gblAuthSelAcntCd"  name="gblAuthSelAcntCd"  />
+        <input type="hidden" id="gblAuthInptAgcyCd" name="gblAuthInptAgcyCd" />
+        <input type="hidden" id="gblAuthCsCd"       name="gblAuthCsCd"       />
+        <!-- //권한 -->
+
+        <!-- 사용자정보 -->
+        <input type="hidden" id="gblUserId" name="gblUserId" />
+        <input type="hidden" id="gblUserNm" name="gblUserNm" />
+        <!-- 사용자정보 -->
+
+        <!-- 사용자 권한 목록 -->
+        <input type="hidden" name="gblUserRoleList" />
+        
+        <!-- //사용자 권한 목록 -->
+        
+
+    </form>
+</body>
+</html>

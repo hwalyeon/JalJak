@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">WMS</title>
+	<th:block th:replace="~{common/fragments/commonHeader}"></th:block>
+</head>
+<body>
+	<div id="wrapper">
+		<div th:replace="~{common/fragments/navigation :: navigation}"></div>
+		
+		<div id="page-wrapper" class="gray-bg">
+					
+			<div layout:fragment="content" th:remove="tag"></div>
+			
+			<div class="footer-blank">&nbsp;</div>
+			<div th:replace="~{common/fragments/commonFooter :: footer}"></div>
+
+		</div>
+	</div>
+	<div id="spinner"></div>
+	<div th:include="~{common/fragments/commonScript}" th:remove="tag"></div>
+</body>
+</html>

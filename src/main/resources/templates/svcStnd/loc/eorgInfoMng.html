@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}">
+<head>
+	<meta charset="UTF-8">
+	<title>성장기준</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="wrapper-content" id="eorgInfoMng">
+
+
+		<!-- 검색조건 영역 -->
+		<div class="ibox m-b-sm">
+			<div class="ibox-title">
+				<i class="fa fa-title-bar"></i>
+				<h5>검색조건</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-xs-1 control-label">성장기준버전</label>
+						<div class="col-xs-2">
+							<select id="growStndVer" name="growStndVer" class="form-control" v-model="params.growStndVer">
+								<option value="">전체</option>
+								<option v-for="item in code.growStndVerList" :value="item.cdVal" v-text="item.cdVal" ></option>
+							</select>
+						</div>
+						<label class="col-xs-1 control-label">나이</label>
+						<div class="col-xs-2">
+							<select id="ageYcnt" name="ageYctn" class="form-control" v-model="params.ageYcnt" >
+								<option value="">전체</option>
+								<option v-for="item in code.ageYcntList" :value="item.cdVal" v-text="item.cdVal" ></option>
+							</select>
+						</div>
+						<label class="col-xs-1 control-label">성별</label>
+						<div class="col-xs-2">
+							<select id="sexCd" name="sexCd" class="form-control" v-model="params.sexCd">
+								<option value="">전체</option>
+								<option v-for="item in code.sexCdList" :value="item.cdVal" v-text="item.cdNm" ></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group mg_none">
+						<div class="text-center">
+							<button class="btn btn-secondary" @click="resetSearchParam()" type="button">
+								<span class="glyphicon glyphicon-refresh"> 초기화</span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-w-m btn-primary" @click="searchGrowStndList(true)"><span>조회</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 검색조건 영역 -->
+
+		<!-- 결과 리스트 영역 -->
+		<div class="ibox">
+			<div class="ibox-content">
+				<div class="form-group">
+					<div class="float_left">
+						<div class="ibox-title pd_none mg_top_10" style="min-height: 0px;">
+							<i class="fa fa-title-bar"></i>
+							<h5>성장기준 목록</h5>
+						</div>
+					</div>
+					<div class="float_right">
+						<button type="button" id="btnDownloadExcel" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" @click="downloadExcel"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+					</div>
+
+					<div class="clear_both"></div>
+				</div>
+				<div class="form-group">
+					<div id="growStnd_list_wrapper">
+						<table id="growStnd_list"></table>
+						<div id="growStnd_pager_list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+<!--    <div th:insert="~{set/userDetl :: body}"></div>-->
+</div>
+<section layout:fragment="user_script">
+	<script type="text/javascript" th:src="@{/js/svcStnd/loc/eorgInfoMng.js}"></script>
+</section>
+</body>
+</html>

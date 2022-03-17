@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmon.stnd.csInfoMng">
+
+       <select id="searchCsInfoList" parameterType="java.util.Map" resultType="MybatisMap">
+	    /* Generated SQL SQL ID : ts_cs_info.select */
+        SELECT  reg_no /* reg_no 등록_번호 numeric */
+               ,cs_tel_no /* cs_tel_no 고객지원_전화_번호 character varying(20) */
+               ,cs_mail_addr /* cs_mail_addr 고객지원_메일_주소 character varying(100) */
+               ,cs_url /* cs_url 고객지원_URL character varying(4000) */
+               ,band_hpge_url /* band_hpge_url 밴드_홈페이지_URL numeric */
+               ,reg_dt /* reg_dt 등록_일자 character(8) */
+               ,reg_tm /* reg_tm 등록_시각 character(6) */
+               ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+               ,upt_dt /* upt_dt 수정_일자 character(8) */
+               ,upt_tm /* upt_tm 수정_시각 character(6) */
+               ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+        FROM   ts_cs_info
+		WHERE  1 = 1
+              <if test=" regNo != null and regNo!= '' ">
+		AND    reg_no = #{regNo}::NUMERIC /* reg_no 등록_번호 numeric */
+              </if>
+        </select>
+
+       <insert id="insertTsCsInfo"  parameterType="java.util.Map" >
+              /* Generated SQL SQL ID : ts_cs_info.insert */
+              INSERT INTO ts_cs_info
+              (
+                      reg_no /* reg_no 등록_번호 numeric */
+              <if test="csTelNo != null">
+                     ,cs_tel_no /* cs_tel_no 고객지원_전화_번호 character varying(20) */
+              </if>
+              <if test="csMailAddr != null">
+                     ,cs_mail_addr /* cs_mail_addr 고객지원_메일_주소 character varying(100) */
+              </if>
+              <if test="csUrl != null">
+                     ,cs_url /* cs_url 고객지원_URL character varying(4000) */
+              </if>
+                     ,band_hpge_url /* band_hpge_url 밴드_홈페이지_URL numeric */
+              <if test="regDt != null">
+                     ,reg_dt /* reg_dt 등록_일자 character(8) */
+              </if>
+              <if test="regTm != null">
+                     ,reg_tm /* reg_tm 등록_시각 character(6) */
+              </if>
+              <if test="regUserId != null">
+                     ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+              </if>
+              <if test="uptDt != null">
+                     ,upt_dt /* upt_dt 수정_일자 character(8) */
+              </if>
+              <if test="uptTm != null">
+                     ,upt_tm /* upt_tm 수정_시각 character(6) */
+              </if>
+              <if test="uptUserId != null">
+                     ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+              </if>
+              )
+              VALUES
+              (
+                      #{regNo}::NUMERIC  /* reg_no 등록_번호 numeric */
+              <if test="csTelNo != null">
+                     ,#{csTelNo}/* cs_tel_no 고객지원_전화_번호 character varying(20) */
+              </if>
+              <if test="csMailAddr != null">
+                     ,#{csMailAddr} /* cs_mail_addr 고객지원_메일_주소 character varying(100) */
+              </if>
+              <if test="csUrl != null">
+                     ,#{csUrl} /* cs_url 고객지원_URL character varying(4000) */
+              </if>
+                     ,#{bandHpgeUrl}::NUMERIC /* band_hpge_url 밴드_홈페이지_URL numeric */
+              <if test="regDt != null">
+                     ,#{regDt} /* reg_dt 등록_일자 character(8) */
+              </if>
+              <if test="regTm != null">
+                     ,#{regTm} /* reg_tm 등록_시각 character(6) */
+              </if>
+              <if test="regUserId != null">
+                     ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+              </if>
+              <if test="uptDt != null">
+                     ,#{uptDt} /* upt_dt 수정_일자 character(8) */
+              </if>
+              <if test="uptTm != null">
+                     ,#{uptTm} /* upt_tm 수정_시각 character(6) */
+              </if>
+              <if test="uptUserId != null">
+                     ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              </if>
+              )
+       </insert>
+
+       <update id="updateTsCsInfo"  parameterType="java.util.Map" >
+              /* Generated SQL SQL ID : ts_cs_info.update */
+              UPDATE ts_cs_info
+              <trim prefix="SET" prefixOverrides=",">
+                     <if test="csTelNo != null">
+                            ,cs_tel_no = #{csTelNo} /* cs_tel_no 고객지원_전화_번호 character varying(20) */
+                     </if>
+                     <if test="csMailAddr != null">
+                            ,cs_mail_addr = #{csMailAddr} /* cs_mail_addr 고객지원_메일_주소 character varying(100) */
+                     </if>
+                     <if test="csUrl != null">
+                            ,cs_url = #{csUrl} /* cs_url 고객지원_URL character varying(4000) */
+                     </if>
+                     <if test="bandHpgeUrl != null">
+                            ,band_hpge_url = #{bandHpgeUrl} /* band_hpge_url 밴드_홈페이지_URL numeric */
+                     </if>
+                     <if test="regDt != null">
+                            ,reg_dt = #{regDt} /* reg_dt 등록_일자 character(8) */
+                     </if>
+                     <if test="regTm != null">
+                            ,reg_tm = #{regTm} /* reg_tm 등록_시각 character(6) */
+                     </if>
+                     <if test="regUserId != null">
+                            ,reg_user_id = #{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+                     </if>
+                     <if test="uptDt != null">
+                            ,upt_dt = #{uptDt} /* upt_dt 수정_일자 character(8) */
+                     </if>
+                     <if test="uptTm != null">
+                            ,upt_tm = #{uptTm} /* upt_tm 수정_시각 character(6) */
+                     </if>
+                     <if test="uptUserId != null">
+                            ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+                     </if>
+              </trim>
+              WHERE  1 = 1
+              AND    reg_no = #{regNo} /* reg_no 등록_번호 numeric */
+       </update>
+
+       <delete id="deleteTsCsInfo"  parameterType="java.util.Map" >
+		/* Generated SQL SQL ID : ts_cs_info.delete */
+		DELETE FROM ts_cs_info
+		WHERE  1 = 1
+		AND    reg_no = #{regNo} /* reg_no 등록_번호 numeric */
+	   </delete>
+
+
+</mapper>

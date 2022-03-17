@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="bandOpenInfoDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 580px; height: 550px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>밴드 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-4" />
+		                        <col class="col-xs-8" />
+		                    </colgroup>
+		                    <tbody>
+			                    <tr>
+			                        <th scope="row">밴드 ID
+										<td>
+											<div><input type="text" name="bandId" v-model="params.bandId" class="form-control float_left width_per_60 ime-eng"  v-on:input="nanCk(event)" maxlength="10" :readonly="params.crud=='U'"/>
+												<button type="button" class="btn btn-w-m btn-primary float_right" v-on:click="searchDupBandId"  :disabled="params.crud=='U'" ><span>ID 확인</span></button>
+											</div>
+									<div class="clear_both" style="width:100%; height:5px;"></div>
+											<div>
+												<select id="bandYtypCd" namd="bandYtypCd" class="form-control float_left width_per_30 ime-eng" v-model="params.bandYtypCd" v-on:change="numberingSelect" :disabled="params.crud=='U'">
+													<option value="">출고년월</option>
+													<option v-for="item in code.bandYtypCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+												</select>
+												<select id="bandMdlCd" namd="bandMdlCd" class="form-control float_left ime-eng" style="margin-left:5px; width:97px;" v-model="params.bandMdlCd" v-on:change="numberingSelect" :disabled="params.crud=='U'">
+													<option value="">모델타입</option>
+													<option v-for="item in code.bandMdlCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+												</select>
+												<button type="button" class="btn btn-w-m btn-primary float_right" v-on:click="numberingBandId"  :disabled="params.crud=='U'"><span>ID 채번</span></button>
+											</div>
+										</td>
+									</th>
+								</tr>
+								<tr>
+									<th scope="row">전화 번호</th>
+									<td>
+										<input type="text" name="telNo" v-model="params.telNo" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)" maxlength="11" placeholder=" '-' 를 제외하고 입력해주세요"/>
+									</td>
+			                    </tr>
+								<tr>
+									<th scope="row">보호자 전화번호1</th>
+									<td>
+										<input type="text" name="guarTelNo" v-model="params.guarTelNo1" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)" maxlength="11" placeholder=" '-' 를 제외하고 입력해주세요"/>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">보호자 전화번호2</th>
+									<td>
+										<input type="text" name="guarTelNo" v-model="params.guarTelNo2" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)" maxlength="11" placeholder=" '-' 를 제외하고 입력해주세요"/>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">개통 상태</th>
+									<td>
+										<select id="bandYtypCd2" namd="bandOpenStatCd" class="form-control float_left width_per_100 ime-eng" v-model="params.bandOpenStatCd">
+											<option value="">선택</option>
+											<option v-for="item in code.bandOpenStatCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">블루투스 ID</th>
+									<td>
+										<input type="text" name="blthId" v-model="params.blthId" class="form-control float_left width_per_100 ime-eng" maxlength="10"/>
+									</td>
+								</tr>
+
+							</tbody>
+		                </table>
+            		</div>
+            	</div>
+            	<div class="modal-footer" style="">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveBandOpenInfoDetl">저장</button>
+						</div>
+						<div v-if="params.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteUser">삭제</button>
+						</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>			
+            </div>
+        </div>
+    </div>
+</div>

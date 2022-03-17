@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user.stdt.stdtInfoMng">
+
+
+       <select id="searchStdtInfoList" parameterType="java.util.Map" resultType="MybatisMap">
+
+              select   B.ENTR_DT/*가입일자*/
+              ,B.GUAR_NO/*학부모번호*/
+              ,B.GUAR_NM/*학부모명*/
+              ,C.SPOS_NM/*학부모명(배우자)*/
+              ,A.STDT_NO/*학생번호*/
+              ,A.STDT_NM/*학생명*/
+              ,I.TEL_NO/*전화번호*/
+              ,fn_getCdNm('PLC_CLSS_CD',D.plc_clss_cd)as plc_clss_cd/*현재위치분류*/
+              ,concat('(',D.pstno,')',D.addr_base,D.addr_spec) as CURR_LOC
+              ,H.DGEM_STAT_CD as DGEM_STAT_CD_TEMP/*위험감정상태*/
+              ,fn_getCdNm('DGEM_STAT_CD',H.DGEM_STAT_CD) as DGEM_STAT_CD
+              ,F.STRS_IDX/*스트레스상태*/
+              ,G.GROW_IDX/*성장상태*/
+              ,G.FAT_IDX/*비만상태*/
+              ,I.BAND_ID/*밴드ID*/
+              ,I.TEL_NO/*전화번호*/
+              ,I.BLTH_ID/*블루투스 ID*/
+              ,A.SEX_CD as SEX_CD_TEMP/*성별*/
+              ,fn_getCdNm('SEX_CD',A.SEX_CD) as SEX_CD
+              ,A.BITH_DT/*생년월일*/
+              ,D.LOC_NO/*소속학교번호*/
+              ,D.LOC_NM/*소속학교명*/
+              ,fn_getage(A.BITH_DT) as AGE/*나이*/
+              ,A.BAND_STAT_CD as BAND_STAT_CD_TEMP/*현재상태*/
+              ,fn_getCdNm('BAND_STAT_CD',A.BAND_STAT_CD) as BAND_STAT_CD
+              ,ment_strs_stat_cd as MENT_STRS_STAT_CD_TEMP/* ment_strs_stat_cd 정신적_스트레스_상태_코드 character varying(20) */
+              ,fn_getCdNm('STRS_STAT_CD', F.MENT_STRS_STAT_CD) AS MENT_STRS_STAT_CD
+              ,phys_strs_stat_cd as PHYS_STRS_STAT_CD_TEMP/* phys_strs_stat_cd 신체적_스트레스_상태_코드 character varying(20) */
+              ,fn_getCdNm('STRS_STAT_CD', F.PHYS_STRS_STAT_CD) AS PHYS_STRS_STAT_CD
+              ,(select SUM(USE_CBEE_AMT)
+              from   TS_STDT_CBEE_HIST X
+              where  X.STDT_NO = A.STDT_NO
+              and    X.CBEE_USE_CD = 'SAVE') as SAVE_TOTAL /*적립 캐시비 사용금액*/
+              ,(select SUM(USE_CBEE_AMT)
+              from   TS_STDT_CBEE_HIST X
+              where  X.STDT_NO = A.STDT_NO
+              and    X.CBEE_USE_CD = 'USE')  as USE_TOTAL /*사용 사용금액*/
+              ,K.CBEE_BAL/*캐시비 잔액*/
+              from     TM_STDT_BASE A
+              left outer join
+              TM_GUAR_BASE B
+              on       A.GUAR_NO_1 = B.GUAR_NO
+              left outer join
+              TM_SPOS_BASE C
+              on		 B.SPOS_NO   = C.SPOS_NO
+              left outer join
+              TM_GUAR_APNT_PLC DD
+              on       B.GUAR_NO   = DD.GUAR_NO
+              left outer join
+              TS_LOC_INFO_BASE D
+              on		 DD.LOC_NO   = D.LOC_NO
+              left outer join
+              TS_STDT_STRS_HIST F
+              on		 A.STDT_NO   = F.STDT_NO
+              left outer join
+              TS_STDT_DGEM_HIST H
+              on	     A.STDT_NO   = H.STDT_NO
+              left outer join
+              TI_DGEM_STND E
+              on		 H.ACT_DIV_CD = E.ACT_DIV_CD
+              left outer join
+              TS_GFIX_HIST G
+              on  	 A.STDT_NO     = G.STDT_NO
+              left outer join
+              TS_BAND_INFO I
+              on		 A.BAND_ID     = I.BAND_ID
+              left outer join
+              TS_STDT_CBEE_HIST K
+              on		 A.CBEE_HIST_NO = K.CBEE_HIST_NO
+              where    1=1
+       <if test="entrDtFr != null and entrDtFr != null and entrDtTo !='' and entrDtTo !='' ">
+        and B.ENTR_DT between #{entrDtFr} and #{entrDtTo}</if>
+        <if test=" stdtNo != null and stdtNo !='' ">
+        and      A.STDT_NO     = #{stdtNo}::numeric</if>
+        <if test=" stdtNm != null and stdtNm !='' ">
+        and      A.STDT_NM     like concat('%',#{stdtNm},'%')</if>
+        <if test=" telNo != null and telNo !='' ">
+        and      I.TEL_NO      like concat('%',#{telNo},'%')</if>
+        <if test=" bandId != null and bandId !='' ">
+        and      I.BAND_ID     like concat('%',#{bandId},'%')</if>
+        <if test=" guarNo != null and guarNo !='' ">
+        and      B.GUAR_NO     = #{guarNo}::numeric</if>
+        <if test=" sposNm != null and sposNm !='' ">
+        and      C.SPOS_NM 	   like concat('%',#{sposNm},'%')</if>
+        <if test=" guarTelNo != null and guarTelNo !='' ">
+        and      B.GUAR_TEL_NO like concat('%',#{guarTelNo},'%')</if>
+        <if test=" locNm != null and locNm !='' ">
+        and      D.LOC_NM      like concat('%',#{locNm},'%')</if>
+        <if test=' paging == "Y" '>
+        LIMIT ${rowCount} OFFSET ${currentIndex}
+        </if>
+        </select>
+
+       <insert id="insertTmStdtBase"  parameterType="java.util.Map" >
+              /* insertTiGrowJudgStnd */
+              INSERT INTO ti_grow_judg_stnd
+              (
+              grow_judg_cd /* grow_judg_cd 성장_판정_코드 character varying(20) */
+              ,gidx_fr /* gidx_fr 성장지수_FROM numeric */
+              ,gidx_to /* gidx_to 성장지수_TO numeric */
+              <if test="smryCntn != null">
+                     ,smry_cntn /* smry_cntn 요약_내용 character varying(100) */
+              </if>
+              <if test="specCntn != null">
+                     ,spec_cntn /* spec_cntn 상세_내용 character varying(4000) */
+              </if>
+              ,reg_dt /* reg_dt 등록_일자 character(8) */
+              ,reg_tm /* reg_tm 등록_시각 character(6) */
+              ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+              ,upt_dt /* upt_dt 수정_일자 character(8) */
+              ,upt_tm /* upt_tm 수정_시각 character(6) */
+              ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+              )
+              VALUES
+              (
+              #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+              ,CAST(#{gidxFr} as integer) /* gidx_fr 성장지수_FROM numeric */
+              ,CAST(#{gidxTo} as integer) /* gidx_to 성장지수_TO numeric */
+              <if test="smryCntn != null">
+                     ,#{smryCntn} /* smry_cntn 요약_내용 character varying(100) */
+              </if>
+              <if test="specCntn != null">
+                     ,#{specCntn} /* spec_cntn 상세_내용 character varying(4000) */
+              </if>
+              ,TO_CHAR(NOW(), 'YYYYMMDD') /* reg_dt 등록_일자 character(8) */
+              ,TO_CHAR(NOW(), 'HH24MISS') /* reg_tm 등록_시각 character(6) */
+              ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+              ,TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+              ,TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+              ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              )
+       </insert>
+
+       <update id="updateTmStdtBase"  parameterType="java.util.Map" >
+              /* updateTiGrowJudgStnd */
+              UPDATE ti_grow_judg_stnd
+              <trim prefix="SET" prefixOverrides=",">
+                     <if test="gidxFr != null">
+                            ,gidx_fr = #{gidxFr} /* gidx_fr 성장지수_FROM numeric */
+                     </if>
+                     <if test="gidxTo != null">
+                            ,gidx_to = #{gidxTo} /* gidx_to 성장지수_TO numeric */
+                     </if>
+                     <if test="smryCntn != null">
+                            ,smry_cntn = #{smryCntn} /* smry_cntn 요약_내용 character varying(100) */
+                     </if>
+                     <if test="specCntn != null">
+                            ,spec_cntn = #{specCntn} /* spec_cntn 상세_내용 character varying(4000) */
+                     </if>
+                     ,upt_dt = #{uptDt} /* upt_dt 수정_일자 character(8) */
+                     ,upt_tm = #{uptTm} /* upt_tm 수정_시각 character(6) */
+                     ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+              </trim>
+              WHERE  1 = 1
+              AND    grow_judg_cd = #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+       </update>
+
+       <delete id="deleteTmStdtBase"  parameterType="java.util.Map" >
+		/* deleteTiGrowJudgStnd */
+		DELETE FROM ti_grow_judg_stnd
+		WHERE  1 = 1
+		AND    grow_judg_cd = #{growJudgCd} /* grow_judg_cd 성장_판정_코드 character varying(20) */
+	   </delete>
+
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cmon.code">
+
+	<select id="searchCmonCdList" parameterType="Map" resultType="MybatisMap">
+	
+SELECT B.CD_VAL
+      ,B.CD_NM
+      ,B.SORT_ORD
+FROM   TC_CD_GRP A
+       INNER JOIN TC_CD_SPEC B
+       ON  A.CD_GRP = B.CD_GRP
+WHERE  1 = 1
+<if test="ignoreUseYn == 'Y'">
+AND    A.USE_YN = 'Y'
+AND    B.USE_YN = 'Y'	</if>
+AND    A.CD_GRP = #{cdGrp}
+ORDER BY B.SORT_ORD
+
+	</select>
+
+</mapper>

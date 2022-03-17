@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}">
+<head>
+	<meta charset="UTF-8">
+	<title>공통코드관리</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="wrapper-content" id="cdMng">
+		
+		<!-- 검색조건 영역 -->
+		<div class="ibox m-b-sm">
+			<div class="ibox-title">
+				<i class="fa fa-title-bar"></i>
+				<h5>검색조건</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-xs-1 control-label">그룹코드</label>
+						<div class="col-xs-2">
+							<input type="text"  id="cdGrp" name="cdGrp" class="form-control"  :value="params.cdGrp.cdGrp"  v-model="params.cdGrp.cdGrp" v-on:input="cdMng_typing">
+						</div>
+						<label class="col-xs-1 control-label">그룹코드명</label>
+						<div class="col-xs-2">
+							<input type="text" id="cdGrpNm" name="cdGrpNm" class="form-control"  :value="params.cdGrpNm" v-model="params.cdGrp.cdGrpNm" v-on:input="cdMng_typing">
+						</div>
+					</div>
+					
+					<div class="form-group mg_none">
+						<div class="text-center">
+							<button class="btn btn-secondary" v-on:click="resetSearchParam()" type="button">
+								<span class="glyphicon glyphicon-refresh"> 초기화</span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-w-m btn-primary" v-on:click="searchCdGrpList(true)"><span>조회</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 검색조건 영역 -->
+		
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="ibox-title">
+					<i class="fa fa-title-bar"></i>
+					<h5>코드그룹 현황</h5>
+					<div class="float_right">
+						<button type="button" id="btnCdGrpReg" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" data-target="#cdGrpDetlPopup" v-on:click="regCdGrpPop()">&nbsp;코드그룹등록</button>
+						<button type="button" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcelCdGrp"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+					</div>
+				</div>
+				<div class="ibox-content">
+					<div class="form-group">
+						<div id="cdGrp_jqGrid_wrapper">
+							<table id="cdGrp_list"></table>
+							<div id="cdGrp_pager_list"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-8">
+				<div class="ibox">
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>코드 현황</h5>
+						<div class="float_right">
+							<button type="button" id="btnCdSpecReg" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" v-on:click="regCdSpecPop()">&nbsp;코드등록</button>
+							<button type="button" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcelCdSpec"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+						</div>
+					</div>
+					<div class="ibox-content">
+						<div class="form-group">
+							<div id="cdSpec_jqGrid_wrapper">
+								<table id="cdSpec_list"></table>
+								<div id="cdSpec_pager_list"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div th:insert="~{set/cdGrpDetl :: body}"></div>
+    <div th:insert="~{set/cdSpecDetl :: body}"></div>
+</div>
+<section layout:fragment="user_script">
+	<script type="text/javascript" th:src="@{/js/set/cdMng.js}"></script>
+	<script type="text/javascript" th:src="@{/js/set/cdGrpDetl.js}"></script>
+	<script type="text/javascript" th:src="@{/js/set/cdSpecDetl.js}"></script>
+</section>
+</body>
+</html>

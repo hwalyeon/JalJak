@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="cdSpecDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 500px; height: 650px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>코드 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">				
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-4" />
+		                        <col class="col-xs-8" />
+		                    </colgroup>
+	                    	<tbody>
+			                   <tr>
+			                        <th scope="row">코드그룹</th>
+			                        <td>
+			                        	<select id="cdGrp" name="cdGrp" class="form-control" v-model="cdSpecInfo.cdGrp" @change="changeCdSpecInfo" >
+				                        	<option value="">선택</option>
+				                            <option v-for="item in code.cdGrpDivList" v-bind:value="item.cdVal" v-text="item.cdVal" ></option>
+				                        </select>
+			                        </td>
+			                    </tr>
+			                        <th scope="row">코드값</th>
+			                        <td>
+			                        	<input type="text" id="cdVal"  name="cdVal" v-model="cdSpecInfo.cdVal"  v-bind:value="cdSpecInfo.cdVal" class="form-control" @change="changeCdSpecInfo"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">코드명</th>
+			                        <td>
+			                        	<input type="text" id="cdNm" name="cdNm" v-model="cdSpecInfo.cdNm" v-bind:value="cdSpecInfo.cdNm" class="form-control"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                      <tr>
+			                        <th scope="row">코드내용</th>
+			                        <td>
+			                        	<input type="text" id="cdDesc" name="cdDesc" v-model="cdSpecInfo.cdDesc" v-bind:value="cdSpecInfo.cdDesc" class="form-control"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                      <tr>
+			                        <th scope="row">필터값1</th>
+			                        <td>
+			                        	<input type="text" id="fltrVal1" name="fltrVal1" v-model="cdSpecInfo.fltrVal1"   v-bind:value="cdSpecInfo.fltrVal1" class="form-control"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                      <tr>
+			                        <th scope="row">필터값2</th>
+			                        <td>
+			                        	<input type="text" id="fltrVal2" name="fltrVal2" v-model="cdSpecInfo.fltrVal2" v-bind:value="cdSpecInfo.fltrVal2" class="form-control"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                      <tr>
+			                        <th scope="row">필터값3</th>
+			                        <td>
+			                        	<input type="text" id="fltrVal3" name="fltrVal3" v-model="cdSpecInfo.fltrVal3"  v-bind:value="cdSpecInfo.fltrVal3"class="form-control"  v-on:input="cdSpecDetl_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">정렬순서</th>
+			                        <td>
+			                        	<input type="number" id="sortOrd" name="sortOrd" v-model="cdSpecInfo.sortOrd" v-bind:value="cdSpecInfo.sortOrd" class="form-control"  v-on:input="sortOrd_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">사용여부</th>
+			                        <td>
+			                        	<select id="useYn" name="useYn" class="form-control" v-model="cdSpecInfo.useYn">
+				                        	<option value="">선택</option>
+				                            <option v-for="item in code.useYnList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+				                        </select>
+			                        </td>
+			                    </tr>
+			                </tbody>
+	                    </table>
+					</div>
+            	</div>
+            	
+            	<div class="modal-footer">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="searchDuprCdSpec">저장</button>
+						</div>
+						<div v-if="cdSpecInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+								<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteCdSpec">삭제</button>
+							</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

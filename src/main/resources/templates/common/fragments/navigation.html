@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<nav th:fragment="navigation" class="navbar-default navbar-static-side" role="navigation">
+		<div id="navigation" class="sidebar-collapse" v-cloak>
+        	<ul class="nav metismenu" id="side-menu">
+            	<li class="nav-header" onclick="window.location.reload()">
+					<div class="dropdown profile-element">
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        	<!-- <span class="clear">
+                        		<span class="block m-t-xs">
+                        			<strong class="font-bold">김재현(a0001)</strong>
+                        		</span>
+                            <span class="text-muted text-xs block">그룹(부서)<b class="caret"></b></span> </span> -->
+						</a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        	<li><a href="#" data-toggle="modal" data-target="#updateUserPassword">비밀번호 변경</a></li>
+							<li class="divider"></li>
+							<li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> 로그아웃</a></li>
+						</ul>
+					</div>
+                	<!-- <div class="logo-element">Untactor</div> -->
+				</li>
+				<li v-for="(menu, index) in menuList" v-bind:id="menu.menuNo" v-bind:menuTree="'0_0_' + menu.menuNo">
+                    <a href="#" v-on:click="newTab(menu.menuNm, menu.menuUrl, menu.menuNo);"><i v-bind:class="(menu.iconInfo == '' ?  'fa fa-sitemap' : menu.iconInfo)"></i>
+                    	<span class="nav-label">{{menu.menuNm}}</span><span class="fa arrow"></span>
+                    </a>
+                    <ul v-if="menu.child.length > 0" class="nav nav-second-level collapse">
+                    	<li v-for="(child, index1) in menu.child" v-bind:id="child.menuNo" v-bind:menuTree="'0_' + child.menuNo + '_' + menu.menuNo">
+                            <template v-if="child.child.length <= 0">
+                            	<a href="#" v-on:click="newTab(child.menuNm, child.menuUrl, child.menuNo);">{{child.menuNm}}</a>
+                            </template>
+                            <template v-if="child.child.length > 0">
+                            	<a href="#" v-on:click="newTab(child.menuNm, child.menuUrl, child.menuNo);">{{child.menuNm}}<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level collapse">
+                                	<li v-for="(child2, index1) in child.child" v-bind:id="child2.menuNo"  v-bind:menuTree="child2.menuNo + '_' + child.menuNo + '_' + menu.menuNo">
+                                    	<a href="#" v-on:click="newTab(child2.menuNm, child2.menuUrl, child2.menuNo);">{{child2.menuNm}}</a>
+                                    </li>
+                                </ul>
+                            </template>
+                        </li>
+                    </ul>
+                </li>
+			</ul>
+		</div>
+	<!--
+	 	<div class="ci-nana">
+	    </div> -->
+     </nav>
+</body>
+</html>

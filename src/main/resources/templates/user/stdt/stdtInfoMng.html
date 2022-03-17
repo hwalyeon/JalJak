@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}">
+<head>
+	<meta charset="UTF-8">
+	<title>사용자</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="wrapper-content" id="stdtInfoMng">
+
+		<!-- 검색조건 영역 -->
+		<div class="ibox m-b-sm">
+			<div class="ibox-title">
+				<i class="fa fa-title-bar"></i>
+				<h5>검색조건</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-xs-1 control-label" >가입일자</label>
+						<div class="col-xs-1" style="width: 10%">
+							<input type="date" name="entrDtFr" class="form-control" v-model="params.entrDtFr">
+						</div>
+						<div class="col-xs-1" style="width: 10%">
+							<input type="date" name="entrDtTo" class="form-control" v-model="params.entrDtTo">
+						</div>
+						<!--이번 달-->
+						<div class="col-xs-1"  style="padding:0px; margin-right:5px;" >
+							<select id="mmDd" name="mmDd" class="form-control" style=" margin-right:15px;" v-model="params.mmDd" v-on:change="mmDdSelect">
+								<option value="">전체</option>
+								<option v-for="item in code.mmDdList" v-bind:value="item.value" v-text="item.text"></option>
+							</select>
+						</div>
+						<label class="col-xs-1 control-label" style="padding-left:0px">학생번호</label>
+						<div class="col-xs-1"  style="padding:0px">
+							<input type="text" name="stdtNo" class="form-control" v-model="params.stdtNo">
+						</div>
+						<label class="col-xs-1 control-label">학생명</label>
+						<div class="col-xs-1"  style="padding:0px">
+							<input type="text" name="stdtNm" class="form-control" v-model="params.stdtNm">
+						</div>
+						<label class="col-xs-1 control-label" style="margin-left:15px;">밴드ID</label>
+						<div class="col-xs-1" style="padding:0px;">
+							<input type="text" name="bandId" class="form-control" style="padding-left:0px; padding-right:0px;"v-model="params.bandId">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="clear_both"></div>
+						<label class="col-xs-1 control-label">학부모번호</label>
+						<div class="col-xs-1" style="width: 10%">
+							<input type="text" name="guarNo" class="form-control" v-model="params.guarNo">
+						</div>
+						<label class="col-xs-1 control-label" style="width: 10%" >학부모명(배우자)</label>
+						<div class="col-xs-1"  style="padding:0px; margin-right:5px;" >
+							<input type="text" name="sposNm" class="form-control"  v-model="params.sposNm" >
+						</div>
+						<label class="col-xs-1 control-label"  style="padding-left:0px">전화번호</label>
+						<div class="col-xs-1" style="padding:0px" >
+							<input type="text" name="telNo" class="form-control"  v-model="params.telNo" >
+						</div>
+						<label class="col-xs-1 control-label">보호자전화번호</label>
+						<div class="col-xs-1"  style="padding:0px">
+							<input type="text" name="guarTelNo" class="form-control" v-model="params.guarTelNo">
+						</div>
+						<label class="col-xs-1 control-label" style="margin-left:15px;">학교(학원)명</label>
+						<div class="col-xs-1" style="padding:0px;">
+							<input type="text" name="locNm" class="form-control" style="padding-left:0px; padding-right:0px;"v-model="params.locNm">
+						</div>
+					</div>
+					<div class="form-group mg_none">
+						<div class="text-center">
+							<button class="btn btn-secondary" v-on:click="resetSearchParam()" type="button">
+								<span class="glyphicon glyphicon-refresh"> 초기화</span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-w-m btn-primary" v-on:click="searchGrowJudgList(true)"><span>조회</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 검색조건 영역 -->
+
+		<!-- 결과 리스트 영역 -->
+		<div class="ibox">
+			<div class="ibox-content">
+				<div class="form-group">
+					<div class="float_left">
+						<div class="ibox-title pd_none mg_top_10" style="min-height: 0px;">
+							<i class="fa fa-title-bar"></i>
+							<h5>성장판정 기준 목록</h5>
+						</div>
+					</div>
+					<div class="float_right">
+						<button type="button" id="btnReg" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" data-target="#growJudgStndDetlPopup" v-on:click="regGrowJudgStndPop()">&nbsp;성장판정기준 등록</button>
+						<button type="button" id="btnDownloadExcel" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcel"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+					</div>
+					<div class="clear_both"></div>
+				</div>
+				<div class="form-group">
+					<div id="grid_list_wrapper">
+						<table id="grid_list"></table>
+						<div id="grid_pager_list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:insert="~{user/stdt/stdtInfoDetl :: body}"></div>
+</div>
+<section layout:fragment="user_script">
+	<script type="text/javascript" th:src="@{/js/editor/summernote.js}"></script>
+
+	<script type="text/javascript" th:src="@{/js/user/stdt/stdtInfoMng.js}"></script>
+	<script type="text/javascript" th:src="@{/js/user/stdt/stdtInfoDetl.js}"></script>
+</section>
+</body>
+</html>

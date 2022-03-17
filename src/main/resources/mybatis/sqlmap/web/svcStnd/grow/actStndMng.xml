@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.grow.actStndMng">
+
+    <!--활동_기준_리스트 조회-->
+	<select id="searchActStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      ACT_CD
+				        , ACT_CD AS ACT_CD_TEMP
+		                , ACT_CLSS_CD
+		                , ACT_NM
+		                , ACT_DESC
+		                , MET_VAL
+		                , MET_MIN_CFCT
+		                , SORT_ORD
+		                , REG_DT
+		                , REG_TM
+		                , REG_USER_ID
+		                , UPT_DT
+		                , UPT_TM
+		                , UPT_USER_ID
+		FROM        TI_ACT_STND
+		WHERE      1 = 1
+		<if test=" actNm != null and actNm != '' ">
+		AND          ACT_NM LIKE CONCAT ('%',#{actNm},'%')</if>
+		ORDER BY SORT_ORD
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	<!--활동_분류_코드_리스트 조회-->
+	<select id="searchActClssCdList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT       DISTINCT  ACT_CLSS_CD
+		FROM         TI_ACT_STND
+		WHERE      1 = 1
+		ORDER BY ACT_CLSS_CD
+	</select>
+
+	<insert id="insertTiActStndList" parameterType="java.util.Map">
+			INSERT INTO TI_ACT_STND
+			(
+			 	  ACT_CD
+				, ACT_CLSS_CD
+				, ACT_NM
+				, ACT_DESC
+				, MET_VAL
+				, MET_MIN_CFCT
+				, SORT_ORD
+				, REG_DT
+				, REG_TM
+				, REG_USER_ID
+				, UPT_DT
+				, UPT_TM
+				, UPT_USER_ID
+			)
+				VALUES
+				(
+				   #{actCd}
+				  ,#{actClssCd}
+				  ,#{actNm}
+				  ,#{actDesc}
+				  ,#{metVal}::NUMERIC
+				  ,#{metMinCfct}::NUMERIC
+				  ,#{sortOrd}::NUMERIC
+				  , TO_CHAR(NOW(), 'YYYYMMDD')
+				  , TO_CHAR(NOW(), 'HH24MISS')
+				  , #{regUserId}
+				  , TO_CHAR(NOW(), 'YYYYMMDD')
+				  , TO_CHAR(NOW(), 'HH24MISS')
+				  , #{uptUserId}
+				)
+	</insert>
+	<update id="updateTiActStndList" parameterType="java.util.Map">
+		UPDATE TI_ACT_STND
+		SET         UPT_DT           =  TO_CHAR(NOW(), 'YYYYMMDD')
+	              	,  UPT_TM           = TO_CHAR(NOW(),'HH24MISS')
+	             	,  UPT_USER_ID  = #{uptUserId}
+		<if test="actCd != null and actCd !=''">  ,ACT_CD = #{actCd}</if>
+		<if test="actClssCd != null and actClssCd != ''">  ,ACT_CLSS_CD = #{actClssCd}</if>
+		<if test="actNm != null and actNm !=''">, ACT_NM = #{actNm}</if>
+		<if test="actDesc != null and actDesc != ''">, ACT_DESC = #{actDesc}</if>
+		<if test="metVal !=null and metVal !=''">, MET_VAL = #{metVal}::NUMERIC</if>
+		<if test="metMinCfct !=null and metMinCfct !=''">, MET_MIN_CFCT = #{metMinCfct}::NUMERIC</if>
+		<if test="sortOrd !=null and sortOrd != ''">, SORT_ORD = #{sortOrd}::NUMERIC</if>
+		WHERE  ACT_CD = #{actCdTemp}
+	</update>
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiActStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_ACT_STND
+        WHERE  ACT_CD = #{actCdTemp}
+	</delete>
+</mapper>

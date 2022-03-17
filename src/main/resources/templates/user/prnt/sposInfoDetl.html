@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="sposInfoDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 580px; height: 550px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>배우자 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+							<colgroup>
+								<col class="col-xs-4" />
+								<col class="col-xs-8" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th scope="row">배우자 번호</th>
+									<td>
+										<input type="text" name="sposNo" v-model="params.sposNo" class="form-control float_left width_per_100 ime-eng" readonly="readonly"/>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">배우자 이름</th>
+									<td>
+										<div>
+											<input type="text" name="sposNm" v-model="params.sposNm" class="form-control float_left width_per_100 ime-eng"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">배우자 전화 번호</th>
+									<td>
+										<input type="text" name=sposTelNo v-model="params.sposTelNo" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)" maxlength="11" placeholder=" '-' 를 제외하고 입력해주세요"/>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">성별 코드</th>
+									<td>
+										<select id="sexCd" name="sexCd" class="form-control float_left width_per_100 ime-eng" v-model="params.sexCd">
+											<option value="">선택</option>
+											<option v-for="item in code.sexCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">인종 구분 코드</th>
+									<td>
+										<select id="raceDivCd" name="raceDivCd" class="form-control float_left width_per_100 ime-eng" v-model="params.raceDivCd">
+											<option value="">선택</option>
+											<option v-for="item in code.raceDivCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">키</th>
+									<td>
+										<input type="text" name="hghtVal" v-model="params.hghtVal" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)"/>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">체중</th>
+									<td>
+										<input type="text" name="wghtVal" v-model="params.wghtVal" class="form-control float_left width_per_100 ime-eng" v-on:input="nanCk(event)"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+            	</div>
+            	<div class="modal-footer">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveSposInfoDetl">저장</button>
+						</div>
+						<div v-if="params.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteUser">삭제</button>
+						</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>			
+            </div>
+        </div>
+    </div>
+</div>

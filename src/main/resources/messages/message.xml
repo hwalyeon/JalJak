@@ -1,0 +1,68 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+    <comment>message properties</comment>
+    <entry key="SYSTEM.default">시스템 오류입니다</entry>
+    <entry key="ESYS001">token 생성 오류입니다</entry>
+    <entry key="ESYS002">JSON parsing 오류입니다</entry>
+    <entry key="ESYS003">허용되지 않는 Method 입니다</entry>
+    <entry key="ESYS004">인코딩 오류입니다</entry>
+    <entry key="ESYS005">PUSH 메세지 발송 중 오류입니다</entry>
+    <entry key="ESYS006">시스템 라이브러리 연동 중 오류입니다</entry>
+    <entry key="javax.validation.constraints.NotEmpty.message">필수 입력 값 누락</entry>
+    
+    <!-- [VALID.xxx] 오류 메시지 -->
+    <entry key="VALID.001">{0}은(는) 필수 입력 값 입니다</entry>
+    <entry key="VALID.002">이미 존재하는 {0} 입니다</entry>
+    <entry key="VALID.003">존재하지 않는 {0} 입니다</entry>
+    <entry key="VALID.004">{0}은(는) 이미 존재하는 {1} 입니다</entry>
+    <entry key="VALID.005">{0}은(는) 존재하지 않는 {1} 입니다</entry>
+    <entry key="VALID.006">{0}은(는) {1} 보다 {2} 합니다</entry>
+    <entry key="VALID.007">{0} {1}할 수 없습니다</entry>
+    
+    <!-- [ECOM...] 공통 오류 메시지 -->
+    <entry key="ECOM001">{0}은(는) 필수 입력 값 입니다</entry>
+    <entry key="ECOM002">이미 존재하는 {0} 입니다</entry>
+    <entry key="ECOM003">존재하지 않는 {0} 입니다</entry>
+    <entry key="ECOM004">{0}은(는) 이미 존재하는 {1} 입니다</entry>
+    <entry key="ECOM005">{0}은(는) 존재하지 않는 {1} 입니다</entry>
+    <entry key="ECOM006">{0}은(는) {1} 보다 {2} 합니다</entry>
+    <entry key="ECOM007">사용자 ID 또는 Password가 일치하지 않습니다</entry>
+    <entry key="ECOM008">로그인 처리 중 오류가 발생하였습니다.</entry>
+    <entry key="ECOM009">파일 업로드 중 오류가 발생하였습니다</entry>
+    <entry key="ECOM010">인증된 사용자와 요청 사용자의 값이 다릅니다</entry>
+    <entry key="ECOM011">패스워드 규칙이 맞지 않습니다</entry>
+    <entry key="ECOM012">기존 패스워드가 맞지 않습니다</entry>
+    <entry key="ECOM013">이미 존재하는 사용자ID 입니다</entry>
+    <entry key="ECOM014">파일 삭제 중 오류가 발생하였습니다</entry>
+    <entry key="ECOM015">1분내에 같은 번호로 {0}회 초과하여 전송할 수 없습니다</entry>
+    <entry key="ECOM016">하루에 같은 번호로 {0}회 초과하여 전송할 수 없습니다</entry>
+    <entry key="ECOM017">인증번호가 일치하지 않습니다</entry>
+    <entry key="ECOM018">기 가입된 사용자와 SNS인증정보가 일치하지 않습니다</entry>
+    <entry key="ECOM019">이미 삭제되었거나 없는 제품입니다</entry>
+    <entry key="ECOM020">제품정보가 잘못되었습니다</entry>
+    <entry key="ECOM021">가입된 정보가 없습니다</entry>
+    <entry key="ECOM022">가입 정보에 휴대폰 번호가 없습니다</entry>
+    <entry key="ECOM023">유효한 A-Story가 아닙니다</entry>
+    <entry key="ECOM024">사용자ID는 영문 또는 숫자만 사용 가능합니다</entry>
+    <entry key="ECOM025">조회할 내용이 없습니다</entry>
+    <entry key="ECOM999">{0}</entry>
+        
+    <!-- [ADMIN] -->
+    <entry key="EADM001">이전 비밀번호가 일치하지 않습니다.</entry>
+    
+    <!-- [ESYS...] 시스템 오류 메시지 -->
+    <entry key="EFIL001">파일 저장에 실패하였습니다.</entry>
+    <entry key="EFIL002">디렉토리 생성에 실패하였습니다.</entry>
+    <entry key="EFIL002">해당 파일명은 이미 존재합니다.</entry>
+    <entry key="EFIL003">사진에 검출된 얼굴이 없습니다</entry>
+    <!-- [EPRJ...] 프로젝트 오류 메시지 -->
+    
+    <!-- [EINF...] 인프라 오류 메시지 -->
+    
+    <!-- [EDPL...] 배포 오류 메시지 -->
+    
+    <!-- [EAPR...] 승인 오류 메시지 -->
+
+</properties>

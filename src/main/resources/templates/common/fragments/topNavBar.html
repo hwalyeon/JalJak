@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="topNavBar" class="row">
+		<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+        	<div class="navbar-header">
+            	<!-- <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a> -->
+			</div>
+            <div class="infont col-md-9 minimalize-styl-2">
+            	
+            	<!-- <div class="topNavBar-cureent-date float_left mg_right_20">
+            		<span>Current : </span><span id="topNavBarCurrentDateTime">2020/07/16, 13:01:38</span>
+            	</div>
+            	<div class="topNavBar-yesterday-job-stat float_left mg_right_20 ">
+            		<div class="topNavBar-yesterday-job-stat-title">Yesterday</div>
+            		<span id="topNavBarYesterdayJobStat" class="topNavBar-yesterday-job-stat-content">Scheduled:123  Done:100  Fail: 23</span>
+            	</div>
+            	<div class="topNavBar-today-job-stat float_left mg_right_20">
+            		<div class="topNavBar-today-job-stat-title">Today</div>
+            		<span id="topNavBarTodayJobStat" class="topNavBar-today-job-stat-content">Scheduled:123  Done:100  Fail:2  Running:18  Remain:3</span>
+            	</div> -->
+            	
+            	<!-- <a href="#" class="ladda-button ladda-button-reload btn btn-outline btn-primary" style="padding: 3px 5px 3px 5px;" data-style="zoom-in" >
+               		<i class="fa fa-refresh"></i> <span>리로딩메시지</span>
+				</a> -->
+			</div>
+            <ul class="nav navbar-top-links navbar-right">
+            	<li>Hello <span id="topNavBarUserNm"></span></li>
+                <li>
+                	<a th:href="@{/logout}">
+                    	<i class="fa fa-sign-out"></i> 로그아웃
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>

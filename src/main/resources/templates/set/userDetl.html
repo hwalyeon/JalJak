@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="userDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 580px; height: 600px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>사용자 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-4" />
+		                        <col class="col-xs-8" />
+		                    </colgroup>
+		                    <tbody>
+			                    <tr>
+			                        <th scope="row">사용자ID</th>
+			                        <td v-if="userInfo.crud == 'C'">
+			                            <input type="text" name="userId" v-model="userInfo.userId" class="form-control float_left width_per_50 ime-eng" @input="userIdChk" maxlength="40"/>
+			                            <button type="button" class="btn btn-w-m btn-primary float_right" v-on:click="searchDupUserId()" v-show="userInfo.crud == 'C'"><span>중복조회</span></button>
+			                        </td>
+			                        <td v-else="userInfo.crud == 'U'">
+			                            <input type="text" name="userId" v-model="userInfo.userId" class="form-control" @input="userIdChk"/>			                            
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">사용자명</th>
+			                        <td>
+			                        	<input type="text" name="userNm" v-model="userInfo.userNm" class="form-control ime-han" maxlength="40"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">비밀번호</th>
+			                        <td>
+			                        	<input type="password" id="userPw" name="userPw" v-model="userInfo.userPw" class="form-control" maxlength="100"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">소속</th>
+			                        <td>
+			                        	<input type="text" id="blngNm" name="blngNm" v-model="userInfo.blngNm" class="form-control" maxlength="100"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">전화번호</th>
+			                        <td>
+			                        	<input type="tel" id="telNo" name="telNo" v-model="userInfo.telNo" class="form-control" maxlength="20"
+			                        	  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">휴대전화번호</th>
+			                        <td>
+			                        	<input type="tel" id="mtelNo" name="mtelNo" v-model="userInfo.mtelNo" class="form-control" maxlength="20"
+			                        	  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">이메일</th>
+			                        <td>
+			                        	<input type="email" id="mailAddr" name="mailAddr" v-model="userInfo.mailAddr" class="form-control ime-eng" maxlength="50"/>
+			                        </td>
+			                    </tr>			                    
+			                    <tr>
+			                        <th scope="row">사용여부</th>
+			                        <td>
+			                        	<input type="radio" id="useYn" name="useYn" v-model="userInfo.useYn" value="Y" />&nbspY
+			                        	<input type="radio" id="useYn" name="useYn" v-model="userInfo.useYn" value="N"/>&nbspN			                        	
+			                        </td>
+			                    </tr>
+							</tbody>
+		                </table>
+            		</div>
+            	</div>
+            	<div class="modal-footer" style="">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveUser">저장</button>
+						</div>
+						<div v-if="userInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteUser">삭제</button>
+						</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>			
+            </div>
+        </div>
+    </div>
+</div>

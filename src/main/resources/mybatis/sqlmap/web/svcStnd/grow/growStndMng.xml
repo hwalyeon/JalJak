@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.grow.growStndMng">
+
+	<!--성장기준 리스트 조회-->
+	<select id="searchGrowStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      GROW_STND_VER
+		, GROW_STND_NO
+		, GROW_STND_NO AS GROW_STND_NO_TEMP
+		, SEX_CD
+		, AGE_YCNT
+		, AGE_MCNT
+		, P3_GIDX
+		, P50_GIDX
+		, P97_GIDX
+		, REG_DT
+		, REG_TM
+		, REG_USER_ID
+		, UPT_DT
+		, UPT_TM
+		, UPT_USER_ID
+		FROM        TI_GROW_STND
+		WHERE      1 = 1
+		<if test=" growStndVer != null and growStndVer != '' ">
+		AND          GROW_STND_VER LIKE CONCAT('%', #{growStndVer},'%')</if>
+		<if test=" growStndNo != null and growStndNo != '' ">
+		AND          GROW_STND_NO = #{growStndNo}::NUMERIC</if>
+		ORDER BY GROW_STND_VER, GROW_STND_NO
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	<!--행추가_행삭제 인서트-->
+	<insert id="insertTiGrowStndList" parameterType="java.util.Map">
+    	INSERT INTO TI_GROW_STND
+    	(
+    	      GROW_STND_VER
+		     , GROW_STND_NO
+		     , SEX_CD
+		     , AGE_YCNT
+		     , AGE_MCNT
+		     , P3_GIDX
+		     , P50_GIDX
+		     , P97_GIDX
+		     , REG_DT
+		     , REG_TM
+		     , REG_USER_ID
+		     , UPT_DT
+		     , UPT_TM
+		     , UPT_USER_ID
+    	)
+    	VALUES
+    	(
+    	     #{growStndVer}
+    	   , #{growStndNo}::NUMERIC
+    	   , #{sexCd}
+    	   , #{ageYcnt}::NUMERIC
+    	   , #{ageMcnt}::NUMERIC
+    	   , #{p3Gidx}::NUMERIC
+    	   , #{p50Gidx}::NUMERIC
+    	   , #{p97Gidx}::NUMERIC
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{regUserId}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{uptUserId}
+    	)
+    </insert>
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiGrowStndList" parameterType="java.util.Map">
+		UPDATE TI_GROW_STND
+		SET         UPT_DT           =  TO_CHAR(NOW(), 'YYYYMMDD')
+		            ,  UPT_TM           = TO_CHAR(NOW(),'HH24MISS')
+		            ,  UPT_USER_ID  = #{uptUserId}
+		<if test="growStndVer != null and growStndVer !=''">  ,GROW_STND_VER = #{growStndVer}</if>
+		<if test="growStndNo != null and growStndNo != ''">  ,GROW_STND_NO = #{growStndNo}::NUMERIC </if>
+		<if test="sexCd != null and sexCd !=''">, SEX_CD = #{sexCd}</if>
+		<if test="ageYcnt != null and ageYcnt != ''">, AGE_YCNT =  #{ageYcnt}::NUMERIC </if>
+		<if test="ageMcnt !=null and ageMcnt !=''">, AGE_MCNT =#{ageMcnt}::NUMERIC </if>
+		<if test="p3Gidx !=null and p3Gidx !=''">, P3_GIDX = #{p3Gidx}::NUMERIC  </if>
+		<if test="p50Gidx !=null and p50Gidx != ''">, P50_GIDX = #{p50Gidx}::NUMERIC  </if>
+		<if test="p97Gidx !=null and p97Gidx !=''">, P97_GIDX = #{p97Gidx}::NUMERIC  </if>
+		WHERE  GROW_STND_NO = #{growStndNoTemp}::NUMERIC
+	</update>
+
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiGrowStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_GROW_STND
+        WHERE  GROW_STND_NO = #{growStndNoTemp}::NUMERIC
+	</delete>
+</mapper>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.nutr.ddNutrEatStndMng">
+
+    <!--일일_영양소_섭취_기준_리스트 리스트 조회-->
+	<select id="selectDdNutrEatStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		with eat_stnd_info as (
+		select
+		       TDNES.sex_cd
+		      ,TDNES.age_ycnt
+		      ,case when TDNES.nutr_cd = 'CAL' then TDNES.dd_rcmd_qty   end  as  CAL
+		      ,case when TDNES.nutr_cd = 'PRTN' then TDNES.dd_rcmd_qty  end  as PRTN
+		      ,case when TDNES.nutr_cd = 'FIDX' then TDNES.dd_rcmd_qty  end  as FIDX
+		      ,case when TDNES.nutr_cd = 'CARB' then TDNES.dd_rcmd_qty  end  as CARB
+		      ,case when TDNES.nutr_cd = 'DFIB' then TDNES.dd_rcmd_qty  end  as DFIB
+		      ,case when TDNES.nutr_cd = 'CA' then TDNES.dd_rcmd_qty  end  as CA
+		      ,case when TDNES.nutr_cd = 'FE' then TDNES.dd_rcmd_qty  end  as FE
+		      ,case when TDNES.nutr_cd = 'MG' then TDNES.dd_rcmd_qty  end  as MG
+		      ,case when TDNES.nutr_cd = 'NA' then TDNES.dd_rcmd_qty  end  as NA
+		      ,case when TDNES.nutr_cd = 'ZN' then TDNES.dd_rcmd_qty  end  as ZN
+		      ,case when TDNES.nutr_cd = 'VIT_D3' then TDNES.dd_rcmd_qty  end  as VIT_D3
+		      ,case when TDNES.nutr_cd = 'VIT_B' then TDNES.dd_rcmd_qty  end  as VIT_B
+		      ,case when TDNES.nutr_cd = 'VIT_B1' then TDNES.dd_rcmd_qty  end  as VIT_B1
+		      ,case when TDNES.nutr_cd = 'VIT_B2' then TDNES.dd_rcmd_qty  end  as VIT_B2
+		      ,case when TDNES.nutr_cd = 'NIA' then TDNES.dd_rcmd_qty  end  as NIA
+		      ,case when TDNES.nutr_cd = 'DFE' then TDNES.dd_rcmd_qty  end  as DFE
+		      ,case when TDNES.nutr_cd = 'VIT_B12' then TDNES.dd_rcmd_qty  end  as VIT_B12
+		      ,case when TDNES.nutr_cd = 'ILE' then TDNES.dd_rcmd_qty  end  as ILE
+		      ,case when TDNES.nutr_cd = 'LEU' then TDNES.dd_rcmd_qty  end  as LEU
+		      ,case when TDNES.nutr_cd = 'VAL' then TDNES.dd_rcmd_qty  end  as VAL
+		      ,case when TDNES.nutr_cd = 'AMNO' then TDNES.dd_rcmd_qty  end  as AMNO
+		      ,case when TDNES.nutr_cd = 'CHL' then TDNES.dd_rcmd_qty  end  as CHL
+		      ,case when TDNES.nutr_cd = 'FAPU' then TDNES.dd_rcmd_qty  end  as FAPU
+		      ,case when TDNES.nutr_cd = 'EPA' then TDNES.dd_rcmd_qty  end  as EPA
+		      ,case when TDNES.nutr_cd = 'DHA' then TDNES.dd_rcmd_qty  end  as DHA
+		      ,case when TDNES.nutr_cd = 'EPA_DHA' then TDNES.dd_rcmd_qty  end  as EPA_DHA
+		from TI_DD_NUTR_EAT_STND TDNES
+		INNER JOIN TI_NUTR_INFO     AS TNI
+		ON   TDNES.NUTR_CD = TNI.NUTR_CD
+		)
+		select
+		       sex_cd
+		      ,age_ycnt
+		      ,MAX(CAL) AS  CAL
+		      ,MAX(PRTN) AS PRTN
+		      ,MAX(FIDX) AS FIDX
+		      ,MAX(CARB) AS CARB
+		      ,MAX(DFIB) AS DFIB
+		      ,MAX(CA) AS CA
+		      ,MAX(FE) AS FE
+		      ,MAX(MG) AS MG
+		      ,MAX(NA) AS NA
+		      ,MAX(ZN) AS ZN
+		      ,MAX(VIT_D3) AS VIT_D3
+		      ,MAX(VIT_B) AS VIT_B
+		      ,MAX(VIT_B1) AS VIT_B1
+		      ,MAX(VIT_B2) AS VIT_B2
+		      ,MAX(NIA) AS NIA
+		      ,MAX(DFE) AS DFE
+		      ,MAX(VIT_B12) AS VIT_B12
+		      ,MAX(ILE) AS ILE
+		      ,MAX(LEU) AS LEU
+		      ,MAX(VAL) AS VAL
+	          ,MAX(AMNO) AS AMNO
+		      ,MAX(CHL) AS CHL
+		      ,MAX(FAPU) AS FAPU
+		      ,MAX(EPA) AS EPA
+		      ,MAX(DHA) AS DHA
+		      ,MAX(EPA_DHA) AS EPA_DHA
+		from eat_stnd_info
+		WHERE     1 = 1
+		<if test=" sexCd != null and sexCd != '' ">
+		AND          SEX_CD = #{sexCd}</if>
+		<if test=" ageYcnt != null and ageYcnt!= '' ">
+		AND          AGE_YCNT = #{ageYcnt}::NUMERIC</if>
+		group by sex_cd , age_ycnt
+		order by sex_cd , age_ycnt
+	</select>
+
+
+	<!--	영양소_코드_명_리스트 조회-->
+	<select id="searchNutrCdNmList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      NUTR_CD
+			            , NUTR_NM
+		FROM        TI_NUTR_INFO
+		ORDER BY SORT_ORD
+	</select>
+
+	<!--행추가_행삭제 인서트-->
+	<insert id="insertTiDdNutrEatStndList" parameterType="java.util.Map">
+    	INSERT INTO  TI_DD_NUTR_EAT_STND
+    	(
+			  SEX_CD
+			, AGE_YCNT
+			, NUTR_CD
+			, DD_RCMD_QTY
+			, DD_NEED_QTY
+			, REG_DT
+			, REG_TM
+			, REG_USER_ID
+			, UPT_DT
+			, UPT_TM
+			, UPT_USER_ID
+    	)
+    	VALUES
+    	(
+    	     #{sexCd}
+    	   , #{ageYcnt}::NUMERIC
+    	   , #{nutrCd}
+    	   , #{ddRcmdQty}::NUMERIC
+    	   , #{ddNeedQty}::NUMERIC
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{regUserId}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{uptUserId}
+    	)
+    </insert>
+    
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiDdNutrEatStndList" parameterType="java.util.Map">
+		WITH upsert as (
+		UPDATE TI_DD_NUTR_EAT_STND
+		SET UPT_DT = TO_CHAR(NOW(), 'YYYYMMDD')
+		, UPT_TM = TO_CHAR(NOW(),'HH24MISS')
+		, UPT_USER_ID = #{uptUserId}
+		<if test="ddRcmdQty != null and ddRcmdQty !=''">, DD_RCMD_QTY = #{ddRcmdQty}::NUMERIC</if>
+		<if test="ddNeedQty != null and ddNeedQty !=''">, DD_NEED_QTY = #{ddNeedQty}::NUMERIC</if>
+		WHERE 1=1
+		AND SEX_CD = #{sexCd}
+		AND AGE_YCNT = #{ageYcnt}::NUMERIC
+		AND NUTR_CD = upper(regexp_replace(#{nutrCd} , '([A-Z])','_\1'))
+		returning *
+		)
+		INSERT INTO ti_dd_nutr_eat_stnd
+		(
+		sex_cd /* sex_cd 성별_코드 character varying(20) */
+		,age_ycnt
+		,nutr_cd /* nutr_cd 영양소_코드 character varying(20) */
+		,dd_rcmd_qty /* dd_rcmd_qty 일_권장_량 numeric */
+		,dd_need_qty /* dd_need_qty 일_필요_량 numeric */
+		,reg_dt /* reg_dt 등록_일자 character(8) */
+		,reg_tm /* reg_tm 등록_시각 character(6) */
+		,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+		,upt_dt /* upt_dt 수정_일자 character(8) */
+		,upt_tm /* upt_tm 수정_시각 character(6) */
+		,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+
+		)
+		SELECT
+		#{sexCd} /* sex_cd 성별_코드 character varying(20) */
+		,#{ageYcnt}::NUMERIC  /* age_ycnt_fr 나이_년수_FROM numeric */
+		,upper(regexp_replace(#{nutrCd} , '([A-Z])','_\1')) /* nutr_cd 영양소_코드 character varying(20) */
+		,#{ddRcmdQty}::NUMERIC /* dd_rcmd_qty 일_권장_량 numeric */
+		,#{ddNeedQty}::NUMERIC /* dd_need_qty 일_필요_량 numeric */
+		, TO_CHAR(NOW(), 'YYYYMMDD')
+		, TO_CHAR(NOW(), 'HH24MISS')
+		, #{regUserId}
+		, TO_CHAR(NOW(), 'YYYYMMDD')
+		, TO_CHAR(NOW(), 'HH24MISS')
+		, #{uptUserId}
+		WHERE NOT EXISTS (SELECT * FROM upsert)
+	</update>
+	
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiDdNutrEatStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_DD_NUTR_EAT_STND
+        WHERE  1=1
+		AND SEX_CD = #{sexCdTemp}
+		AND AGE_YCNT = #{ageYcntTemp}::NUMERIC
+		AND NUTR_CD = #{nutrCdTemp}
+	</delete>
+
+</mapper>

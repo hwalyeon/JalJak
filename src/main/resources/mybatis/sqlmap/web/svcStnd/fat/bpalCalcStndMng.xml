@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.fat.bpalCalcStndMng">
+
+    <!--휴식대사량_계산_기준 리스트 조회-->
+	<select id="selectBpalCalcStndList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      SEX_CD             AS SEX_CD_TEMP
+		                , AGE_YCNT_FR   AS AGE_YCNT_FR_TEMP
+		                , AGE_YCNT_TO  AS AGE_YCNT_TO_TEMP
+		                , SEX_CD
+	   		            , AGE_YCNT_FR
+		                , AGE_YCNT_TO
+                        , CALC_FRML
+                        , REG_DT
+                        , REG_TM
+                        , REG_USER_ID
+                        , UPT_DT
+                        , UPT_TM
+                        , UPT_USER_ID
+		FROM        TI_BPAL_CALC_STND TBCS
+		WHERE     1 = 1
+		<if test=" sexCd != null and sexCd != '' ">
+		AND          SEX_CD = #{sexCd}</if>
+		<if test=" ageYcntFr != null and ageYcntFr != '' ">
+		AND           AGE_YCNT_FR = #{ageYcntFr}::NUMERIC</if>
+		ORDER BY SEX_CD, AGE_YCNT_FR
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+
+<!--행추가_행삭제 인서트-->
+	<insert id="insertTiBpalCalcStndList" parameterType="java.util.Map">
+    	INSERT INTO TI_BPAL_CALC_STND
+    	(
+              SEX_CD
+            , AGE_YCNT_FR
+            , AGE_YCNT_TO
+            , CALC_FRML
+            , REG_DT
+            , REG_TM
+            , REG_USER_ID
+            , UPT_DT
+            , UPT_TM
+            , UPT_USER_ID
+    	)
+    	VALUES
+    	(
+    	     #{sexCd}
+    	   , #{ageYcntFr}::NUMERIC
+    	   , #{ageYcntTo}::NUMERIC
+    	   , #{calcFrml}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{regUserId}
+	       , TO_CHAR(NOW(), 'YYYYMMDD')
+	       , TO_CHAR(NOW(), 'HH24MISS')
+	       , #{uptUserId}
+    	)
+    </insert>
+    
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiBpalCalcStndList" parameterType="java.util.Map">
+		UPDATE TI_BPAL_CALC_STND TBCS
+		SET         UPT_DT           = TO_CHAR(NOW(), 'YYYYMMDD')
+		            ,  UPT_TM           = TO_CHAR(NOW(),'HH24MISS')
+	             	,  UPT_USER_ID  = #{uptUserId}
+		<if test="sexCd != null and sexCd !=''">  ,SEX_CD = #{sexCd}</if>
+		<if test="ageYcntFr != null and ageYcntFr != ''">  ,AGE_YCNT_FR = #{ageYcntFr}::NUMERIC</if>
+		<if test="ageYcntTo != null and ageYcntTo !=''">, AGE_YCNT_TO = #{ageYcntTo}::NUMERIC</if>
+		<if test="calcFrml != null and calcFrml != ''">, CALC_FRML = #{calcFrml}</if>
+		WHERE  1=1
+		AND SEX_CD = #{sexCdTemp}
+		AND AGE_YCNT_FR = #{ageYcntFrTemp}::NUMERIC
+		AND AGE_YCNT_TO = #{ageYcntToTemp}::NUMERIC
+	</update>
+	
+	<!--행추가_행삭제 삭제-->
+	<delete id ="deleteTiBpalCalcStndList" parameterType="java.util.Map">
+        DELETE
+        FROM    TI_BPAL_CALC_STND TBCS
+        WHERE  1=1
+        AND SEX_CD = #{sexCdTemp}
+		AND AGE_YCNT_FR = #{ageYcntFrTemp}::NUMERIC
+		AND AGE_YCNT_TO = #{ageYcntToTemp}::NUMERIC
+	</delete>
+
+</mapper>

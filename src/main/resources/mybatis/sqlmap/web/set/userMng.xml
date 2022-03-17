@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="set.userMng">
+	
+	<select id="searchTcUserBase" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT USER_ID
+	      ,USER_NM
+	      ,USER_PW
+	      ,BLNG_NM
+	      ,TEL_NO
+	      ,MTEL_NO
+	      ,MAIL_ADDR
+	      ,ENTR_DT
+	      ,RELS_DT	      
+	      ,USE_YN
+	FROM   TC_USER_BASE
+	WHERE  1 = 1
+	<if test=" userId != null and userId != '' ">
+	AND   USER_ID = #{userId}		</if>
+	<if test=" userNm != null and userNm != '' ">
+	AND   USER_NM LIKE CONCAT('%', #{userNm}, '%')	</if>
+	<if test=" userPw != null and userPw != '' ">
+	AND   USER_PW = #{userPw}	</if>
+	<if test=" blngNm != null and blngNm != '' ">
+	AND   BLNG_NM LIKE CONCAT ('%', #{blngNm}, '%')		</if>
+	<if test=" telNo != null and telNo != '' ">
+	AND   TEL_NO LIKE CONCAT ('%', #{telNo}, '%')		</if>
+	<if test=" mtelNo != null and mtelNo != '' ">
+	AND   MTEL_NO LIKE CONCAT ('%', #{mtelNo}, '%')		</if>
+	<if test=" mailAddr != null and mailAddr != '' ">
+	AND   MAIL_ADDR LIKE CONCAT ('%', #{mailAddr}, '%')		</if>
+	<if test=" useYn != null and useYn != '' ">
+	AND   USE_YN LIKE CONCAT('%',#{useYn},'%')</if>
+	ORDER BY USER_ID
+	<if test=' paging == "Y" '>
+    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+	<insert id="insertTcUserBase" parameterType="java.util.Map">
+	INSERT INTO TC_USER_BASE
+	(
+	     USER_ID
+	    ,USER_NM
+	    ,USER_PW
+	<if test=" blngNm != null and blngNm != '' ">
+	    ,BLNG_NM		</if>
+	<if test=" telNo != null and telNo != '' ">
+	    ,TEL_NO			</if>
+	<if test=" mtelNo != null and mtelNo != '' ">
+	    ,MTEL_NO		</if>
+	<if test=" mailAddr != null and mailAddr != '' ">
+	    ,MAIL_ADDR		</if>
+	    ,ENTR_DT
+	    ,RELS_DT
+	    ,USE_YN
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{userId}
+	    ,#{userNm}
+	    ,#{userPw}
+	<if test=" blngNm != null and blngNm != '' ">
+	    ,#{blngNm}			</if>
+	<if test=" telNo != null and telNo != '' ">
+	    ,#{telNo}			</if>
+	<if test=" mtelNo != null and mtelNo != '' ">
+	    ,#{mtelNo}			</if>
+	<if test=" mailAddr != null and mailAddr != '' ">
+	    ,#{mailAddr}		</if>
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')	  
+	    ,''
+	    ,#{useYn}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}	
+	)
+	</insert>
+	
+	<update id="updateTcUserBase" parameterType="java.util.Map">
+	UPDATE TC_USER_BASE
+	SET    UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24MMIS')
+	      ,UPT_USER_ID = #{uptUserId}
+	      ,USER_ID = #{userId}
+    	<if test="userNm     != null and userNm     != ''">,USER_NM      = #{userNm}		</if>
+    	<if test="blngNm     != null and blngNm     != ''">,BLNG_NM      = #{blngNm}		</if>
+    	<if test="telNo      != null and telNo      != ''">,TEL_NO       = #{telNo}				    </if>
+    	<if test="mtelNo     != null and mtelNo     != ''">,MTEL_NO      = #{mtelNo}	    	</if>
+    	<if test="mailAddr   != null and mailAddr   != ''">,MAIL_ADDR    = #{mailAddr}		</if>
+    	<if test="ertrDt     != null and ertrDt     != ''">,ERTR_DT      = #{ertrDt}			        </if>
+    	<if test="relsDt     != null and relsDt     != ''">,RELS_DT      = #{relsDt}			        </if>
+    	<if test="useYn      != null and useYn      != ''">,USE_YN       = #{useYn}		     	</if>
+	     WHERE  1 = 1
+	     AND      USER_ID = #{userId}
+	</update>
+	
+	<update id="updateUserPw" parameterType="java.util.Map">
+	UPDATE TC_USER_BASE
+	SET    USER_PW     = #{userPw}
+	      ,UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24MISS')
+	      ,UPT_USER_ID = #{uptUserId}
+	WHERE  USER_ID     = #{userId}
+	</update>
+	
+	<delete id="deleteTcUserBase" parameterType="java.util.Map">
+	DELETE
+	FROM   TC_USER_BASE
+	WHERE  USER_ID = #{userId}
+	</delete>
+	
+	<update id="updateAcdmProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+	
+	UPDATE TO_ACDM_BASE
+	SET    UPT_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM       = TO_CHAR(NOW(), 'HH24MMIS')
+	      ,UPT_USER_ID  = #{userId}
+	      ,PROF_IMG_NO  = #{fileNo}
+	WHERE  1 = 1
+	AND    ACDM_ID = #{userId}
+	
+	</update>
+	
+	<update id="updateLctrProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+	
+	UPDATE TO_LCTR_BASE
+	SET    UPT_DT       = DATE_FORMAT(NOW(), '%Y%m%d')
+	      ,UPT_TM       = DATE_FORMAT(NOW(), '%H%i%s')
+	      ,UPT_USER_ID  = #{userId}
+	      ,PROF_IMG_NO  = #{fileNo}
+	WHERE  1 = 1
+	AND    LCTR_ID = #{userId}
+	
+	</update>
+	
+	<update id="updateStdtProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
+	
+	UPDATE TO_STDT_BASE
+	SET    UPT_DT       = DATE_FORMAT(NOW(), '%Y%m%d')
+	      ,UPT_TM       = DATE_FORMAT(NOW(), '%H%i%s')
+	      ,UPT_USER_ID  = #{userId}
+	      ,PROF_IMG_NO  = #{fileNo}
+	WHERE  1 = 1
+	AND    STDT_ID = #{userId}
+	
+	</update>
+	
+</mapper>

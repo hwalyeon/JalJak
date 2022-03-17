@@ -1,0 +1,28 @@
+<div id="imageView">
+    <div class="modal fade" id="showImageView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow:auto;">
+        <div class="modal-dialog-wrap">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header ui-draggable-handle">
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title"></h4><h5>등록 이미지 보기</h5>
+                    </div>
+                    <div class="modal-body form-horizontal">
+                        <div class="ibox m-b-sm">
+                            <div class="form-group required">
+                                <a data-dismiss="modal"><img v-bind:src="imageUrl" onerror="this.src='/img/no_img_256x256.png';"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-center">
+                            <button type="button" data-dismiss="modal" value="닫기" class="btn btn-w-m btn-white"><span>닫기</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/plugins/vues/v-money.js}"></script>
+<script type="text/javascript" th:src="@{/js/common/imageView.js}"></script>

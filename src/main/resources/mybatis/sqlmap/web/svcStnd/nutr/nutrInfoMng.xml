@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.nutr.nutrInfoMng">
+
+    <!--영양소_정보_리스트 조회-->
+	<select id="searchNutrInfoList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      NUTR_CD
+	                    , NUTR_CD AS NUTR_CD_TEMP
+	   		            , NUTR_NM
+		                , NUTR_UNIT_CD
+		                , GFIX_DIV_CD
+		                , fn_getCdNm('GFIX_DIV_CD',GFIX_DIV_CD) AS GFIX_DIV_CD_NM
+                        , SORT_ORD
+                        , USE_YN
+                        , REG_DT
+                        , REG_TM
+                        , REG_USER_ID
+                        , UPT_DT
+                        , UPT_TM
+                        , UPT_USER_ID
+		FROM       TI_NUTR_INFO
+		WHERE     1 = 1
+		<if test=" nutrNm != null and nutrNm != '' ">
+		AND          NUTR_NM  LIKE CONCAT('%',#{nutrNm},'%')</if>
+		ORDER BY SORT_ORD
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	<!--영양소_코드_리스트 조회-->
+	<select id="searchNutrCdList" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT      NUTR_CD
+		                , NUTR_NM
+	    FROM        TI_NUTR_INFO
+       ORDER BY NUTR_CD
+	</select>
+	<!--행추가_행삭제 인서트-->
+	<insert id="insertTiNutrCdList" parameterType="java.util.Map">
+	INSERT INTO TI_NUTR_INFO
+	(
+	     NUTR_CD
+	    ,NUTR_NM
+	    ,NUTR_UNIT_CD
+	    ,GFIX_DIV_CD
+	    ,SORT_ORD
+	    ,USE_YN
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{nutrCd}
+	    ,#{nutrNm}
+	    ,#{nutrUnitCd}
+	    ,#{gfixDivCd}
+		,#{sortOrd}::NUMERIC
+	    ,#{useYn}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}
+	)
+	</insert>
+
+	<!--행추가_행삭제 업데이트-->
+	<update id="updateTiNutrCdList" parameterType="java.util.Map">
+		UPDATE TI_NUTR_INFO
+		SET         UPT_DT          = TO_CHAR(NOW(), 'YYYYMMDD')
+	  	             , UPT_TM          = TO_CHAR(NOW(), 'HH24MISS')
+		             , UPT_USER_ID = #{uptUserId}
+		<if test="nutrCd != null and nutrCd != ''">,NUTR_CD = #{nutrCd}	</if>
+		<if test="nutrNm != null and nutrNm != ''">,NUTR_NM = #{nutrNm}	</if>
+		<if test="nutrUnitCd != null and nutrUnitCd != ''">,NUTR_UNIT_CD = #{nutrUnitCd}	</if>
+		<if test="gfixDivCd != null and gfixDivCd != ''">,GFIX_DIV_CD = #{gfixDivCd}	</if>
+		<if test="sortOrd != null and sortOrd != ''">,SORT_ORD = #{sortOrd}::NUMERIC	</if>
+		<if test="useYn != null and useYn != ''">,USE_YN = #{useYn}	</if>
+		WHERE  NUTR_CD = #{nutrCdTemp}
+	</update>
+
+	<!--행추가_행삭제_삭제-->
+	<delete id="deleteTiNutrCdList" parameterType="java.util.Map">
+	DELETE
+	FROM     TI_NUTR_INFO
+	WHERE  NUTR_CD = #{nutrCd}
+	</delete>
+
+	<select id="searchNutrCodeList" resultType="MybatisMap">
+		SELECT      NUTR_CD
+		          , NUTR_NM
+		FROM       TI_NUTR_INFO
+		WHERE     1 = 1
+		AND    USE_YN = 'Y'
+		ORDER BY SORT_ORD
+	</select>
+
+	<select id="searchNutrStatStndInfoList" resultType="MybatisMap">
+		select
+		     'U' as crud
+			,tni.nutr_cd
+			,tni.nutr_nm
+			,tnss.nutr_stat_cd
+			,fn_getcdnm('NUTR_STAT_CD',tnss.nutr_stat_cd) as nutr_stat_nm
+			,tnss.nutr_rmrk
+		from ti_nutr_info tni
+		inner join  ti_nutr_stat_stnd tnss
+		on tni.nutr_cd = tnss.nutr_cd
+		where tni.nutr_cd = #{nutrCd}
+		<if test="nutrStatCd != null and nutrStatCd != '' ">
+			and tnss.nutr_stat_cd = #{nutrStatCd}
+		</if>
+		order by tni.nutr_cd, tnss.nutr_stat_cd
+	</select>
+
+	<insert id="insertTiNutrStatStnd"  parameterType="java.util.Map">
+		/* Generated SQL SQL ID : ti_nutr_stat_stnd.insert */
+		INSERT INTO ti_nutr_stat_stnd
+		(
+		      nutr_cd /* nutr_cd 영양소_코드 character varying(20) */
+		     ,nutr_stat_cd /* nutr_stat_cd 영양섭취_상태_코드 character varying(4000) */
+		     ,nutr_rmrk /* nutr_rmrk 영양섭취_비고 character varying(4000) */
+		     ,reg_dt /* reg_dt 등록_일자 character(8) */
+		     ,reg_tm /* reg_tm 등록_시각 character(6) */
+		     ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+		     ,upt_dt /* upt_dt 수정_일자 character(8) */
+		     ,upt_tm /* upt_tm 수정_시각 character(6) */
+		     ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+		)
+		VALUES
+		(
+		      #{nutrCd} /* nutr_cd 영양소_코드 character varying(20) */
+		     ,#{nutrStatCd} /* nutr_stat_cd 영양섭취_상태_코드 character varying(4000) */
+			 ,#{nutrRmrk} /* nutr_rmrk 영양섭취_비고 character varying(4000) */
+		     ,TO_CHAR(NOW(), 'YYYYMMDD') /* reg_dt 등록_일자 character(8) */
+		     ,TO_CHAR(NOW(), 'HH24MISS') /* reg_tm 등록_시각 character(6) */
+		     ,#{regUserId} /* reg_user_id 등록_사용자_ID character varying(20) */
+		     ,TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+		     ,TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+		     ,#{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+		)
+	</insert>
+
+	<update id="updateTiNutrStatStnd" parameterType="java.util.Map">
+		/* Generated SQL SQL ID : ti_nutr_stat_stnd.update */
+		UPDATE ti_nutr_stat_stnd
+		SET nutr_rmrk = #{nutrRmrk} /* nutr_rmrk 영양섭취_비고 character varying(4000) */
+           ,upt_dt = TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+		   ,upt_tm = TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+		   ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+		WHERE  1 = 1
+		AND    nutr_cd = #{nutrCd} /* nutr_cd 영양소_코드 character varying(20) */
+		AND    nutr_stat_cd = #{nutrStatCd} /* nutr_stat_cd 영양섭취_상태_코드 character varying(4000) */
+	</update>
+
+	<delete id="deleteTiNutrStatStnd" parameterType="java.util.Map">
+		/* Generated SQL SQL ID : ti_nutr_stat_stnd.delete */
+		DELETE FROM ti_nutr_stat_stnd
+		WHERE  1 = 1
+		AND    nutr_cd = #{nutrCd} /* nutr_cd 영양소_코드 character varying(20) */
+		AND    nutr_stat_cd = #{nutrStatCd} /* nutr_stat_cd 영양섭취_상태_코드 character varying(4000) */
+	</delete>
+
+	<select id="searchNutrEatStndInfoList" resultType="MybatisMap">
+		select
+			 'U' as crud
+			,tni.nutr_cd
+			,tni.nutr_nm
+			,tdnes.sex_cd
+			,fn_getcdnm('SEX_CD',tdnes.sex_cd) as sex_nm
+			,tdnes.age_ycnt
+			,tdnes.dd_rcmd_qty
+			,tdnes.dd_need_qty
+		from ti_nutr_info tni
+		inner join ti_dd_nutr_eat_stnd tdnes
+		on tni.nutr_cd = tdnes.nutr_cd
+		where tni.nutr_cd = #{nutrCd}
+		order by tni.nutr_cd , tdnes.sex_cd , tdnes.age_ycnt
+	</select>
+
+
+	<insert id="insertTiNutrEatStnd"  parameterType="java.util.Map">
+		/* nutrInfoMng.insertTiNutrEatStnd */
+		INSERT INTO ti_dd_nutr_eat_stnd
+		(
+			sex_cd /* sex_cd 성별_코드  */
+		   ,age_ycnt /* age_ycnt 나이_년수  */
+		   ,nutr_cd /* nutr_cd 영양소_코드  */
+		   ,dd_rcmd_qty /* dd_rcmd_qty 일_권장_량  */
+		   ,dd_need_qty /* dd_need_qty 일_필요_량  */
+           ,reg_dt /* reg_dt 등록_일자  */
+		   ,reg_tm /* reg_tm 등록_시각  */
+		   ,reg_user_id /* reg_user_id 등록_사용자_ID  */
+		   ,upt_dt /* upt_dt 수정_일자  */
+		   ,upt_tm /* upt_tm 수정_시각  */
+		   ,upt_user_id /* upt_user_id 수정_사용자_ID  */
+		)
+		VALUES
+		(
+		    #{sexCd} /* sex_cd 성별_코드  */
+		   ,#{ageYcnt}::NUMERIC /* age_ycnt 나이_년수  */
+		   ,#{nutrCd} /* nutr_cd 영양소_코드  */
+		   ,#{ddRcmdQty}::NUMERIC /* dd_rcmd_qty 일_권장_량  */
+		   ,#{ddRcmdQty}::NUMERIC /* dd_need_qty 일_필요_량  */
+		   ,TO_CHAR(NOW(), 'YYYYMMDD') /* reg_dt 등록_일자  */
+		   ,TO_CHAR(NOW(), 'HH24MISS') /* reg_tm 등록_시각  */
+		   ,#{regUserId} /* reg_user_id 등록_사용자_ID  */
+		   ,TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자  */
+		   ,TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각  */
+		   ,#{uptUserId} /* upt_user_id 수정_사용자_ID  */
+		)
+	</insert>
+
+	<update id="updateTiNutrEatStnd" parameterType="java.util.Map">
+		/* nutrInfoMng.updateTiNutrEatStnd */
+		UPDATE ti_dd_nutr_eat_stnd
+		SET dd_rcmd_qty = #{ddRcmdQty}::NUMERIC /* dd_rcmd_qty 일_권장_량  */
+		   ,dd_need_qty = #{ddRcmdQty}::NUMERIC /* dd_rcmd_qty 일_권장_량  */
+           ,upt_dt = TO_CHAR(NOW(), 'YYYYMMDD') /* upt_dt 수정_일자 character(8) */
+		   ,upt_tm = TO_CHAR(NOW(), 'HH24MISS') /* upt_tm 수정_시각 character(6) */
+		   ,upt_user_id = #{uptUserId} /* upt_user_id 수정_사용자_ID character varying(20) */
+		WHERE  1 = 1
+		AND    sex_cd = #{sexCd} /* nutr_stat_cd 성별_코드 */
+		AND    age_ycnt = #{ageYcnt}::NUMERIC /* nutr_stat_cd 나이_년수  */
+		AND    nutr_cd = #{nutrCd} /* nutr_cd 영양소_코드  */
+	</update>
+
+</mapper>

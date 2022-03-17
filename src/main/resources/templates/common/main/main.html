@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+
+    <style type="text/css">
+        .pad-left-5 {
+            padding-left: 5px;
+        }
+        .pad-right-5 {
+            padding-right: 5px;
+        }
+        .txt_line {
+            width: 370px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .txt_multiline {
+            display: -webkit-box;
+            margin-top:1px;
+            max-height:60px;
+            overflow:hidden;
+            vertical-align:top;
+            text-overflow: ellipsis;
+            word-break:break-all;
+            -webkit-box-orient:vertical;
+            -webkit-line-clamp:3;
+        }
+        .txt_height {
+            height:91px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrapper wrapper-content" id="main">
+        <div class="ibox m-b-sm float-e-margins">
+            <div class="ibox-content">
+                <div class="text-center m-t-lg">
+                    <h1>
+                        Welcome
+                    </h1>
+                    <small>
+                        It is an application skeleton for a typical untactor site.
+                        Good lock!!
+                    </small><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Script Area Start //-->
+<section layout:fragment="user_script">
+    <script th:inline="javascript" type="text/javascript">
+        // 동적 또는 초기 로딩 시에 화면상에 message 를 적용시켜야 할 경우 구현. Overrid 시 구현.
+
+        var main = new Vue({
+            el : "#main",
+            data : {
+                vocList : [],
+                bulletinList : [],
+                faqList : []
+            },
+            methods : {
+                            
+            },
+            updated : function() {
+                // console.log("updated");
+            },
+            computed : function() {
+                // console.log("computed");
+            },
+            mounted : function() {
+                var that = this;
+            }
+        });
+
+
+    </script>
+</section>
+</body>
+</html>

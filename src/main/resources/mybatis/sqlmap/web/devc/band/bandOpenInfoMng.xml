@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="devc.band.bandOpenInfoMng">
+
+	<!--밴드/개통정보_리스트 조회 -->
+	<select id="selectBandOpenInfoList"
+		parameterType="java.util.Map" resultType="MybatisMap">
+			with BAND_YTYP_WITH as
+	      (
+	      select TBI.BAND_ID
+	      , case when cast(SUBSTRING(TBI.BAND_ID, 1,1) AS INTEGER) <![CDATA[<]]> 2 
+	      then '203'|| SUBSTRING(TBI.BAND_ID, 1,1) || SUBSTRING(TBI.BAND_ID, 2,2) else '202'|| SUBSTRING(TBI.BAND_ID, 1,1) || SUBSTRING(TBI.BAND_ID, 2,2) end AS BAND_YTYP
+	      , case when TBI.API_URL_DTTM is not null then 'Y' else 'N' end as API_URL_YN --URL제공여부 
+	      from TS_BAND_INFO as TBI
+	      )
+	      select TBI.BAND_ID as BAND_ID_TEMP
+	      , TBI.UPT_DT
+	      , TBI.REG_DT
+	      , TBI.BAND_ID
+	      , T1.BAND_YTYP
+	      , TBI.BAND_MDL_CD
+	      , TSB.STDT_NO --학생번호
+	      , TBI.TEL_NO
+	      , TSB.STDT_NM --학생명
+	      , TGB_SUB.GUAR_NO  as GUAR_NO_SUB--보호자_번호
+	      , TGB.GUAR_NO
+	      , TBI.BAND_OPEN_STAT_CD
+	      , fn_getCdNm('BAND_OPEN_STAT_CD',band_open_stat_cd) as BAND_OPEN_STAT_CD_NM
+	      , TGB.GUAR_NM --보호자_명
+	      , coalesce (TGB_SUB.GUAR_NM , TMSB.spos_nm ) as GUAR_NM_SUB--보호자_명
+	      , TBI.GUAR_TEL_NO_1
+	      , TBI.GUAR_TEL_NO_2
+	      , TBI.OPEN_GRAM_NO
+	      , TBI.BLTH_ID
+	      , TBI.API_URL_GRAM_NO --API URL 제공여부
+	      , TBI.API_URL_DTTM
+	      , T1.API_URL_YN
+	      , TBI.REG_DT
+	      , TBI.REG_TM
+	      , TBI.REG_USER_ID
+	      , TBI.UPT_DT
+	      , TBI.UPT_TM
+	      , TBI.UPT_USER_ID
+	      from TS_BAND_INFO AS TBI
+	      left outer join TM_STDT_BASE AS TSB
+	      on TBI.BAND_ID = TSB.BAND_ID
+	      left outer join TM_GUAR_BASE AS TGB
+	      on TBI.GUAR_TEL_NO_1 = TGB.GUAR_TEL_NO
+		  left outer join TM_GUAR_BASE AS TGB_SUB
+		  on TBI.GUAR_TEL_NO_2 = TGB.GUAR_TEL_NO
+	      left outer join TM_SPOS_BASE AS TMSB
+	      on  TGB.SPOS_NO = TMSB.SPOS_NO
+	      left outer join BAND_YTYP_WITH AS T1
+	      on TBI.BAND_ID = T1.BAND_ID
+	      where 1=1
+		<if test="uptDtFr != null and uptDtTo != null and uptDtFr !='' and uptDtTo !='' ">
+			and TBI.UPT_DT between #{uptDtFr} and #{uptDtTo}</if>
+		<if test=" stdtNm != null and stdtNm !='' ">
+			and TSB.STDT_NM like CONCAT('%',#{stdtNm},'%')</if>
+		<if test="bandTelNo != null and bandTelNo !='' ">
+			and TBI.TEL_NO = #{bandTelNo}</if>
+		<if test="bandYtypCd != null and bandYtypCd !='' ">
+			and T1.BAND_YTYP like CONCAT('%',#{bandYtypCd},'%')</if>
+		<if test="bandId != null and bandId !='' ">
+			and TBI.BAND_ID like CONCAT('%',#{bandId},'%')</if>
+		<if test="bandOpenStatCd != null and bandOpenStatCd !='' ">
+			and TBI.BAND_OPEN_STAT_CD = #{bandOpenStatCd}</if>
+		<if test="guarTelNo != null and guarTelNo !='' ">
+		    and TBI.GUAR_TEL_NO_1 = #{guarTelNo} or TBI.GUAR_TEL_NO_2 = #{guarTelNo}</if>
+		<if test="guarNm != null and guarNm !='' ">
+		    and coalesce (TGB_SUB.GUAR_NM , TMSB.spos_nm ) like CONCAT('%',#{guarNm},'%') or TGB.GUAR_NM like CONCAT ('%',#{guarNm},'%')</if>
+		ORDER BY  TBI.UPT_DT , TBI.REG_DT , TBI.BAND_ID
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+
+
+	<insert id="insertTsBandInfoList" parameterType="java.util.Map">
+		INSERT INTO TS_BAND_INFO
+		(
+		BAND_ID
+		, BAND_MDL_CD
+		, TEL_NO
+		, BLTH_ID
+		, GUAR_TEL_NO_1
+		, GUAR_TEL_NO_2
+		, API_URL_GRAM_NO
+		, API_URL_DTTM
+		, OPEN_GRAM_NO
+		, BAND_OPEN_STAT_CD
+		, REG_DT
+		, REG_TM
+		, REG_USER_ID
+		, UPT_DT
+		, UPT_TM
+		, UPT_USER_ID
+		)
+		VALUES
+		(
+		#{bandId}
+		, #{bandMdlCd}
+		, #{telNo}
+		, #{blthId}
+		, #{guarTelNo1}
+		, #{guarTelNo2}
+		, #{apiUrlGramNo}
+		, #{apiUrlDttm}
+		, #{openGramNo}
+		, #{bandOpenStatCd}
+		, TO_CHAR(NOW(), 'YYYYMMDD')
+		, TO_CHAR(NOW(), 'HH24MISS')
+		, #{regUserId}
+		, TO_CHAR(NOW(), 'YYYYMMDD')
+		, TO_CHAR(NOW(), 'HH24MISS')
+		, #{uptUserId}
+		)
+	</insert>
+
+	<update id="updateTsBandInfoList" parameterType="java.util.Map">
+		UPDATE TS_BAND_INFO
+		SET UPT_DT = TO_CHAR(NOW(), 'YYYYMMDD')
+		, UPT_TM = TO_CHAR(NOW(),'HH24MISS')
+		, UPT_USER_ID = #{uptUserId}
+		<if test="telNo != null and telNo !=''"> ,TEL_NO = #{telNo}</if>
+		<if test="guarTelNo1 != null and guarTelNo1 != ''"> ,GUAR_TEL_NO_1 = #{guarTelNo1}</if>
+		<if test="guarTelNo2 != null and guarTelNo2 != ''"> ,GUAR_TEL_NO_2 = #{guarTelNo2}</if>
+		<if test="bandOpenStatCd != null and bandOpenStatCd != ''"> ,BAND_OPEN_STAT_CD = #{bandOpenStatCd}</if>
+		<if test="blthId != null and blthId != ''"> ,BLTH_ID = #{blthId}</if>
+		WHERE 1=1
+		AND BAND_ID = #{bandId}
+
+	</update>
+
+	<delete id="deleteTsBandInfoList" parameterType="java.util.Map">
+		DELETE
+		FROM TS_BAND_INFO
+		WHERE 1=1
+		AND BAND_ID = #{bandId}
+
+	</delete>
+	<!--밴드_ID_중복 조회 -->
+	<select id="selectBandId" parameterType="java.util.Map"
+		resultType="MybatisMap">
+		SELECT BAND_ID
+		FROM TS_BAND_INFO
+		WHERE 1=1
+		AND BAND_ID = #{bandId}
+	</select>
+
+	<!--밴드_ID_채번 -->
+	<select id="numberingBandId" parameterType="java.util.Map"
+		resultType="MybatisMap">
+		SELECT
+		#{bandYtypCd} || #{bandMdlCd}|| to_char(coalesce(cast(max(substring(band_id ,5,6))
+		AS INTEGER) , 0) + 1 , 'FM000000') as BAND_ID
+		FROM TS_BAND_INFO
+		WHERE SUBSTRING(BAND_ID, 1, 4) = #{bandYtypCd}||#{bandMdlCd}
+
+	</select>
+	<!--밴드_정보_상세보기 -->
+	<select id="selectBandOpenInfo" parameterType="java.util.Map" resultType="MybatisMap">
+		with BAND_YTYP_WITH as
+	      (
+	      select TBI.BAND_ID
+	      , case when cast(SUBSTRING(TBI.BAND_ID, 1,1) AS INTEGER) <![CDATA[<]]> 2 
+	      then '203'|| SUBSTRING(TBI.BAND_ID, 1,1) || SUBSTRING(TBI.BAND_ID, 2,2) else '202'|| SUBSTRING(TBI.BAND_ID, 1,1) || SUBSTRING(TBI.BAND_ID, 2,2) end AS BAND_YTYP
+	      , case when TBI.API_URL_DTTM is not null then 'Y' else 'N' end as API_URL_YN --URL제공여부 
+	      from TS_BAND_INFO as TBI
+	      )
+	      select TBI.BAND_ID as
+	        BAND_ID_TEMP
+	      , TBI.UPT_DT
+	      , TBI.REG_DT
+	      , TBI.BAND_ID
+	      , T1.BAND_YTYP
+	      , TBI.BAND_MDL_CD
+	      , TSB.STDT_NO --학생번호
+	      , TBI.TEL_NO
+	      , TSB.STDT_NM --학생명
+	      , coalesce (TGB_SUB.GUAR_NO , TMSB.spos_no ) as GUAR_NO_SUB--보호자_명
+	      , TGB.GUAR_NO
+	      , TBI.BAND_OPEN_STAT_CD
+	      , fn_getCdNm('BAND_OPEN_STAT_CD',band_open_stat_cd) as BAND_OPEN_STAT_CD_NM
+	      , TGB.GUAR_NM --보호자_명
+	      , coalesce (TGB_SUB.GUAR_NM , TMSB.spos_nm ) as GUAR_NM_SUB--보호자_명
+	      , TBI.GUAR_TEL_NO_1
+	      , TBI.GUAR_TEL_NO_2
+	      , TBI.OPEN_GRAM_NO
+	      , TBI.BLTH_ID
+	      , TBI.API_URL_GRAM_NO --API URL 제공여부
+	      , TBI.API_URL_DTTM
+	      , T1.API_URL_YN
+	      , TBI.REG_DT
+	      , TBI.REG_TM
+	      , TBI.REG_USER_ID
+	      , TBI.UPT_DT
+	      , TBI.UPT_TM
+	      , TBI.UPT_USER_ID
+	      from TS_BAND_INFO AS TBI
+	      left outer join TM_STDT_BASE AS TSB
+	      on TBI.BAND_ID = TSB.BAND_ID
+	      left outer join TM_GUAR_BASE AS TGB
+	      on TSB.GUAR_NO_1 = TGB.GUAR_NO 
+	      left outer join TM_GUAR_BASE AS TGB_SUB
+	      on  TSB.GUAR_NO_2 = TGB_SUB.GUAR_NO
+	      left outer join TM_SPOS_BASE AS TMSB
+	      on  TGB.SPOS_NO = TMSB.SPOS_NO
+	      left outer join BAND_YTYP_WITH AS T1
+	      on TBI.BAND_ID = T1.BAND_ID
+	      where 1=1
+		and TBI.BAND_ID = #{bandId}
+
+	</select>
+
+
+</mapper>

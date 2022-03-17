@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="stdtInfoDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 850px; height: 630px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>성장판정기준 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-2" />
+		                        <col class="col-xs-10" />
+		                    </colgroup>
+		                    <tbody>
+			                    <tr>
+			                        <th scope="row">성장판정코드</th>
+			                        <td>
+										<select id="growJudgCd" name="growJudgCd" class="form-control" v-model="growJudgStndInfo.growJudgCd" :disabled="growJudgStndInfo.crud=='U'">
+											<option value="">선택</option>
+											<option v-for="item in code.mentGrowJudgCdList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+										</select>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">성장지수_FR</th>
+			                        <td>
+			                        	<input type="number" id="gidxFr" name="gidxFr" v-model="growJudgStndInfo.gidxFr" class="form-control" maxlength="10"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">성장지수_TO</th>
+			                        <td>
+			                        	<input type="number" id="gidxTo" name="gidxTo" v-model="growJudgStndInfo.gidxTo" class="form-control" maxlength="10"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">요약내용</th>
+			                        <td>
+										<div class="mg_top_10">
+											<summer-note
+													v-model="growJudgStndInfo.smryCntn"
+													ref="smryCntn"
+													:options="{height:100, notUseVideo:true, maxImageWidth: 1280}"/>
+										</div>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">상세내용</th>
+			                        <td>
+										<textarea id="specCntn" name="specCntn" v-model="growJudgStndInfo.specCntn" class="form-control"></textarea>
+			                        </td>
+			                    </tr>
+							</tbody>
+		                </table>
+            		</div>
+            	</div>
+            	<div class="modal-footer" style="">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveInfo">저장</button>
+						</div>
+						<div v-if="growJudgStndInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteInfo">삭제</button>
+						</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>			
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="menuDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 700px; height: 620px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>메뉴정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row mg_none">
+						<div class="pd_left_none pd_right_none col-xs-6 float_left">
+							<div class="ibox-content border-style_none">
+								<table class="table table-bordered table_view">
+				                    <colgroup>
+				                        <col class="col-xs-4" />
+				                        <col class="col-xs-8" />
+				                    </colgroup>
+				                    <tbody>
+					                    <tr>
+					                        <th scope="row">상위 메뉴</th>
+					                        <td>
+					                        	<select id="upprMenuNo" name="upprMenuNo" class="form-control" v-model="menuInfo.upprMenuNo" v-on:change="changeUpprMenuNo" :disabled="menuInfo.crud=='U'">
+						                        	<option value="" readonly="menuInfo.crud=='U'">선택</option>
+						                            <option v-for="item in code.upprMenuList" v-bind:value="item.cdVal" v-text="item.cdNm" :disabled="menuInfo.crud=='U'"></option>
+						                        </select>
+					                        </td>
+					                    </tr>
+										<tr>
+											<th scope="row">중 메뉴</th>
+											<td>
+												<select id="subUpprMenuNo" name="subUpprMenuNo" class="form-control" v-model="menuInfo.subUpprMenuNo" v-on:change="changeSubUpprMenuNo" :disabled="menuInfo.crud=='U'">
+													<option value="" readonly="menuInfo.crud=='U'">선택</option>
+													<option v-for="item in code.subUpprMenuList" v-bind:value="item.cdVal" v-text="item.cdNm" :disabled="menuInfo.crud=='U'"></option>
+												</select>
+											</td>
+										</tr>
+					                    <tr>
+					                        <th scope="row">메뉴번호</th>
+					                        <td>
+					                            <input type="text" name="menuNo" v-model="menuInfo.menuNo" class="form-control"  :readonly="menuInfo.crud == 'U'" maxlength="200"/>					
+					                            <h2>{{menuInfo.readonly}}</h2>                            
+					                        </td>
+					                    </tr>
+					                    <tr>
+					                        <th scope="row">메뉴명</th>
+					                        <td>
+					                        	<input type="text" name="menuNm" v-model="menuInfo.menuNm" class="form-control" maxlength="100"/>
+					                        </td>
+					                    </tr>
+					                    <tr>
+					                        <th scope="row">메뉴 경로</th>
+					                        <td>
+					                        	<input type="text" id="menuUrl" name="menuUrl" v-model="menuInfo.menuUrl" class="form-control" maxlength="200"/>
+					                        </td>
+					                    </tr>
+					                    <tr>
+					                    	<th scope="row">메뉴아이콘</th>
+					                        <td>
+					                        	<input type="text" id="iconInfo" name="iconInfo" v-model="menuInfo.iconInfo" class="form-control" maxelngth="40"/>
+					                        </td>
+					                    </tr>
+					                    <tr>
+					                    	<th scope="row">사용여부</th>
+					                        <td>
+					                    		<select id="useYn" name="useYn" class="form-control" v-model="menuInfo.useYn">
+					                    			<option value="" disabled>선택</option>
+						                            <option value="Y">Y</option>
+						                            <option value="N">N</option>
+						                        </select>
+					                        </td>
+					                    </tr>
+					                    <tr>
+					                    	<th scope="row">메뉴 설명</th>
+					                        <td>
+					                        	<input type="text" id="menuDesc" name="menuDesc" v-model="menuInfo.menuDesc" class="form-control" maxlength="1000"/>
+					                        </td>
+					                    </tr>
+									</tbody>
+				                </table>
+		            		</div>
+		            	</div>
+	           			<div class="pd_left_none pd_right_none col-xs-6 float_right">
+		            		<div class="ibox-content border-style_none">
+		            			<table class="table table-bordered table_view">
+									<colgroup>
+										<col class="width_per_30" />
+										<col class="width_per_70" />
+									</colgroup>
+									<tbody>
+										<tr>
+											<th scope="row">역할코드</th>
+											<th scope="row">역할명</th>
+										</tr>
+										<tr v-for="(role, index) in menuInfo.roleList">
+											<td>
+												<span name="roleCd" v-text="role.roleCd"></span>
+											</td>
+											<td>
+												<select v-model="role.roleCd" v-on:change="setRoleCd(index)" class="form-control width_per_80 float_left">
+										            <option v-for="item in code.roleList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+										        </select>
+										        <input type="button" v-show="!!role.roleCd" class="btn btn-outline btn-primary form-control width_40 float_right" v-on:click="delRoleCd(index)" value="X" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+			            	</div>
+			            </div>
+		            </div>
+	            </div>
+            	<div class="modal-footer">
+            		<div class="ibox">
+						<div class="text-center">
+							<div class="disp_in_block width_per_20 mg_right_15">
+								<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="saveMenu">저장</button>
+							</div>
+							<div v-if="menuInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+								<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteMenu">삭제</button>
+							</div>
+							<div class="disp_in_block width_per_20">
+								<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

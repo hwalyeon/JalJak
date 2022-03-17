@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="common/layout/registLayout">
+<head>
+<meta charset="UTF-8">
+<title>##로그인##</title>
+
+	<script th:inline="javascript" type="text/javascript">
+		function parentReload()
+		{
+	   		if ( parent && parent.frames.length > 0 )
+	   		{
+				parent.location.reload();
+			}
+
+            if (opener)
+            {
+                opener.location.reload();
+                self.close();
+            }
+	   	}
+
+		$(document).ready(function() {
+	    	parentReload();
+	    });
+
+        function login()
+        {
+        	if ( WebUtil.isNull($('#userId').val()) ) {
+        		alert("아이디를 입력하세요");
+        		$('#userId').focus();
+        		return false;
+        	}
+        	
+        	if ( WebUtil.isNull($('#userPw').val()) ) {
+        		alert("비밀번호를 입력하세요");
+        		$('#userPw').focus();
+        		return false;
+        	}
+        	        	
+			var params = {
+				userId : $('#userId').val(),
+				userPw : $('#userPw').val()
+			}
+
+            $.ajax({
+                url: '/v1/auth/login.ab',
+                method: "POST",
+                data: JSON.stringify(params),
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                success: function(response) {
+                	if ( response.rtnCd == 'ECOM007' ) {
+                		alert(response.rtnMsg);
+                	} else {
+                		
+                		SessionUtil.setUserInfo(response.rtnData);
+                		
+                    	window.location.href="/";
+                	}
+                },
+                error: function(xhr) {
+                	console.log(xhr);
+                	alert(xhr.rtnMsg);
+                }
+            });
+        }
+
+        function ip_local()
+        {
+            var ip = [];
+            window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || false;
+
+            alert(window.RTCPeerConnection);
+
+            try {
+                var network = new ActiveXObject('WScript.Network');
+                // Show a pop up if it works
+                alert(network.UserDomain);
+            }
+            catch (e) { alert(e.toString()); }
+
+            if (window.RTCPeerConnection) {
+                //ip = [];
+                var pc = new RTCPeerConnection({iceServers:[]}), noop = function(){};
+                pc.createDataChannel('');
+                pc.createOffer(pc.setLocalDescription.bind(pc), noop);
+
+                pc.onicecandidate = function(event) {
+                    if (event && event.candidate && event.candidate.candidate) {
+                        var s = event.candidate.candidate.split('\n');
+                        ip.push(s[0].split(' ')[4]);
+                    }
+                }
+            }
+
+            return ip;
+        }
+
+		/*]]>*/
+	</script>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+<div class="middle-box text-center loginscreen animated fadeInDown">
+	<div class="login-form">
+		<div class="" style="padding-top: 57px; padding-left: 260px;">
+			<input type="text" id="userId" class="form-control" style="width: 220px; height:32px;" placeholder="ID를 입력해주세요" required autofocus onKeypress="javascript:if(event.keyCode==13) {login()}">
+		</div>
+        <div class="" style="padding-top: 4px; padding-left: 260px;">
+        	<input type="password" id="userPw" class="form-control" style="width: 220px; height:32px;" placeholder="비밀번호를 입력해주세요" required onKeypress="javascript:if(event.keyCode==13) {login()}">
+		</div>
+		<input type="button" class="btn btn-primary block m-b" style="font-size: 15px; width: 496px;" value="Login" onClick="login()">
+	</div>
+</div>
+</div>
+	<section layout:fragment="user_script"></section>
+</body>
+</html>

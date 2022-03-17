@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="set.menuMng">
+	
+	<select id="searchTcMenuBaseList" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT A.MENU_NO
+          ,A.MENU_NM
+          ,A.UPPR_MENU_NO
+          ,B.MENU_NM        AS UPPR_MENU_NM
+          ,A.MENU_URL
+          ,A.MENU_DESC
+          ,A.ICON_INFO
+          ,A.USE_YN
+          ,(select UPPR_MENU_NO from TC_MENU_BASE where menu_no = A.uppr_menu_no) as MAIN_UPPR_MENU_NO
+    FROM  TC_MENU_BASE A
+          INNER JOIN TC_MENU_BASE B
+          ON  B.MENU_NO = A.UPPR_MENU_NO
+    WHERE 1 = 1
+    <if test=" menuNo != null and menuNo != '' ">
+	AND   A.MENU_NO = #{menuNo}		</if>
+	<if test=" upprMenuNo != null and upprMenuNo != '' ">
+	AND   A.UPPR_MENU_NO = #{upprMenuNo}		</if>
+	<if test=" menuNm != null and menuNm != '' ">
+	AND   A.MENU_NM LIKE CONCAT('%', #{menuNm}, '%')	</if>
+	ORDER BY A.MENU_NO
+	<if test=' paging == "Y" '>
+    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+	
+	<select id="searchUpprMenuList" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT B.MENU_NO
+	      ,B.MENU_NM
+	      ,B.MENU_URL
+	FROM   (
+	           SELECT DISTINCT UPPR_MENU_NO AS MENU_NO
+	           FROM   TC_MENU_BASE A
+	           WHERE  1 = 1
+	           AND    UPPR_MENU_NO IS NOT NULL
+	           AND    UPPR_MENU_NO != ''
+	       ) A
+	       INNER JOIN TC_MENU_BASE B
+	       ON B.MENU_NO = A.MENU_NO
+			<if test=" upprMenuNo != null and upprMenuNo != '' ">
+				AND   B.UPPR_MENU_NO = #{upprMenuNo}
+			</if>
+	ORDER BY A.MENU_NO
+
+	</select>
+	
+	
+	<insert id="insertTcMenuBase" parameterType="java.util.Map">
+	
+	INSERT INTO TC_MENU_BASE
+	(
+	     MENU_NO
+	    ,UPPR_MENU_NO
+	    ,MENU_URL
+	    ,MENU_NM
+	    ,MENU_DESC
+	    ,ICON_INFO
+	    ,USE_YN
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{menuNo}
+	    ,#{upprMenuNo}
+	    ,#{menuUrl}
+	    ,#{menuNm}
+	    ,#{menuDesc}
+	    ,#{iconInfo}
+	    ,#{useYn}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}	
+	)
+	
+	</insert>
+	
+	<update id="updateTcMenuBase" parameterType="java.util.Map">
+	
+	UPDATE TC_MENU_BASE
+	SET    UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24MISS')
+	      ,UPT_USER_ID = #{uptUserId}
+    	<if test="upprMenuNo   != null and upprMenuNo   != ''">,UPPR_MENU_NO   = #{upprMenuNo}		</if>
+    	<if test="menuUrl      != null and menuUrl      != ''">,MENU_URL       = #{menuUrl}			</if>
+    	<if test="menuNm       != null and menuNm       != ''">,MENU_NM        = #{menuNm}			</if>
+    	<if test="menuDesc     != null and menuDesc     != ''">,MENU_DESC      = #{menuDesc}		</if>
+    	<if test="iconInfo     != null and iconInfo     != ''">,ICON_INFO      = #{iconInfo}		</if>    	
+    	<if test="useYn        != null and useYn        != ''">,USE_YN         = #{useYn}			</if>    	
+	WHERE  MENU_NO = #{menuNo}
+	
+	</update>
+	
+	<delete id="deleteTcMenuBase" parameterType="java.util.Map">
+	
+	DELETE
+	FROM   TC_MENU_BASE
+	WHERE  MENU_NO = #{menuNo}
+	AND      MENU_NM = #{menuNm}
+	
+	</delete>
+	
+	<select id="searchTcMenuRoleList" parameterType="java.util.Map" resultType="MybatisMap">
+	
+	SELECT A.MENU_NO
+	      ,B.MENU_NM
+	      ,A.ROLE_CD
+	      ,C.ROLE_NM
+	FROM   TC_MENU_ROLE A
+	       INNER JOIN TC_MENU_BASE B
+	       ON  B.MENU_NO = A.MENU_NO
+	       INNER JOIN TC_ROLE_BASE C
+	       ON  C.ROLE_CD = A.ROLE_CD
+	WHERE  1 = 1
+    <if test=" menuNo != null and menuNo != '' ">
+	AND   A.MENU_NO = #{menuNo}		</if>
+	<if test=" roleCd != null and roleCd != '' ">
+	AND   A.ROLE_CD = #{roleCd}		</if>
+	ORDER BY A.MENU_NO
+	</select>
+	
+	<insert id="insertTcMenuRole" parameterType="java.util.Map">
+	INSERT INTO TC_MENU_ROLE
+	(
+	     MENU_NO
+	    ,ROLE_CD
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{menuNo}
+	    ,#{roleCd}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}	
+	)
+	</insert>
+	
+	<update id="updateTcMenuRole" parameterType="java.util.Map">
+	UPDATE TC_MENU_ROLE
+	SET    UPT_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
+	      ,UPT_TM         = TO_CHAR(NOW(), 'HH24MISS')
+	      ,UPT_USER_ID = #{uptUserId}
+    	<if test="roleCd != null and roleCd != ''">,ROLE_CD = #{roleCd}	</if>
+	WHERE  MENU_NO = #{menuNo}	
+	</update>
+	
+	<delete id="deleteTcMenuRole" parameterType="java.util.Map">
+	DELETE
+	FROM   TC_MENU_ROLE
+	WHERE  MENU_NO = #{menuNo}
+	</delete>
+		
+</mapper>

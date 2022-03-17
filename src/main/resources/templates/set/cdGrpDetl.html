@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:remove="tag">
+<div class="modal fade" id="cdGrpDetlPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog-wrap">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width: 500px; height: 350px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="ibox-title">
+						<i class="fa fa-title-bar"></i>
+						<h5>코드그룹 정보</h5>
+					</div>
+				</div>
+				<div class="modal-body">				
+					<div class="ibox-content border-style_none">
+						<table class="table table-bordered table_view">
+		                    <colgroup>
+		                        <col class="col-xs-4" />
+		                        <col class="col-xs-8" />
+		                    </colgroup>
+	                    	<tbody>
+			                    <tr>
+			                        <th scope="row">코드그룹</th>
+			                        <td>
+			                        	<input type="text"  id="cdGrp"  name="cdGrp" class="form-control"   v-model="cdGrpInfo.cdGrp"  :value="cdGrp.cdGrp"   v-on:input="cdGrp_typing"/>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">코드그룹명</th>
+			                        <td>
+			                        	<input type="text" id="cdGrpNm" name="cdGrpNm" class="form-control"  v-model="cdGrpInfo.cdGrpNm"  :value="cdGrp.cdGrpNm"   v-on:input="cdGrp_typing"  />
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <th scope="row">사용여부</th>
+			                        <td>
+			                        	<select id="useYn" name="useYn" class="form-control" v-model="cdGrpInfo.useYn">
+				                        	<option value="">선택</option>
+				                            <option v-for="item in code.useYnList" v-bind:value="item.cdVal" v-text="item.cdNm"></option>
+				                        </select>
+			                        </td>
+			                    </tr>
+			                </tbody>
+	                    </table>
+					</div>
+            	</div>
+            	
+            	<div class="modal-footer">
+					<div class="text-center">
+						<div class="disp_in_block width_per_20 mg_right_15">
+							<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="searchDupUserId">저장</button>
+						</div>
+						<div v-if="cdGrpInfo.crud=='U'" class="disp_in_block width_per_20 mg_right_15">
+								<button type="button" class="btn btn-outline btn-primary form-control" v-on:click="deleteCdGrp">삭제</button>
+							</div>
+						<div class="disp_in_block width_per_20">
+							<input type="button" data-dismiss="modal" class="form-control" th:value="닫기">
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

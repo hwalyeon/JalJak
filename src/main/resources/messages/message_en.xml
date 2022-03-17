@@ -1,0 +1,35 @@
+<!--?xml version="1.0" encoding="UTF-8" ?-->
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+    <comment>message properties EN</comment>
+    <entry key="testMsg">Test message {0} {1}</entry>
+    <entry key="SYSTEM.default">System error</entry>
+    
+    <!-- [VALID.xxx] Validation error message -->
+    <entry key="VALID.001">{0} is a required input value.</entry>
+    <entry key="VALID.002">{0} already exists.</entry>
+    <entry key="VALID.003">{0} does not exist.</entry>
+    <entry key="VALID.004">{0} is {1} that already exists.</entry>
+    <entry key="VALID.005">{0} is {1} which does not exist.</entry>
+    <entry key="VALID.006">{0} must be {2} than {1}.</entry>
+    <entry key="VALID.007">{0} cannot be {1}.</entry>
+    
+    <!-- [ECOM...] Common error message -->
+    <entry key="ECOM001">{0} is a required input value.</entry>
+    <entry key="ECOM002">{0} already exists.</entry>
+    <entry key="ECOM003">{0} does not exist.</entry>
+    <entry key="ECOM004">{0} is {1} that already exists.</entry>
+    <entry key="ECOM005">{0} is {1} which does not exist.</entry>
+    <entry key="ECOM006">{0} must be {2} than {1}.</entry>
+    
+    <!-- [ESYS...] System error message -->
+    
+    <!-- [EPRJ...] Project error message -->
+    
+    <!-- [EINF...] Infra error message -->
+    
+    <!-- [EDPL...] Deploy error message -->
+    
+    <!-- [EAPR...] Aproval error message -->
+</properties>

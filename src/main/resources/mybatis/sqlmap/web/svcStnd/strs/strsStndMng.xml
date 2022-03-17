@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="svcStnd.strs.strsStndMng">
+
+	<select id="searchStrsList" parameterType="java.util.Map" resultType="MybatisMap">
+	SELECT
+               ment_strs_stat_cd /* ment_strs_stat_cd 정신적_스트레스_상태_코드 character varying(20) */
+             , fn_getCdNm('STRS_STAT_CD', ment_strs_stat_cd) AS MENT_STRS_STAT_NM
+             , phys_strs_stat_cd /* phys_strs_stat_cd 신체적_스트레스_상태_코드 character varying(20) */
+             , fn_getCdNm('STRS_STAT_CD', phys_strs_stat_cd) AS PHYS_STRS_STAT_NM
+             , strs_judg_cntn /* strs_judg_cntn 스트레스_판정_내용 text */
+             , reg_dt /* reg_dt 등록_일자 character(8) */
+             , reg_tm /* reg_tm 등록_시각 character(6) */
+             , reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
+             , upt_dt /* upt_dt 수정_일자 character(8) */
+             , upt_tm /* upt_tm 수정_시각 character(6) */
+             , upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
+        FROM   ti_strs_stnd
+		WHERE
+		       ment_strs_stat_cd LIKE CONCAT (#{mentStrsStatCd}, '%') /* ment_strs_stat_cd 정신적_스트레스_상태_코드 character varying(20) */
+		AND    phys_strs_stat_cd LIKE CONCAT (#{physStrsStatCd}, '%') /* phys_strs_stat_cd 신체적_스트레스_상태_코드 character varying(20) */
+		order  by MENT_STRS_STAT_NM
+
+	</select>
+
+	<select id="selectTcCdSpec" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT B.CD_GRP
+		,B.CD_GRP_NM
+		,A.CD_VAL
+		,A.CD_NM
+		,A.CD_DESC
+		,A.FLTR_VAL_1
+		,A.FLTR_VAL_2
+		,A.FLTR_VAL_3
+		,A.SORT_ORD
+		,A.USE_YN
+		FROM   TC_CD_SPEC A
+		INNER JOIN TC_CD_GRP B
+		ON  B.CD_GRP = A.CD_GRP
+		WHERE 1 = 1
+		AND   A.CD_GRP = 'STRS_STAT_CD'
+		ORDER BY A.CD_GRP, A.SORT_ORD
+		<if test=' paging == "Y" '>
+			LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	</select>
+
+    <update id="updateTiStrsStnd" parameterType="java.util.Map">
+        UPDATE ti_strs_stnd
+        SET	REG_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
+		   ,REG_TM         = TO_CHAR(NOW(), 'HH24MISS')
+		   ,REG_USER_ID    = #{regUserId}
+           ,UPT_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
+           ,UPT_TM         = TO_CHAR(NOW(), 'HH24MISS')
+           ,UPT_USER_ID = #{uptUserId}
+        <if test="mentStrsStatCd != null and mentStrsStatCd != ''">,ment_strs_stat_cd = #{mentStrsStatCd}	</if>
+        <if test="physStrsStatCd != null and physStrsStatCd != ''">,phys_strs_stat_cd = #{physStrsStatCd}	</if>
+		<if test="strsJudgCntn != null and strsJudgCntn != ''">,strs_judg_cntn = #{strsJudgCntn}	</if>
+        WHERE  ment_strs_stat_cd = #{mentStrsStatCd}
+        AND    phys_strs_stat_cd  = #{physStrsStatCd}
+    </update>
+
+    <delete id="deleteTiStrsStnd" parameterType="java.util.Map">
+	DELETE
+	FROM   ti_strs_stnd
+	WHERE  ment_strs_stat_cd  = #{mentStrsStatCd}
+    AND    phys_strs_stat_cd  = #{physStrsStatCd}
+	</delete>
+
+    <insert id="insertTiStrsStnd" parameterType="java.util.Map">
+	INSERT INTO ti_strs_stnd
+	(
+	     ment_strs_stat_cd
+	    ,phys_strs_stat_cd
+	    ,strs_judg_cntn
+	    ,REG_DT
+	    ,REG_TM
+	    ,REG_USER_ID
+	    ,UPT_DT
+	    ,UPT_TM
+	    ,UPT_USER_ID
+	)
+	VALUES
+	(
+	     #{mentStrsStatCd}
+	    ,#{physStrsStatCd}
+	    ,#{strsJudgCntn}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{regUserId}
+	    ,TO_CHAR(NOW(), 'YYYYMMDD')
+	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,#{uptUserId}
+	)
+	</insert>
+
+	<select id="mentphysCd" parameterType="java.util.Map" resultType="MybatisMap">
+		SELECT  ment_strs_stat_cd
+	           ,fn_getcdnm('STRS_STAT_CD', ment_strs_stat_cd) as ment_strs_stat_nm
+	           ,phys_strs_stat_cd
+		       ,fn_getcdnm('STRS_STAT_CD', phys_strs_stat_cd) as phys_strs_stat_nm
+		FROM ti_strs_stnd
+		WHERE 1=1
+		AND ment_strs_stat_cd = #{mentStrsStatCd}
+		and phys_strs_stat_cd = #{physStrsStatCd}
+	</select>
+
+
+</mapper>
