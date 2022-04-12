@@ -50,29 +50,26 @@
 	</update>
 	
 	<update id="merge" >
-	with upsert as 
-	(
-		update tokn_key
-		set    key_val = #{keyVal}
-		where  user_id = #{userId}
-		and    clnt_id = #{clntId}
-		returning *
-	)
-	insert into tokn_key
-	(
-	     user_id
-	    ,clnt_id
-	    ,key_val
-	    ,reg_user_id
-	    ,upt_user_id
-	)
-	select  #{userId}
-	       ,#{clntId}
-	       ,#{keyVal}
-	       ,#{regUserId}
-	       ,#{uptUserId}
-    where not exists(select * from upsert)
-	
+	MERGE INTO tokn_key X
+ USING dual
+  ON (
+        x.user_id = #{userId}
+    AND x.clnt_id = #{clntId}
+  )
+  WHEN MATCHED THEN
+   UPDATE SET key_val = #{keyVal}
+  WHEN NOT MATCHED THEN
+  insert
+   (
+        user_id
+       ,clnt_id
+       ,key_val
+   )
+   values( #{userId}
+          ,#{clntId}
+          ,#{keyVal}
+  )
+
 	</update>
 	
 	<update id="mergeMysql" >

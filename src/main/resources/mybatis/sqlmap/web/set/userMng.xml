@@ -48,6 +48,8 @@
 	<if test=" telNo != null and telNo != '' ">
 	    ,TEL_NO			</if>
 	<if test=" mtelNo != null and mtelNo != '' ">
+
+
 	    ,MTEL_NO		</if>
 	<if test=" mailAddr != null and mailAddr != '' ">
 	    ,MAIL_ADDR		</if>

@@ -10,10 +10,10 @@ spring:
       on-profile: local, default
   datasource:
     hikari:
-      driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:postgresql://abd01.cluster-czdogjjomgak.ap-northeast-2.rds.amazonaws.com:5432/abd01dsv?currentSchema=absv
-      username: masteraccount
-      password: TLZBFLDZM1!
+      driver-class-name: oracle.jdbc.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@192.168.110.175:1521:HBBL
+      username: PANDA
+      password: PANDA
   servlet:
     multipart:
       max-file-size: 10MB
@@ -26,7 +26,7 @@ spring:
     cache: false
 
 server:
-  port: 28080
+  port: 8089
 
 jwt:
   token:
