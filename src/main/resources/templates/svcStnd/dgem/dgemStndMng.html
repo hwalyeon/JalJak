@@ -24,44 +24,23 @@
 			<div class="ibox-content">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-xs-1 control-label">활동 구분</label>
+						<label class="col-xs-1 control-label">센서 ID</label>
 						<div class="col-xs-2">
-							<select id="actDivCd" namd="actDivCd" class="form-control" v-model="params.actDivCd">
-								<option value="">전체</option>
-								<option v-for="item in code.actDivCdList" v-bind:value="item.cdVal" v-text="item.cdNm" >
-							</select>
+							<input type="text" name="senserId" class="form-control" v-model="params.senserId">
 						</div>
-						<label class="col-xs-1 control-label">심박 상태</label>
+						<label class="col-xs-1 control-label">센서 명</label>
 						<div class="col-xs-2">
-							<select id="hbitStatCd" namd="hbitStatCd" class="form-control" v-model="params.hbitStatCd">
-								<option value="">전체</option>
-								<option v-for="item in code.hbitStatCdList" v-bind:value="item.cdVal" v-text="item.cdNm" >
-							</select>
+							<input type="text" name="senserNm" class="form-control" v-model="params.senserNm">
 						</div>
-						<label class="col-xs-1 control-label">장소 분류</label>
+						<label class="col-xs-1 control-label">알람 ID</label>
 						<div class="col-xs-2">
-							<select id="plcClssCd" namd="plcClssCd" class="form-control" v-model="params.plcClssCd">
-								<option value="">전체</option>
-								<option v-for="item in code.plcClssCdList" v-bind:value="item.cdVal" v-text="item.cdNm" >
-							</select>
+							<input type="text" name="alarmId" class="form-control" v-model="params.alarmId">
 						</div>
-						<label class="col-xs-1 control-label">체온 상태</label>
+						<label class="col-xs-1 control-label">알람 명</label>
 						<div class="col-xs-2">
-							<select id="tempStatCd" namd="tempStatCd" class="form-control" v-model="params.tempStatCd">
-								<option value="">전체</option>
-								<option v-for="item in code.tempStatCdList" v-bind:value="item.cdVal" v-text="item.cdNm" >
-							</select>
+							<input type="text" name="alarmNm" class="form-control" v-model="params.alarmNm">
 						</div>
-					</div>	
-					<div class="form-group">	
-						<label class="col-xs-1 control-label">위험감정 상태</label>
-						<div class="col-xs-2">
-							<select id="dgemStatCd" namd="dgemStatCd" class="form-control" v-model="params.dgemStatCd">
-								<option value="">전체</option>
-								<option v-for="item in code.dgemStatCdList" v-bind:value="item.cdVal" v-text="item.cdNm" >
-							</select>
-						</div>
-						
+					</div>
 					</div>
 					<div class="form-group mg_none">
 						<div class="text-center">
@@ -83,14 +62,14 @@
 					<div class="float_left">
 						<div class="ibox-title pd_none mg_top_10" style="min-height: 0px;">
 							<i class="fa fa-title-bar"></i>
-							<h5>위험감정기준 목록</h5>
+							<h5>감시화면 목록</h5>
 						</div>
 					</div>
 					<div class="clear_both"></div>
 					<div class="float_right">
 <!-- 						<button type="button" id="btnSave" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" v-on:click="btnSave">&nbsp;저장</button> -->
-						<button type="button" id="btnReg" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" data-target="#dgemStndDetlPopup" v-on:click="regDgemStndDetlPop()">&nbsp;신규 등록</button>
-						<button type="button" id="btnDownloadExcel" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcel"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>
+<!--						<button type="button" id="btnReg" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" data-toggle="modal" data-target="#dgemStndDetlPopup" v-on:click="regDgemStndDetlPop()">&nbsp;신규 등록</button>-->
+<!--						<button type="button" id="btnDownloadExcel" class="btn btn-outline btn-primary ladda-button mg_left_10" data-style="zoom-in" v-on:click="downloadExcel"><i class="fa fa-file-excel-o"></i>&nbsp;엑셀다운로드</button>-->
 					</div>
 					<div class="clear_both"></div>
 				</div>

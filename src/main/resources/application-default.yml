@@ -12,8 +12,8 @@ spring:
     hikari:
       driver-class-name: oracle.jdbc.OracleDriver
       jdbc-url: jdbc:oracle:thin:@192.168.110.175:1521:HBBL
-      username: PANDA
-      password: PANDA
+      username: LGW
+      password: LGW
   servlet:
     multipart:
       max-file-size: 10MB

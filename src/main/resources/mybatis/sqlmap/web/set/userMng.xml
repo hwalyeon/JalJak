@@ -19,22 +19,20 @@
 	<if test=" userId != null and userId != '' ">
 	AND   USER_ID = #{userId}		</if>
 	<if test=" userNm != null and userNm != '' ">
-	AND   USER_NM LIKE CONCAT('%', #{userNm}, '%')	</if>
+	AND   USER_NM LIKE  #{userNm}	</if>
 	<if test=" userPw != null and userPw != '' ">
 	AND   USER_PW = #{userPw}	</if>
 	<if test=" blngNm != null and blngNm != '' ">
-	AND   BLNG_NM LIKE CONCAT ('%', #{blngNm}, '%')		</if>
+	AND   BLNG_NM LIKE   #{blngNm}	</if>
 	<if test=" telNo != null and telNo != '' ">
-	AND   TEL_NO LIKE CONCAT ('%', #{telNo}, '%')		</if>
+	AND   TEL_NO LIKE   #{telNo}		</if>
 	<if test=" mtelNo != null and mtelNo != '' ">
-	AND   MTEL_NO LIKE CONCAT ('%', #{mtelNo}, '%')		</if>
+	AND   MTEL_NO LIKE   #{mtelNo}		</if>
 	<if test=" mailAddr != null and mailAddr != '' ">
-	AND   MAIL_ADDR LIKE CONCAT ('%', #{mailAddr}, '%')		</if>
+	AND   MAIL_ADDR LIKE #{mailAddr} 		</if>
 	<if test=" useYn != null and useYn != '' ">
-	AND   USE_YN LIKE CONCAT('%',#{useYn},'%')</if>
+	AND   USE_YN LIKE    #{useYn}</if>
 	ORDER BY USER_ID
-	<if test=' paging == "Y" '>
-    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
 	</select>
 	
 	<insert id="insertTcUserBase" parameterType="java.util.Map">
@@ -76,22 +74,22 @@
 	    ,#{mtelNo}			</if>
 	<if test=" mailAddr != null and mailAddr != '' ">
 	    ,#{mailAddr}		</if>
-	    ,TO_CHAR(NOW(), 'YYYYMMDD')	  
+	    ,TO_CHAR( SYSDATE, 'YYYYMMDD')	  
 	    ,''
 	    ,#{useYn}
-	    ,TO_CHAR(NOW(), 'YYYYMMDD')
-	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,TO_CHAR( SYSDATE, 'YYYYMMDD')
+	    ,TO_CHAR( SYSDATE, 'HH24MISS')
 	    ,#{regUserId}
-	    ,TO_CHAR(NOW(), 'YYYYMMDD')
-	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,TO_CHAR( SYSDATE, 'YYYYMMDD')
+	    ,TO_CHAR( SYSDATE, 'HH24MISS')
 	    ,#{uptUserId}	
 	)
 	</insert>
 	
 	<update id="updateTcUserBase" parameterType="java.util.Map">
 	UPDATE TC_USER_BASE
-	SET    UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
-	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24MMIS')
+	SET    UPT_DT      = TO_CHAR( SYSDATE, 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR( SYSDATE, 'HH24MISS')
 	      ,UPT_USER_ID = #{uptUserId}
 	      ,USER_ID = #{userId}
     	<if test="userNm     != null and userNm     != ''">,USER_NM      = #{userNm}		</if>
@@ -109,8 +107,8 @@
 	<update id="updateUserPw" parameterType="java.util.Map">
 	UPDATE TC_USER_BASE
 	SET    USER_PW     = #{userPw}
-	      ,UPT_DT      = TO_CHAR(NOW(), 'YYYYMMDD')
-	      ,UPT_TM      = TO_CHAR(NOW(), 'HH24MISS')
+	      ,UPT_DT      = TO_CHAR( SYSDATE, 'YYYYMMDD')
+	      ,UPT_TM      = TO_CHAR( SYSDATE, 'HH24MISS')
 	      ,UPT_USER_ID = #{uptUserId}
 	WHERE  USER_ID     = #{userId}
 	</update>
@@ -124,8 +122,8 @@
 	<update id="updateAcdmProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
 	
 	UPDATE TO_ACDM_BASE
-	SET    UPT_DT       = TO_CHAR(NOW(), 'YYYYMMDD')
-	      ,UPT_TM       = TO_CHAR(NOW(), 'HH24MMIS')
+	SET    UPT_DT       = TO_CHAR( SYSDATE, 'YYYYMMDD')
+	      ,UPT_TM       = TO_CHAR( SYSDATE, 'HH24MISS')
 	      ,UPT_USER_ID  = #{userId}
 	      ,PROF_IMG_NO  = #{fileNo}
 	WHERE  1 = 1
@@ -136,8 +134,8 @@
 	<update id="updateLctrProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
 	
 	UPDATE TO_LCTR_BASE
-	SET    UPT_DT       = DATE_FORMAT(NOW(), '%Y%m%d')
-	      ,UPT_TM       = DATE_FORMAT(NOW(), '%H%i%s')
+	SET    UPT_DT       = DATE_FORMAT( SYSDATE, '%Y%m%d')
+	      ,UPT_TM       = DATE_FORMAT( SYSDATE, '%H%i%s')
 	      ,UPT_USER_ID  = #{userId}
 	      ,PROF_IMG_NO  = #{fileNo}
 	WHERE  1 = 1
@@ -148,8 +146,8 @@
 	<update id="updateStdtProfImg"  parameterType="kr.co.seculink.web.model.cmon.TcFileVO">
 	
 	UPDATE TO_STDT_BASE
-	SET    UPT_DT       = DATE_FORMAT(NOW(), '%Y%m%d')
-	      ,UPT_TM       = DATE_FORMAT(NOW(), '%H%i%s')
+	SET    UPT_DT       = DATE_FORMAT( SYSDATE, '%Y%m%d')
+	      ,UPT_TM       = DATE_FORMAT( SYSDATE, '%H%i%s')
 	      ,UPT_USER_ID  = #{userId}
 	      ,PROF_IMG_NO  = #{fileNo}
 	WHERE  1 = 1

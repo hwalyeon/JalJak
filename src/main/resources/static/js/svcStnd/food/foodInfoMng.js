@@ -48,12 +48,13 @@ let foodInfoMng = new Vue({
         initGrid: function() {
             let $this = this;
         	let colModels = [
-                {name: "foodNo"     , index: "foodNo"   , label: "식품번호"   , width: 80, align: "center"},
-                {name: "foodLclsNm"     , index: "foodLclsNm"   , label: "식품 대분류 명"   , width: 80, align: "center"},
-                {name: "foodMclsNm"     , index: "foodMclsNm"   , label: "식품 중분류 명"   , width: 80, align: "center"},
-                {name: "foodNm"     , index: "foodNm"   , label: "식품명"   , width: 80, align: "center"},
-                {name: "otimEatQty"       , index: "otimEatQty"     , label: "1회 섭취용량"        , width: 80, align: "center"},
-                {name: "eatUnitCd"       , index: "eatUnitCd"     , label: "섭취단위코드"        , width: 80, align: "center"},
+                {name: "buildId"     , index: "buildId"   , label: "건물_ID"   , width: 80, align: "center"},
+                {name: "flValue"     , index: "flValue"   , label: "층수"   , width: 80, align: "center"},
+                {name: "sencerId"     , index: "sencerId"   , label: "센서_ID"   , width: 80, align: "center"},
+                {name: "sencerValue"     , index: "sencerValue"   , label: "센서_값"   , width: 80, align: "center"},
+                {name: "alarmId"     , index: "alarmId"   , label: "알람_ID"   , width: 80, align: "center"},
+                {name: "alarmNm"     , index: "alarmNm"   , label: "알람_명"   , width: 80, align: "center"},
+                {name: "alarmValue"     , index: "alarmValue"   , label: "알람_값"   , width: 80, align: "center"},
                 {name: "regDt"                , index: "regDt"                , label: "등록일자"                    , width: 80          , align: "center"
                     , formatter: function(cellValue, options, rowObject) { return formatDate(cellValue);                                              }},
                 {name: "regTm"               , index: "regTm"               , label: "등록시각"                   , width: 80          , align: "center"

@@ -65,35 +65,19 @@ let dgemStndMng = new Vue({
              
         	let colModels = [
                 {name: "crud"           , index: "crud"           , label: "crud"         , hidden: true },
-                {name: "actDivCdTemp"   , index: "actDivCdTemp"   , label: "활동 구분 코드" 	  , hidden: true },
-                {name: "hbitStatCdTemp" , index: "hbitStatCdTemp" , label: "심박 상태 코드" 	  , hidden: true }, 
-                {name: "plcClssCdTemp"  , index: "plcClssCdTemp"  , label: "장소 분류 코드" 	  , hidden: true },
-                {name: "tempStatCdTemp" , index: "tempStatCdTemp" , label: "체온 상태 코드" 	  , hidden: true },
-                {name: "dgemStatCdTemp" , index: "dgemStatCdTemp" , label: "위험감정 상태 코드" , hidden: true },
-                {name: "actDivCd"       , index: "actDivCd"       , label: "활동 구분 코드" 	  , hidden: true },
-                {name: "hbitStatCd"     , index: "hbitStatCd"     , label: "심박 상태 코드" 	  , hidden: true }, 
-                {name: "plcClssCd"      , index: "plcClssCd"      , label: "장소 분류 코드" 	  , hidden: true },
-                {name: "tempStatCd"     , index: "tempStatCd"     , label: "체온 상태 코드" 	  , hidden: true },
-                {name: "dgemStatCd"     , index: "dgemStatCd"     , label: "위험감정 상태 코드" , hidden: true },
-                {name: "actDivCdNm"     , index: "actDivCdNm"     , label: "활동 구분 명" 	  , width: 50 , align: "center" },
-                {name: "hbitStatCdNm"   , index: "hbitStatCdNm"   , label: "심박 상태 명" 	  , width: 50 , align: "center" },
-                {name: "plcClssCdNm"    , index: "plcClssCdNm"    , label: "장소 분류 명" 	  , width: 50 , align: "center" },
-                {name: "tempStatCdNm"   , index: "tempStatCdNm"   , label: "체온 상태 명" 	  , width: 50 , align: "center" },
-                {name: "dgemIdx" 	    , index: "dgemIdx" 	      , label: "위험감정 지수" 	  , width: 50 , align: "center" },
-                {name: "dgemStatCdNm"   , index: "dgemStatCdNm"   , label: "위험감정 상태 명"    , width: 50 , align: "center" }, 
-                {name: "dgemSmryCntn"   , index: "dgemSmryCntn"   , label: "위험감정 요약내용" , width: 80 , align: "center" 	}, 
+                {name: "cctvHistNo"   , index: "cctvHistNo"   , label: "이력번호" 	  , width: 50 , align: "center"},
+                {name: "senserId"   , index: "senserId"   , label: "센서ID" 	  , width: 50 , align: "center"},
+                {name: "senserNm" , index: "senserNm" , label: "센서 명" 	  , width: 50 , align: "center"},
+                {name: "senserValue"  , index: "senserValue"  , label: "센서 값" 	  , width: 50 , align: "center"},
+                {name: "alarmId" , index: "alarmId" , label: "알람ID" 	  , width: 50 , align: "center"},
+                {name: "alarmNm" , index: "alarmNm" , label: "알람 명" , width: 50 , align: "center"},
+                {name: "alarmValue"       , index: "alarmValue"       , label: "알람 값" 	  , width: 50 , align: "center"},
                 {name: "regDt"          , index: "regDt"          , label: "등록일자"   	  , width: 50 , align: "center"  , formatter: function(cellValue, options, rowObject) { return formatDate(cellValue);}  },
                 {name: "regTm"          , index: "regTm"          , label: "등록시각"   	  , width: 50 , align: "center"  , formatter: function(cellValue, options, rowObject) { return formatTime(cellValue);}  },
                 {name: "regUserId"      , index: "regUserId"      , label: "등록사용자ID"	  , width: 50 , align: "center"  },
                 {name: "uptDt"          , index: "uptDt"          , label: "수정일자"    	  , width: 50 , align: "center"  , formatter: function(cellValue, options, rowObject) { return formatDate(cellValue);}  },
                 {name: "uptTm"          , index: "uptTm"          , label: "수정시각"    	  , width: 50 , align: "center"  , formatter: function(cellValue, options, rowObject) { return formatTime(cellValue);}  },
-                {name: "uptUserId"      , index: "uptUserId"      , label: "수정사용자ID"	  , width: 50 , align: "center"  },
-                {name: "dgemStndDetlPop" , index: "dgemStndDetlPop" , label: "상세정보보기", width: 50, align: "center",
-                    formatter: function(cellValue, options, rowObject) {
-                        return '<input type="button" class="btn btn-xs btn-outline btn-success" onclick="dgemStndMng.regDgemStndDetlPop(\'' + rowObject.actDivCd + '\',\'' + rowObject.hbitStatCd + '\',\'' + rowObject.plcClssCd + '\',\'' + rowObject.tempStatCd + '\',\'' + rowObject.dgemStatCd + '\')" value="상세보기" data-toggle="modal" data-target="#dgemStndDetlPopup" />';
-                    }
-                }
-                
+                {name: "uptUserId"      , index: "uptUserId"      , label: "수정사용자ID"	  , width: 50 , align: "center"  }
             ];
   
             $("#dgem_list").jqGrid("GridUnload");

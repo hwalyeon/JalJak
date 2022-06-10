@@ -37,8 +37,6 @@ WHERE 1=1
 	<if test=" cdGrpNm != null and cdGrpNm != '' ">
 	AND   CD_GRP_NM LIKE CONCAT('%', #{cdGrpNm}, '%')	</if>
 	ORDER BY CD_GRP
-	<if test=' paging == "Y" '>
-    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
 	</select>
 	
 	<insert id="insertTcCdGrp" parameterType="java.util.Map">

@@ -41,19 +41,19 @@
 	(
 	     #{userId}
 	    ,#{roleCd}
-	    ,TO_CHAR(NOW(), 'YYYYMMDD')
-	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,TO_CHAR(SYSDATE, 'YYYYMMDD')
+	    ,TO_CHAR(SYSDATE, 'HH24MISS')
 	    ,#{regUserId}
-	    ,TO_CHAR(NOW(), 'YYYYMMDD')
-	    ,TO_CHAR(NOW(), 'HH24MISS')
+	    ,TO_CHAR(SYSDATE, 'YYYYMMDD')
+	    ,TO_CHAR(SYSDATE, 'HH24MISS')
 	    ,#{uptUserId}	
 	)
 	</insert>
 	
 	<update id="updateTcUserRole" parameterType="java.util.Map">
 	UPDATE TC_USER_ROLE
-	SET UPT_DT      = DATE_FORMAT(NOW(), '%Y%m%d')
-	      ,UPT_TM      = DATE_FORMAT(NOW(), '%H%i%s')
+	SET UPT_DT      = DATE_FORMAT(SYSDATE, '%Y%m%d')
+	      ,UPT_TM      = DATE_FORMAT(SYSDATE, '%H%i%s')
 	      ,UPT_USER_ID = #{uptUserId}
     	<if test="roleCd != null and roleCd != ''">
     	,ROLE_CD = #{roleCd}	</if>

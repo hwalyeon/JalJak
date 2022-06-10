@@ -3,14 +3,14 @@ let userMng = new Vue({
     data: {
     	params: {
     		userId: '',
-    		userNm: '',
-    		blngNm: '',
-    		telNo: '',
-    		mtelNo: '',
-    		mailAddr: '',
-    		useYn:'Y',
-    		paging: 'Y',
-    		totalCount: 0,
+            userNm: '',
+            blngNm: '',
+            telNo: '',
+            mtelNo: '',
+            mailAddr: '',
+            useYn:'Y',
+            paging: 'Y',
+            totalCount: 0,
             rowCount: 30,
             currentPage: 1,
             currentIndex: 0

@@ -25,8 +25,6 @@
 	<if test=" menuNm != null and menuNm != '' ">
 	AND   A.MENU_NM LIKE CONCAT('%', #{menuNm}, '%')	</if>
 	ORDER BY A.MENU_NO
-	<if test=' paging == "Y" '>
-    LIMIT ${rowCount} OFFSET ${currentIndex} </if>
 	</select>
 	
 	<select id="searchUpprMenuList" parameterType="java.util.Map" resultType="MybatisMap">

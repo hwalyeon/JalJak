@@ -3,26 +3,27 @@
 <mapper namespace="svcStnd.food.foodInfoMng">
 
 <select id="searchFoodInfoList" parameterType="java.util.Map" resultType="MybatisMap">
-	SELECT		food_no /* food_no 식품_번호 numeric */
-               ,food_lcls_nm /* food_lcls_nm 식품_대분류_명 character varying(100) */
-               ,food_mcls_nm /* food_mcls_nm 식품_중분류_명 character varying(100) */
-               ,food_nm /* food_nm 식품_명 character varying(100) */
-               ,otim_eat_qty /* otim_eat_qty 1회_섭취_용량 numeric */
-               ,eat_unit_cd /* eat_unit_cd 섭취_단위_코드 character varying(20) */
-               ,reg_dt /* reg_dt 등록_일자 character(8) */
-               ,reg_tm /* reg_tm 등록_시각 character(6) */
-               ,reg_user_id /* reg_user_id 등록_사용자_ID character varying(20) */
-               ,upt_dt /* upt_dt 수정_일자 character(8) */
-               ,upt_tm /* upt_tm 수정_시각 character(6) */
-               ,upt_user_id /* upt_user_id 수정_사용자_ID character varying(20) */
-        FROM   ti_food_info
-		WHERE  1 = 1
-        <if test=" foodNo != null and foodNo != '' ">
-		AND    food_no = CAST(#{foodNo} AS INTEGER)
-		</if>
-		AND    food_nm LIKE  CONCAT('%',#{foodNm},'%') /* food_no 식품_번호 numeric */
-        <if test=' paging == "Y" '>
-        LIMIT ${rowCount} OFFSET ${currentIndex} </if>
+	SELECT BUILD_ID,
+           FL_VALUE,
+           SENCER_ID,
+           SENCER_VALUE,
+           ALARM_ID,
+           ALARM_NM,
+           ALARM_VALUE,
+           REG_DT,
+           REG_TM,
+           REG_USER_ID,
+           UPT_DT,
+           UPT_TM,
+           UPT_USER_ID
+    FROM   FLOOR_DATA
+    WHERE  1=1
+    <if test="buildId != null and buildId != ''">
+    and BUILD_ID like '%' || #{buildId} || '%'</if>
+    <if test="flValue != null and flValue != ''">
+    and FL_VALUE = #{flValue}</if>
+    <if test="regDt != null and regDt != ''">
+    and REG_DT   = #{regDt}</if>
 </select>
 
 

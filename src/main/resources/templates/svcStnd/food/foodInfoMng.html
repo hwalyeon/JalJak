@@ -24,13 +24,17 @@
 			<div class="ibox-content">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-xs-1 control-label">식품번호</label>
+						<label class="col-xs-1 control-label">건물 ID</label>
 						<div class="col-xs-2">
-							<input type="number" name="foodNo" class="form-control" v-model="params.foodNo">
+							<input type="text" name="buildId" class="form-control" v-model="params.buildId">
 						</div>
-						<label class="col-xs-1 control-label">식품명</label>
+						<label class="col-xs-1 control-label">층 수</label>
 						<div class="col-xs-2">
-							<input type="text" name="foodNm" class="form-control" v-model="params.foodNm">
+							<input type="number" name="flValue" class="form-control" v-model="params.flValue">
+						</div>
+						<label class="col-xs-1 control-label">등록일자</label>
+						<div class="col-xs-2">
+							<input type="date" name="regDt" class="form-control" v-model="params.regDt">
 						</div>
 					</div>
 					<div class="form-group mg_none">
@@ -53,7 +57,7 @@
 					<div class="float_left">
 						<div class="ibox-title pd_none mg_top_10" style="min-height: 0px;">
 							<i class="fa fa-title-bar"></i>
-							<h5>스트레스 기준 목록</h5>
+							<h5>층별데이터 목록</h5>
 						</div>
 					</div>
 					<div class="float_right">
