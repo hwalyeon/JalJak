@@ -48,23 +48,13 @@ let foodInfoMng = new Vue({
         initGrid: function() {
             let $this = this;
         	let colModels = [
-                {name: "buildId"     , index: "buildId"   , label: "건물_ID"   , width: 80, align: "center"},
+                {name: "buildId"     , index: "buildId"   , label: "건물_ID"   , width: 170, align: "center"},
                 {name: "flValue"     , index: "flValue"   , label: "층수"   , width: 80, align: "center"},
-                {name: "sencerId"     , index: "sencerId"   , label: "센서_ID"   , width: 80, align: "center"},
+                {name: "sencerId"     , index: "sencerId"   , label: "센서_ID"   , width: 100, align: "center"},
                 {name: "sencerValue"     , index: "sencerValue"   , label: "센서_값"   , width: 80, align: "center"},
                 {name: "alarmId"     , index: "alarmId"   , label: "알람_ID"   , width: 80, align: "center"},
-                {name: "alarmNm"     , index: "alarmNm"   , label: "알람_명"   , width: 80, align: "center"},
-                {name: "alarmValue"     , index: "alarmValue"   , label: "알람_값"   , width: 80, align: "center"},
-                {name: "regDt"                , index: "regDt"                , label: "등록일자"                    , width: 80          , align: "center"
-                    , formatter: function(cellValue, options, rowObject) { return formatDate(cellValue);                                              }},
-                {name: "regTm"               , index: "regTm"               , label: "등록시각"                   , width: 80          , align: "center"
-                    , formatter: function(cellValue, options, rowObject) { return formatTime(cellValue);                                              }},
-                {name: "regUserId"          , index: "regUserId"         , label: "등록사용자ID"            , width: 80          , align: "center"},
-                {name: "uptDt"                , index: "uptDt"                , label: "수정일자"                   , width: 80          , align: "center"
-                    , formatter: function(cellValue, options, rowObject) { return formatDate(cellValue);                                              }},
-                {name: "uptTm"               , index: "uptTm"               , label: "수정시각"                   , width: 80          , align: "center"
-                    , formatter: function(cellValue, options, rowObject) { return formatTime(cellValue);                                              }},
-                {name: "uptUserId"          , index: "uptUserId"         , label: "수정사용자ID"            , width: 80          , align: "center"}
+                {name: "alarmNm"     , index: "alarmNm"   , label: "알람_명"   , width: 110, align: "center"},
+                {name: "alarmValue"     , index: "alarmValue"   , label: "알람_값"   , width: 80, align: "center"}
 
             ];
 

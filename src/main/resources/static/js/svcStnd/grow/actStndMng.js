@@ -33,11 +33,11 @@ let actStndMng = new Vue({
             },
             initCodeList : function() {
 
-                let $this = this;
+                /*let $this = this;
                 $this.codeList( $this.code.actClssCdList, function() {
                     $this.initGrid();
                     $this.searchActStndList(true);
-                });
+                });*/
             },
             // 활동_분류_코드 리스트_조회
             codeList : function (arrayObject , callback){

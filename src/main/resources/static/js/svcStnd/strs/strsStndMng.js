@@ -41,13 +41,13 @@ let strsStndMng = new Vue({
         },
 
         initCodeList: function() {
-            let $this = this;
-            getCommonCodeList('STRS_STAT_CD',$this.code.strsStatList, function(){
-                $this.initGrid();
-                $this.searchStrsList(true);
-                $this.searchCdSpecList(true);
-            }
-            );
+            // let $this = this;
+            // getCommonCodeList('STRS_STAT_CD',$this.code.strsStatList, function(){
+            //     $this.initGrid();
+            //     $this.searchStrsList(true);
+            //     $this.searchCdSpecList(true);
+            // }
+            // );
         },
         initGrid: function() {
             let $this = this;

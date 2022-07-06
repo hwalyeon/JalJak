@@ -4,14 +4,16 @@
 	  layout:decorate="~{common/layout/defaultLayout}">
 <head>
 	<meta charset="UTF-8">
-	<title>사용자</title>
+	<title>사용자자</title>
 </head>
 <body>
+
 <div layout:fragment="content">
+	<img src="/img/ondo.png">
 	<div class="wrapper-content" id="strsStndMng">
 
 		<!-- 검색조건 영역 -->
-		<div class="ibox m-b-sm">
+		<!--<div class="ibox m-b-sm">
 			<div class="ibox-title">
 				<i class="fa fa-title-bar"></i>
 				<h5>검색조건</h5>
@@ -24,6 +26,7 @@
 			<div class="ibox-content">
 				<div class="form-horizontal">
 					<div class="form-group">
+
 						<label class="col-xs-2 control-label">정신적 스트레스 상태코드</label>
 						<div class="col-xs-2">
 							<select id="mentStrsStatCd" name="mentStrsStatCd" class="form-control" v-model="params.mentStrsStatCd" v-on:click="mentStrsStatNmVal()">
@@ -50,11 +53,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 		<!-- 검색조건 영역 -->
 		
 		<!-- 결과 리스트 영역 -->
-		<div class="row">
+		<!--<div class="row">
 			<div class="col-xs-4">
 				<div class="ibox-title">
 					<i class="fa fa-title-bar"></i>
@@ -73,7 +76,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-8">sjsjsj
+			<div class="col-xs-8">
 				<div class="ibox">
 					<div class="ibox-title">
 						<i class="fa fa-title-bar"></i>
@@ -93,9 +96,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
     </div>
-    <div th:insert="~{svcStnd/strs/strsStndDetl :: body}"></div>
+
 </div>
 <section layout:fragment="user_script">
 	<script type="text/javascript" th:src="@{/js/svcStnd/strs/strsStndMng.js}"></script>
